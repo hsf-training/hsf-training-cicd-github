@@ -3,7 +3,7 @@
 HSF Training CI/CD -- Github Edition
 ====================================
 
-An introduction to continuous integration (CI) and continuous deployment (CD) using github with TravisCI. This repository holds the source code of the webpage that is rendered [here](https://hsf-training.github.io/hsf-training-cicd-travis/). Contributions are welcome (see below)!
+An introduction to continuous integration (CI) and continuous deployment (CD) using github with TravisCI. This repository holds the source code of the webpage that is rendered [here](https://hsf-training.github.io/hsf-training-cicd-github/). Contributions are welcome (see below)!
 
 This training module is part of an initiative of the [HEP Software foundation](https://hepsoftwarefoundation.org/) to build up a full software [training curriculum](https://hepsoftwarefoundation.org/training/curriculum) for high energy physics.
 
