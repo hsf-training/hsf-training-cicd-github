@@ -1,7 +1,7 @@
 [![Build Status](hhttps://travis-ci.org/hsf-training/hsf-training-cicd.svg?branch=gh-page)](https://travis-ci.org/carpentries/lesson-example)
 
-HSF Training CI/CD -- Github + TravisCI Edition
-===============================================
+HSF Training CI/CD -- Github Edition
+====================================
 
 An introduction to continuous integration (CI) and continuous deployment (CD) using github with TravisCI. This repository holds the source code of the webpage that is rendered [here](https://hsf-training.github.io/hsf-training-cicd-travis/). Contributions are welcome (see below)!
 
@@ -18,6 +18,6 @@ This training module is part of an initiative of the [HEP Software foundation](h
     please run `make serve` from the command line
     to launch Jekyll with the correct parameters,
     or push to your repository's `gh-pages` branch
-and let GitHub take care of the rendering.
+    and let GitHub take care of the rendering.
 2.  Run `make lesson-check` to check that your files follow our formatting rules.
 
