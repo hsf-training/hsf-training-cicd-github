@@ -6,132 +6,77 @@ objectives:
   - Learn where to find more details about everything for the GitLab CI.
   - Understand the structure of the GitLab CI YAML file.
 questions:
-  - What is the GitLab CI specification?
+  - What is the GitHub CI specification?
 hidden: false
 keypoints:
-  - You should bookmark the GitLab reference on CI/CD. You'll visit that page often.
+  - You should bookmark the GitHub reference on CI/CD. You'll visit that page often.
   - A job is defined by a name and a script, at minimum.
   - Other than job names, reserved keywords are the top-level parameters defined in a YAML file.
 ---
 <iframe width="420" height="263" src="https://www.youtube.com/embed/1Kz3VrzYHb0?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-# GitLab CI YAML
+# GitHub CI YAML
 
-The GitLab CI configurations are specified using a YAML file called `.gitlab-ci.yml`. Here is an example:
+The GitHub CI configurations are specified using a YAML file called `main.yml` stored in the`.github/workflows/` directory. Here is an example:
 
 ~~~
-image: rikorose/gcc-cmake
+name: example
 
-before_script:
-  - mkdir build
+on: push
 
-build_code:
-  script:
-    - cd build
-    - cmake ../src
-    - cmake --build .
+jobs:
+  job_1:
+    runs-on: ubuntu-latest
+	steps:
+	  - name: My first step
+	    run: |
+			echo This is the first step of my first job.
 ~~~
 {: .language-yaml}
 
-> ## `script` commands
->
-> Sometimes, `script` commands will need to be wrapped in single or double quotes. For example, commands that contain a colon (`:`) need to be wrapped in quotes so that the YAML parser knows to interpret the whole thing as a string rather than a “key: value” pair. Be careful when using special characters: `:`, `{`, `}`, `[`, `]`, `,`, `&`, `*`, `#`, `?`, `|`, `-`, `<`, `>`, `=`, `!`, `%`, `@`, `\``.
+
+> ## `name`
+> **Optional**. GitHub displays the names of your workflows on your repository's actions page. If you omit name, GitHub sets it to the YAML file.
+
+> ## `on`
+> **Required**. Specify the event that automatically triggers pipelines. This example uses the push event, so that the jobs run every time someone pushes a change to the repository.
+
+> ## `jobs`
+> Specify the job(s) to be run. Each job runs in an environment specified by `runs-on`. Jobs run in parallel by default. To run jobs sequentially, you have to define dependencies on other jobs. We'll cover this in a later section.
 {: .callout}
 
-This is the simplest possible configuration that will work for most code using minimal dependencies with `cmake` and `make`:
+> ## Steps
+> A step is an individual task that can run commands (known as actions). Each step in a job executes on the same runner, allowing the actions in that job to share data with each other.
 
-1. Define one job `build_code` (the job names are arbitrary) with different commands to be executed.
-2. Before every job, the commands defined by `before_script` are executed.
+## Take note
 
-The `.gitlab-ci.yml` file defines sets of jobs with constraints of how and when they should be run. The jobs are defined as top-level elements with a name (in our case `build_code`) and always have to contain the `script` keyword. Let's explore this structure in more depth.
+ Sometimes, commands that contain a colon (`:`) need to be wrapped in quotes so that the YAML parser knows to interpret the whole thing as a string rather than a “key: value” pair. Be careful when using special characters: `:`, `{`, `}`, `[`, `]`, `,`, `&`, `*`, `#`, `?`, `|`, `-`, `<`, `>`, `=`, `!`, `%`, `@`, `\``.
+{: .callout}
 
 ## Overall Structure
 
 Every single parameter we consider for all configurations are keys under jobs. The YAML is structured using job names. For example, we can define three jobs that run in parallel (more on parallel/serial later) with different sets of parameters.
 
 ~~~
-job1:
-  param1: null
-  param2: null
+jobs:
+  job1:
+    param1: null
+    param2: null
 
-job2:
-  param1: null
-  param3: null
+  job2:
+    param1: null
+    param3: null
 
-job3:
-  param2: null
-  param4: null
-  param5: null
+  job3:
+    param2: null
+    param4: null
+    param5: null
 ~~~
 {: .language-yaml}
 
-> ## Parallel or Serial Execution?
->
-> Note that by default, all jobs you define run in parallel. If you want them to run in serial, or a mix of parallel and serial, or as a directed acyclic graph, we'll cover this in a later section.
-{: .callout}
-
-What can you not use as job names? There are a few reserved keywords (because these are used as global parameters for configuration, in addition to being job-specific parameters):
-
-- `default`
-- `image`
-- `services`
-- `stages`
-- `types`
-- `before_script`
-- `after_script`
-- `variables`
-- `cache`
-
-Global parameters mean that you can set parameters at the top-level of the YAML file. What does that actually mean? Here's another example:
-
-~~~
-image: rikorose/gcc-cmake
-
-stages: [build, test, deploy]
-
-job1:
-  script: make
-
-job2:
-  image: rikorose/gcc-cmake:gcc-6
-  script: make
-~~~
-{: .language-yaml}
-
-where `image` and `stages` are global parameters being used. Note that `job2:image` overrides `:image`.
-
-## Job Parameters
-
-What are some of the parameters that can be used in a job? Rather than copy/pasting from the reference (linked below in this session), we'll go to the [Configuration parameters](https://docs.gitlab.com/ee/ci/yaml/#configuration-parameters) section in the GitLab docs. The most important parameter, and the only one needed to define a job, is `script`
-
-~~~
-job one:
-  script: make
-
-job two:
-  script:
-    - python test.py
-    - coverage
-~~~
-{: .language-yaml}
-
-> ## Understanding the Reference
->
-> One will notice that the reference uses colons like `:job:image:name` to refer to parameter names. This is represented in yaml like:
-> ~~~
-> job:
->   image:
->     name: rikorose/gcc-cmake:gcc-6
-> ~~~
-> {: .language-yaml}
-> where the colon refers to a child key.
-{: .callout}
 
 ## Reference
 
-The reference guide for all GitLab CI/CD pipeline configurations is found at [https://docs.gitlab.com/ee/ci/yaml/](https://docs.gitlab.com/ee/ci/yaml/). This contains all the different parameters you can assign to a job.
-
-> ## Further Reading
-> - [https://docs.gitlab.com/ee/ci/yaml/](https://docs.gitlab.com/ee/ci/yaml/)
+The reference guide for all GitLab CI/CD pipeline configurations is found at [workflow-syntax-for-github-actions](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions). This contains all the different parameters you can assign to a job.
 {: .checklist}
 
 {% include links.md %}
