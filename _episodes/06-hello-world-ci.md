@@ -36,9 +36,16 @@ jobs:
 ~~~
 {: .source}
 
-Run locally:
+## Run locally
+
+We need a dedicated tool: [nektos/act](https://github.com/nektos/act).
+  ```bash
+  curl https://raw.githubusercontent.com/nektos/act/master/install.sh --output install.sh
+  bash install.sh -b .
 ```
-act -l
+
+```
+./act -l
 ```
 
 What happened??? We can see that this failed because the YAML was invalid... (Error: yaml: line 8: mapping values are not allowed in this context)
@@ -47,17 +54,18 @@ We should fix this accondingly to the Error message.
 
 Let's rerun:
 ```
-act -l
+./act -l
 ```
 This should print out the job name, *i.e* hello_word.
 
 To run hello word
 
 ```
-act -j job_1
+./act -j hello_word
 ```
 
-Now, let's run on GitHub virual machines
+## Run on GitHub virual
+
 ```
 cd virtual-pipelines-eventselection/
 git checkout -b feature/add-ci

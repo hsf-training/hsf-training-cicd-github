@@ -44,19 +44,20 @@ Now you can run ROOT inside the new environment
  ```
 To remove the environment, run `conda env remove -n root_env`.
 
+### Option 3: for CERN USER
+From any system with a CVMFS installation such as lxplus, login using your credentials.You can use the CERN lxplus service to log into a machine at CERN with CVMFS.
 
-## Extra tool: act
-
-This tool [act](https://github.com/nektos/act) will allow us to run CI tests locally. 
-
-For Docker users run
+Exemple using lxplus service 
   ```bash
-  curl https://raw.githubusercontent.com/nektos/act/master/install.sh | bash
+  ssh -Y your_username@lxplus.cern.ch
   ```
-Otherwise you may have to run with *sudo*
+When logged in, just source the software stack with the following command
   ```bash
-  curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
+  source /cvmfs/sft.cern.ch/lcg/views/LCG_98python3/x86_64-centos7-gcc10-opt/setup.sh
+  which root  #  check which ROOT executable you have sourced
+  root-config --version # check ROOT version
   ```
+**Note** that you may have to replace *x86_64-centos7-gcc8-opt* with a platform matching your system.
 
 ## Set up new project
 
@@ -88,6 +89,17 @@ Otherwise you may have to run with *sudo*
   ```bash
   git remote set-url https://github.com/<your login>/virtual-pipelines-eventselection.git
   ```
+  Now run
+  ```bash
+  git remote -v
+  ```
+  
+  You can push your code
+  ```bash
+  push -u origin master
+  ``
+  
+  Check on your personal github web page.
 
 ## Video Tutorials
 <iframe width="420" height="263" src="https://www.youtube.com/embed/NcVGX8zWzQY?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
