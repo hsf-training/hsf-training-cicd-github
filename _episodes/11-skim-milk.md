@@ -154,6 +154,8 @@ In order to take advantage of this, one combines `download-artifact` with `needs
 
 ![Skim waiting]({{site.baseurl}}/fig/actions_skim_job_wait.png)
 
+![Skim waiting]({{site.baseurl}}/fig/actions_skim_job_failure1.png)
+
 > 
 >
 > What happened?

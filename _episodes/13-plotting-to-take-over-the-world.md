@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: build
-        run: ${{ secrets.COMPILER }} skim.cxx -o skim `root-config --cflags --glibs`
+        run: {% raw %}${{ secrets.COMPILER }}{% endraw %} skim.cxx -o skim `root-config --cflags --glibs`
 
       - uses: actions/upload-artifact@v2
         with:
@@ -127,9 +127,9 @@ jobs:
 > {: .solution}
 {: .challenge}
 
-Once we're done, we should probably start thinking about how to test some of these outputs we've made. We now have a skimmed ggH ROOT file and a file of histograms of the skimmed ggH.
+![Actions_secret_variable]({{site.baseurl}}/fig/actions_artifacts_final.png)
 
-![Artifacts]({{site.baseurl}}/fig/actions_artifacts_final.png)
+Once we're done, we should probably start thinking about how to test some of these outputs we've made. We now have a skimmed ggH ROOT file and a file of histograms of the skimmed ggH.
 
 > ## Are we testing anything?
 >

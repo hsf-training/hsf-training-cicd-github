@@ -85,7 +85,7 @@ which will produce an output binary called `skim`.
 ```bash
 ./act -l
 ```
-![Output:]({{site.baseurl}}/fig/act_list_parallel_jobs.png)
+![Act two parallel jobs]({{site.baseurl}}/fig/act_list_parallel_jobs.png)
 
 We can see 2 parallel jobs. Let's commit the changes we made.
 
@@ -95,8 +95,8 @@ git commit -m "add build skim job"
 git push -u origin feature/add-ci
 ```
 
-![Results:]({{site.baseurl}}/fig/actions_parallel_jobs_failure1a.png)
-![Results:]({{site.baseurl}}/fig/actions_parallel_jobs_failure2a.png)
+![Job failure root-config]({{site.baseurl}}/fig/actions_parallel_jobs_failure1a.png)
+![Job failure root-config details]({{site.baseurl}}/fig/actions_parallel_jobs_failure1b.png)
 
 ## No root-config?
 
@@ -145,11 +145,11 @@ If you run again `./act -j build_skim`, you see
 ```
 {: .output}
 
-![Look like]({{site.baseurl}}/fig/act_run_parallel_jobs_failure.png)
 
 > ## Failed again???
 >
 > What's that?
+> ![Error no such file]({{site.baseurl}}/fig/act_error_no_such_file.png)
 >
 > > ## Answer
 > > It seems the job cannot access the repository. We need to instruct GitHub actions to checkout the repository. 

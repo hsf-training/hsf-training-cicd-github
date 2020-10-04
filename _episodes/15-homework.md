@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: build
-        run: ${{ secrets.COMPILER }} skim.cxx -o skim `root-config --cflags --glibs`
+        run: {% raw %}${{ secrets.COMPILER }}{% endraw %} skim.cxx -o skim `root-config --cflags --glibs`
 
       - uses: actions/upload-artifact@v2
         with:

@@ -105,7 +105,7 @@ We first have to store its definition in GitHub:
 > >       uses: actions/checkout@v2
 > >
 > >     - name: build
-> >       run: ${{ secrets.COMPILER }} skim.cxx -o skim `root-config --cflags --glibs`
+> >       run: {% raw %}${{ secrets.COMPILER }}{% endraw %} skim.cxx -o skim `root-config --cflags --glibs`
 > >
 > >     - uses: actions/upload-artifact@v2
 > >       with:
@@ -117,7 +117,7 @@ We first have to store its definition in GitHub:
 {: .challenge}
 
 
-[Results]({{site.baseurl}}/fig/actions_secret_variable.png)
+![Actions_secret_variable]({{site.baseurl}}/fig/actions_secret_variable.png)
 
 
 ## Naming your secrets
