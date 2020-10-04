@@ -7,99 +7,70 @@ questions:
 ## Prerequisites
 > - We assume that you already have a Github account
 > - You should have git working on your laptop
+> - You should have an SSH key added to your Github account
 {: .prereq}
 
+## Set up Docker
 
-## ROOT setup
-This exemple analysis needs ROOT software (>=6.16). The CI tools will handle this, but to anticipate what CI tool will do you need ROOT on your laptop.
+Part of this training needs Docker. Therefore you must have Docker installed. 
 
-If you don't have ROOT installed on your laptop, you can choose one of the following options
+If this is not the case, follow the above links for instuctions.
 
-### Option 1: using docker
-In order to run ROOT image "*rootproject/root-conda*" as container, you must have Docker installed. If this is not the case, install docker following the instructions [here](https://docs.docker.com/engine/install).
+- Linux:  [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
+- Mac OS:  [https://docs.docker.com/docker-for-mac/install/](https://docs.docker.com/docker-for-mac/install/)
+- Windows: [https://docs.docker.com/docker-for-windows/install/](https://docs.docker.com/docker-for-windows/install/)
 
-Once Docker is installed, you can run (you might need to run with *sudo*)
-
- ```bash
- docker run --rm -it  rootproject/root-conda
- root-config --version # check ROOT version
- exit
- ```
-The `--rm` flag automatically cleans up the container on exit, `-t` to access the terminal, and`-i` for interactive mode. For more details, please refer to [Getting started](https://hub.docker.com/r/rootproject/root) section.
-
-
-### Option 2: using conda
-Make sure conda is installed otherwise go to [installation](https://docs.conda.io/projects/conda/en/latest/user-guide/install) section or refer to instructions in this [presentation](https://indico.cern.ch/event/759388/contributions/3306849/attachments/1816254/2968550/root_conda_forge.pdf).
-
-Create an environment named "*root_env*" that contains Python 3.8 and ROOT:
- ```bash
- conda create -n root_env python=3.8 root -c conda-forge
- ```
-
-Now you can run ROOT inside the new environment
- ```bash
- conda activate root_env
- root-config --version # check ROOT version
- conda deactivate
- ```
-To remove the environment, run `conda env remove -n root_env`.
-
-### Option 3: for CERN USER
-From any system with a CVMFS installation such as lxplus, login using your credentials.You can use the CERN lxplus service to log into a machine at CERN with CVMFS.
-
-Exemple using lxplus service 
-  ```bash
-  ssh -Y your_username@lxplus.cern.ch
+To check your installation open a terminal and run
   ```
-When logged in, just source the software stack with the following command
-  ```bash
-  source /cvmfs/sft.cern.ch/lcg/views/LCG_98python3/x86_64-centos7-gcc10-opt/setup.sh
-  which root  #  check which ROOT executable you have sourced
-  root-config --version # check ROOT version
+  docker --version
   ```
-**Note** that you may have to replace *x86_64-centos7-gcc8-opt* with a platform matching your system.
+**Note** that you may have to run with *sudo*
 
-## Set up new project
+## Set up the code
 
-- Create a new project on your personal github account called *virtual-pipelines-eventselection*.
+- Create a new project on your personal GitHub account and name it *virtual-pipelines-eventselection*.
 
   > Make sure you click Public for the visibility level of the new project so that everyone can see your awesome work
   > (and it will also make things easier when we get to working with containers).
   > ![example of a properly-filled-in blank project form for gitlab]({{site.baseurl}}/fig/blank-project-form.png)
-  {: .callout}
+  {: .callout}  
 
 - Get the code
 
+  Open a terminal and clone the repository that contains the required files.
+
   ```bash
-  git clone https://github.com/awesome-workshop/payload.git virtual-pipelines-eventselection
+  git clone git@github.com:awesome-workshop/payload.git virtual-pipelines-eventselection
+  cd virtual-pipelines-eventselection
   ```
 
-- We need to add the code to the new project (your github) 
+- Add the code to your your personal GitHub account
 
+  At the moment, your clone is the remote repository stored on someone GitHub account. To get the name of the existing remote use
+  ```bash
+  git remote -v # -v stands for verbose
+  ```
+  Output:
+  ```bash
+  origin	git@github.com:awesome-workshop/payload.git (fetch)
+  origin	git@github.com:awesome-workshop/payload.git (push)
+  ```
+  
+  You have to change remote's URL in order to be able to add the code to your personal GitHub account. 
+
+  ```bash
+  git remote set-url origin git@github.com:<GitHub username>/virtual-pipelines-eventselection.git
+  ```
+  Check again the name of the current remote:
   ```bash
   git remote -v
   ```
-  ```
-  origin	https://github.com/awesome-workshop/payload.git (fetch)
-  origin	https://github.com/awesome-workshop/payload.git (push)  
-  ```
-  
-- Rename the origin url
-
+   
+  The last step is to run the push command as follows
   ```bash
-  git remote set-url https://github.com/<your login>/virtual-pipelines-eventselection.git
+  git push -u origin master
   ```
-  Now run
-  ```bash
-  git remote -v
-  ```
-  
-  You can push your code
-  ```bash
-  push -u origin master
-  ``
-  
-  Check on your personal github web page.
+  This will add the code to your GitHub account. Done!
 
 ## Video Tutorials
 <iframe width="420" height="263" src="https://www.youtube.com/embed/NcVGX8zWzQY?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

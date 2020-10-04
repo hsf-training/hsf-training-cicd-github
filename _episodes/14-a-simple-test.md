@@ -6,69 +6,60 @@ objectives:
   - Actually add a test on the output of running physics
 questions:
   - I'm out of questions.
-  - I've been here too long. Mr. Stark, I don't feel too good.
 hidden: false
 keypoints:
   - This kind of test is a regression test, as we're testing assuming the code up to this point was correct.
-  - This is not a unit test. Unit tests would be testing individual pieces of the `atlas/athena` or `CMSSW` code-base, or specific functionality you wrote into your algorithms.
+  - This is not a unit test. Unit tests would be testing individual pieces of the Framework code-base, or specific functionality you wrote into your algorithms.
 ---
 <iframe width="420" height="263" src="https://www.youtube.com/embed/C9auGFgIHns?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 So at this point, I'm going to be very hands-off, and just explain what you will be doing. Here's where you should be starting from:
 
 ~~~
-stages:
-  - build
-  - run
-  - plot
+...
+...
+...
+ skim:
+   needs: build_skim
+   runs-on: ubuntu-latest
+   container: rootproject/root-conda:6.18.04
+   steps:
+     - name: checkout repository
+       uses: actions/checkout@v2
 
-.build_template:
-  stage: build
-  before_script:
-   - COMPILER=$(root-config --cxx)
-   - FLAGS=$(root-config --cflags --libs)
-  script:
-   - $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-  artifacts:
-    paths:
-      - skim
-    expire_in: 1 day
+    - uses: actions/download-artifact@v2
+      with:
+        name: skim6.18.04
 
-build_skim:
-  extends: .build_template
-  image: rootproject/root-conda:6.18.04
+    - name: skim
+      run: |
+        chmod +x ./skim
+        ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
 
-build_skim_latest:
-  extends: .build_template
-  image: rootproject/root-conda:latest
-  allow_failure: yes
+    - uses: actions/upload-artifact@v2
+      with:
+        name: processed_data
+        path: skim_ggH.root
 
-skim_ggH:
-  stage: run
-  dependencies:
-    - build_skim
-  image: rootproject/root-conda:6.18.04
-  before_script:
-    - printf $SERVICE_PASS | base64 -d | kinit $CERN_USER@CERN.CH
-  script:
-    - ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
-  artifacts:
-    paths:
-      - skim_ggH.root
-      - skim_ggH.log
-    expire_in: 1 week
+ plot:
+   needs: skim
+   runs-on: ubuntu-latest
+   container: rootproject/root-conda:6.18.04
+   steps:
+     - name: checkout repository
+       uses: actions/checkout@v2
 
-plot_ggH:
-  stage: plot
-  dependencies:
-    - skim_ggH
-  image: rootproject/root-conda:6.18.04
-  script:
-    - python histograms.py skim_ggH.root ggH hist_ggH.root
-  artifacts:
-    paths:
-      - hist_ggH.root
-    expire_in: 1 week
+    - uses: actions/download-artifact@v2
+      with:
+        name: processed_data
+
+    - name: plot
+      run: python histograms.py skim_ggH.root ggH hist_ggH.root
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: histograms
+        path: hist_ggH.root
 ~~~
 {: .language-yaml}
 

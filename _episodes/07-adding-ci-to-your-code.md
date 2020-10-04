@@ -11,7 +11,6 @@ hidden: false
 keypoints:
   - Setting up CI/CD shouldn't be mind-numbing
   - All defined jobs run in parallel by default
-  - Jobs can be allowed to fail without breaking your CI/CD
 ---
 <iframe width="420" height="263" src="https://www.youtube.com/embed/GiwtSwtMYzg?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 # Time To Skim
@@ -21,23 +20,37 @@ keypoints:
 As of right now, your `.github/workflows/main.yml` should look like
 
 ~~~
+on: push
 jobs:
-	hello_word:
-		runs-on: ubuntu-latest
-		steps:
-			- name: my first ci/cd
-			  run: |
-				  echo hello world
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello world
 ~~~
 {: .language-yaml}
 
-Let's go ahead and teach our CI to build our code. Let's add another job (named `build_skim`) that runs in parallel for right now, and runs the compiler `ROOT` uses. This worked for me on my computer, so we should try it:
+Let's go ahead and teach our CI to build our code. Let's add another job (named `build_skim`) that runs in parallel for right now, and runs the compiler `ROOT` uses. 
 
+This should work. But let's give a try.
+
+If you already have ROOT installed on your computer use
 ~~~
-COMPILER=$(root-config --cxx)
-$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
+cd virtual-pipelines-eventselection
+COMPILER=g++
+$COMPILER skim.cxx -o skim `root-config --cflags --glibs`
 ~~~
 {: .language-bash}
+
+No worries if you don't have ROOT, use `Docker` instead
+~~~
+cd virtual-pipelines-eventselection
+docker run -it --rm -v $PWD:/virtual-pipelines-eventselection -w /virtual-pipelines-eventselection rootproject/root-conda:6.18.04 /bin/bash 
+COMPILER=g++
+$COMPILER skim.cxx -o skim `root-config --cflags --glibs`
+exit
+~~~
+{: .language-bash}
+**Note** that you may have to run `docker` with sudo.
 
 which will produce an output binary called `skim`.
 
@@ -48,40 +61,54 @@ which will produce an output binary called `skim`.
 > > ## Solution
 > > ~~~
 > > jobs:
-> > 	hello_word:
-> > 		runs-on: ubuntu-latest
-> > 		steps:
-> > 			- name: my first ci/cd
-> > 			  run: |
-> > 				  echo hello world
+> >   greeting:
+> >     runs-on: ubuntu-latest
+> >     steps:
+> >       - run: echo hello world
 > >
-> > 	build_skim:
-> > 		runs-on: ubuntu-latest
-> > 		steps:
-> > 			- name: my first ci/cd
-> > 			  run: |
-> > 				  COMPILER=$(root-config --cxx)
-> > 				  $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
+> >   build_skim:
+> >     runs-on: ubuntu-latest
+> >     steps:
+> >       - name: build
+> >         run: |
+> >           COMPILER=g++
+> >           $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
 > > ~~~
 > > {: .language-yaml}
 > {: .solution}
 {: .challenge}
 
-![CI/CD Two Parallel Jobs]({{site.baseurl}}/fig/ci-cd-two-parallel-jobs.png)
+<!--![CI/CD Two Parallel Jobs]({{site.baseurl}}/fig/ci-cd-two-parallel-jobs.png)-->
+
+## Check jobs
+
+```bash
+./act -l
+```
+![Output:]({{site.baseurl}}/fig/act_list_parallel_jobs.png)
+
+We can see 2 parallel jobs. Let's commit the changes we made.
+
+```bash
+git add .github/workflows/main.yml
+git commit -m "add build skim job"
+git push -u origin feature/add-ci
+```
+
+![Results:]({{site.baseurl}}/fig/actions_parallel_jobs_failure1a.png)
+![Results:]({{site.baseurl}}/fig/actions_parallel_jobs_failure2a.png)
 
 ## No root-config?
 
-Ok, so maybe we were a little naive here. Let's start debugging. You got this error when you tried to build
+Ok, so maybe we were a little naive here. Let's start debugging locally.
 
-~~~
-[example/build_skim] 🚀  Start image=node:12.6-buster-slim
-[example/build_skim]   🐳  docker run image=node:12.6-buster-slim entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
-[example/build_skim] ⭐  Run build skim
-| /github/workflow/0: line 2: root-config: command not found
-[example/build_skim]   ❌  Failure - build skim
-Error: exit with `FAILURE`: 127
-~~~
+We can reproduce this error:
+```bash
+./act -j build_skim
+```
 
+You got this error when you tried to build
+![CI/CD Two Parallel Jobs]({{site.baseurl}}/fig/act_run_parallel_jobs_failure.png)
 {: .output}
 
 > ## Broken Build
@@ -108,49 +135,52 @@ Let's go ahead and update our `.github/workflow/main.yml` and fix it to use a ve
 
 ~~~
 runs-on: ubuntu-latest
-container:
-	image: rootproject/root-conda:6.18.04
+container: rootproject/root-conda:6.18.04
 ~~~
+{: .language-yaml}
 
-If you look at the log now, you see
+If you run again `./act -j build_skim`, you see
 ```
 [example/build_skim] 🚀  Start image=rootproject/root-conda:6.18.04
 ```
+{: .output}
+
+![Look like]({{site.baseurl}}/fig/act_run_parallel_jobs_failure.png)
 
 > ## Failed again???
 >
 > What's that?
 >
 > > ## Answer
-> > It seems the job cannot access the repository.
+> > It seems the job cannot access the repository. We need to instruct GitHub actions to checkout the repository. 
 > > ~~~
 > > steps:
-> >    - name: checkout
+> >    - name: checkout repository
 > >      uses: actions/checkout@v2
 > > ~~~
-
-
-> ## Still failed??? What the hell.
->
-> What happened?
->
-> > ## Answer
-> > It turns out we just forgot the include flags needed for compilation. If you look at the log, you'll see
-> > ~~~
-> >  $ COMPILER=$(root-config --cxx)
-> >  $ $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
-> >  skim.cxx:11:10: fatal error: ROOT/RDataFrame.hxx: No such file or directory
-> >   #include "ROOT/RDataFrame.hxx"
-> >            ^~~~~~~~~~~~~~~~~~~~~
-> >  compilation terminated.
-> >  ERROR: Job failed: exit code 1
-> > ~~~
-> > {: .output}
-> > How do we fix it? We just need to add another variable to add the flags at the end via `$FLAGS` defined as `FLAGS=$(root-config --cflags --libs)`.
+> > {: .language-yaml}
 > {: .solution}
 {: .challenge}
 
 Ok, let's go ahead and update our `.github/workflow/main.yml` again, and it better be fixed or so help me...
+
+We could separate the environment variables being set like `COMPILER=g++` in the last step since this is actually preparation for setting up our environment -- rather than part of the script we want to test! For example,
+
+~~~
+build_skim:
+  runs-on: ubuntu-latest
+  container: rootproject/root-conda:latest
+  steps:
+    - name: checkout repository
+      uses: actions/checkout@v2
+
+    - name: build
+      run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
+      env:
+        COMPILER: g++
+~~~
+{: .language-yaml}
+`env` can be set under `job:steps:` or under `job:` as well.
 
 # Building multiple versions
 
@@ -161,47 +191,44 @@ Great, so we finally got it working... CI/CD isn't obviously powerful when you'r
 > What does the `.github/workflow/main.yml` look like now?
 >
 > > ## Solution
-
+> >
 > > ~~~
 > > jobs:
-> > 	hello_word:
-> > 		runs-on: ubuntu-latest
-> > 		steps:
-> > 			- name: my first ci/cd
-> > 			  run: |
-> > 				  echo hello world
+> >   greeting:
+> >     runs-on: ubuntu-latest
+> >     steps:
+> >       - run: echo hello world
 > >
-> > 	build_skim:
-> > 		runs-on: ubuntu-latest
-> >         container:
-> >             image: rootproject/root-conda:6.18.04
-> > 		steps:
-> >             -name: checkout
-> >               uses: actions/checkout@v2
+> >   build_skim:
+> >     runs-on: ubuntu-latest
+> >     container: rootproject/root-conda:6.18.04
+> >     steps:
+> >       - name: checkout repository
+> >         uses: actions/checkout@v2
 > >
-> > 			- name: build
-> > 			  run: |
-> > 				  COMPILER=$(root-config --cxx)
-> >                   FLAGS=$(root-config --cflags --libs)
-> > 				  $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
+> >       - name: build
+> >         run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
+> >         env:
+> >           COMPILER: g++
 > >
-> > 	build_skim_latest:
-> > 		runs-on: ubuntu-latest
-> >         container:
-> >             image: rootproject/root-conda:latest
-> > 		steps:
-> >             -name: checkout
-> >               uses: actions/checkout@v2
-
-> > 			- name: latest
-> > 			  run: |
-> > 				  COMPILER=$(root-config --cxx)
-> >                   FLAGS=$(root-config --cflags --libs)
-> > 				  $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
+> >   build_skim_latest:
+> >     runs-on: ubuntu-latest
+> >     container: rootproject/root-conda:latest
+> >     steps:
+> >       - name: checkout repository
+> >         uses: actions/checkout@v2
+> >
+> >       - name: latest
+> >         run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
+> >         env:
+> >           COMPILER: g++
 > > ~~~
 > > {: .language-yaml}
 > {: .solution}
 {: .challenge}
+
+
+We're ready for a coffee break.
 
 
 {% include links.md %}

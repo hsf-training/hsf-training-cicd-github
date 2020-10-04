@@ -8,7 +8,7 @@ questions:
   - How do we make plots?
 hidden: false
 keypoints:
-  - Another script, another job, another stage, another artifact.
+  - Another action, another job, another artifact.
 ---
 <iframe width="420" height="263" src="https://www.youtube.com/embed/BDpqN3nVVVo?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 # On Your Own
@@ -20,87 +20,108 @@ python histograms.py skim_ggH.root ggH hist_ggH.root
 ~~~
 {: .language-bash}
 
-This needs to be added to your `.gitlab-ci.yml` which should look like the following:
+This needs to be added to your `.github/workflows/main.yml` which should look like the following:
 
 ~~~
-stages:
-  - greeting
-  - build
-  - run
-  - plot
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello world
+ 
+  build_skim:
+    needs: greeting
+    runs-on: ubuntu-latest
+    container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
+    strategy:
+      matrix:
+        version: [6.18.04, latest]
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
 
-hello world:
-  stage: greeting
-  script:
-   - echo "Hello World"
+      - name: build
+        run: ${{ secrets.COMPILER }} skim.cxx -o skim `root-config --cflags --glibs`
 
-.build_template:
-  stage: build
-  before_script:
-   - COMPILER=$(root-config --cxx)
-   - FLAGS=$(root-config --cflags --libs)
-  script:
-   - $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-  artifacts:
-    paths:
-      - skim
-    expire_in: 1 day
+      - uses: actions/upload-artifact@v2
+        with:
+          name: skim{% raw %}${{ matrix.version }}{% endraw %}
+          path: skim
 
-build_skim:
-  extends: .build_template
-  image: rootproject/root-conda:6.18.04
+  skim:
+    needs: build_skim
+    runs-on: ubuntu-latest
+    container: rootproject/root-conda:6.18.04
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
 
-build_skim_latest:
-  extends: .build_template
-  image: rootproject/root-conda:latest
-  allow_failure: yes
+     - uses: actions/download-artifact@v2
+       with:
+         name: skim6.18.04
 
-skim_ggH:
-  stage: run
-  dependencies:
-    - build_skim
-  image: rootproject/root-conda:6.18.04
-  before_script:
-    - printf $SERVICE_PASS | base64 -d | kinit $CERN_USER@CERN.CH
-  script:
-    - ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
-  artifacts:
-    paths:
-      - skim_ggH.root
-    expire_in: 1 week
+     - name: skim
+       run: |
+         chmod +x ./skim
+         ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
 ~~~
 {: .language-yaml}
 
 > ## Adding Artifacts
 >
-> So we need to do a few things:
+> So we need to do a two things:
 >
-> 1. add a `plot` stage
-> 2. add a `plot_ggH` job
-> 3. save the output `hist_ggH.root` as an artifact (expires in 1 week)
+> 1. add a `plot` job
+> 2. save the output `hist_ggH.root` as an artifact
 >
-> You know what? While you're at it, why not delete the `greeting` stage and `hello_world` job too? There's no need for it anymore 🙂.
+> You know what? While you're at it, why not delete the `greeting` job and multi versions job as well? There's no need for it anymore 🙂.
 >
 > > ## Solution
 > > ~~~
-> > stages:
-> >   - build
-> >   - run
-> >   - plot
 > > ...
 > > ...
 > > ...
-> > plot_ggH:
-> >   stage: plot
-> >   dependencies:
-> >     - skim_ggH
-> >   image: rootproject/root-conda:6.18.04
-> >   script:
-> >     - python histograms.py skim_ggH.root ggH hist_ggH.root
-> >   artifacts:
-> >     paths:
-> >       - hist_ggH.root
-> >     expire_in: 1 week
+> >  skim:
+> >    needs: build_skim
+> >    runs-on: ubuntu-latest
+> >    container: rootproject/root-conda:6.18.04
+> >    steps:
+> >      - name: checkout repository
+> >        uses: actions/checkout@v2
+> >
+> >     - uses: actions/download-artifact@v2
+> >       with:
+> >         name: skim6.18.04
+> >
+> >     - name: skim
+> >       run: |
+> >         chmod +x ./skim
+> >         ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
+> >
+> >     - uses: actions/upload-artifact@v2
+> >       with:
+> >         name: processed_data
+> >         path: skim_ggH.root
+> >
+> >  plot:
+> >    needs: skim
+> >    runs-on: ubuntu-latest
+> >    container: rootproject/root-conda:6.18.04
+> >    steps:
+> >      - name: checkout repository
+> >        uses: actions/checkout@v2
+> >
+> >     - uses: actions/download-artifact@v2
+> >       with:
+> >         name: processed_data
+> >
+> >     - name: plot
+> >       run: python histograms.py skim_ggH.root ggH hist_ggH.root
+> >
+> >     - uses: actions/upload-artifact@v2
+> >       with:
+> >         name: histograms
+> >         path: hist_ggH.root
 > > ~~~
 > > {: .language-yaml}
 > {: .solution}
@@ -108,9 +129,11 @@ skim_ggH:
 
 Once we're done, we should probably start thinking about how to test some of these outputs we've made. We now have a skimmed ggH ROOT file and a file of histograms of the skimmed ggH.
 
+![Artifacts]({{site.baseurl}}/fig/actions_artifacts_final.png)
+
 > ## Are we testing anything?
 >
-> Integration testing is actually testing that the scripts we have still run. So we are constantly testing as we go here which is nice. Additionally, there's also continuous deployment because we've been making artifacts that are passed to other jobs. There are many ways to deploy the results of the code base, such as pushing to a web server, or putting files on EOS from the CI jobs, and so on. Artifacts are one way to deploy.
+> Integration testing is actually testing that the scripts we have still run. So we are constantly testing as we go here which is nice. Additionally, there's also continuous deployment because we've been making artifacts that are passed to other jobs. There are many ways to deploy the results of the code base, such as pushing to a web server and so on. Artifacts are one way to deploy.
 {: .callout}
 
 

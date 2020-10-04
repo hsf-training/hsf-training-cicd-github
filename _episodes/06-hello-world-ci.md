@@ -5,20 +5,19 @@ exercises: 10
 objectives:
   - Add CI/CD to your project.
 questions:
-  - How do I run a simple GitHub CI job?
+  - How do I run a simple GitHub Actions job?
 hidden: false
 keypoints:
   - Creating `.github/workflows/main.yml` is the first step to salvation.
   - Pipelines are made of jobs with steps.
-  - CI Linters are especially useful to check syntax before pushing changes.
+  - ACT is especially useful to check and run GitHub Actions jobs (locally) before pushing changes.
 ---
 <iframe width="420" height="263" src="https://www.youtube.com/embed/LqeJzIYJCwc?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-# Adding CI/CD to a project
 
-We've been working on the analysis code which has a lot of work done, but we should be good physicists (and people) by adding tests and CI/CD. The first thing we'll do is create a `.github/workflows/main.yml` file in the project.
+## Adding CI/CD to a project
 
-Firstly, let's run a GitHub CI job locally
-```
+The first thing we'll do is create a `.github/workflows/main.yml` file in the project.
+```bash
 cd virtual-pipelines-eventselection/
 mkdir -p .github/workflows
 ```
@@ -27,53 +26,59 @@ Open `.github/workflows/main.yml` with your favorite editor and add the followin
 name: example
 on: push
 jobs:
-	hello_word:
-		runs-on: ubuntu-latest
-		steps:
-			-name: my first ci/cd
-			  run: |
-				  echo hello world
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+      -run: echo hello world
 ~~~
-{: .source}
+{: .language-yaml}
 
-## Run locally
+## Run GitHub Actions
+
+### `Run on your computer`
 
 We need a dedicated tool: [nektos/act](https://github.com/nektos/act).
+
+Let's install it first.
   ```bash
   curl https://raw.githubusercontent.com/nektos/act/master/install.sh --output install.sh
   bash install.sh -b .
 ```
 
-```
-./act -l
+Once the installation is done, you can run
+```bash
+./act -l  # -l stands for list (list workflows)
 ```
 
-What happened??? We can see that this failed because the YAML was invalid... (Error: yaml: line 8: mapping values are not allowed in this context)
+What happened??? We can see that this failed because the YAML was invalid... (Error: yaml: line ...)
 
-We should fix this accondingly to the Error message.
+We should fix this accondingly to the Error message. **Note** that `act` is not a YAML Validator but can help. Some YAML Validators: [https://codebeautify.org/yaml-validator](https://codebeautify.org/yaml-validator), [http://www.yamllint.com/](http://www.yamllint.com/), ...
 
 Let's rerun:
-```
+```bash
 ./act -l
 ```
-This should print out the job name, *i.e* hello_word.
+This should print out the job name, *i.e* greeting:
 
-To run hello word
+![Hello world list]({{site.baseurl}}/fig/act_list_greeting.png)
 
+To run `greeting` do
+
+```bash
+./act -j greeting  # -l stands for job (run job)
 ```
-./act -j hello_word
-```
+Output:
+![greeting job]({{site.baseurl}}/fig/act_run_greeting.png)
 
-## Run on GitHub virual
+### `Run on GitHub`
 
-```
+```bash
 cd virtual-pipelines-eventselection/
 git checkout -b feature/add-ci
 git add .github/workflows/main.yml
 git commit -m "my first ci/cd"
 git push -u origin feature/add-ci
 ```
-{: .source}
 
 > ## Feature Branches
 >
@@ -82,13 +87,18 @@ git push -u origin feature/add-ci
 
 Now, if you navigate to the GitHub webpage for that project and hit Actions button, you will find details of your job (status, output,...).
 
+![GitHub Actions Page]({{site.baseurl}}/fig/actions_commits_page.png)
+
+From this page, click through until you can find the output for the successful job run which should look like the following
+![CI/CD Hello World Success Output]({{site.baseurl}}/fig/actions_first_ci-cd_success.png)
+
 
 Lastly, we'll open up a pull request for this branch, since we plan to merge this back into master when we're happy with the first iteration of the CI/CD.
 
 > ## Work In Progress?
 >
-> If you expect to be working on a branch for a bit of time while you have a merge request open, it's good etiquette to mark it as a Work-In-Progress (WIP).
-> ![Work In Progress]({{site.baseurl}}/fig/work-in-progress.png)
+> If you expect to be working on a branch for a bit of time while you have a merge request open, it's good etiquette to mark it as a Work-In-Progress (WIP). However this is not a built-in feature of GitHub, it requires to install it from [GitHub Marketplace](https://github.com/marketplace/wip). Free for personal account.
+> ![Work In Progress](https://raw.githubusercontent.com/wip/app/master/assets/wip.gif)
 {: .callout}
 
 

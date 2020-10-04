@@ -19,18 +19,18 @@ permalink: index.html  # Is the only page that doesn't follow the pattern /:path
 Introduction
 ------------
 
-At CERN, we use GitLab to host our code. GitLab is bundled with a built-in CI/CD system that we'll learn how to develop on to make our code robust to errors, preserved, and reproducible.
+GitHub is a version control distributed git platform used for code hosting and collaboration. Yet it can be used to automatically run the hosted code on Github's servers via GitHub Actions. Actions are workflow automation scripts. We'll learn how to develop on to make our code robust to errors, preserved, and reproducible.
 
 The aim of this module is to:
 - explore what it means to build a CI/CD workflow
-- expand on concepts unique to GitLab's CI/CD which is essential to anyone working in ATLAS
+- guide you through building a CI/CD workflow
 
 > ## The skills we'll focus on:
 >
 > 1.  Making scripts exit correctly
 > 2.  Building a CI/CD workflow of unlimited potential
 > 3.  Understanding how job runners work (and get access to your clones)
-> 4.  The GitLab permissions model
+> 4.  The GitHub permissions model
 > 5.  Protecting secret information while allowing jobs to run
 {: .checklist}
 

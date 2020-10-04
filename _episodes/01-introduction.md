@@ -47,8 +47,8 @@ Don't just limit yourself to thinking of CI/CD as primarily for testing changes,
 
 Now, obviously, we're not going to make our own fully-fledged CI/CD solution. Plenty exist in the wild today, and below are just a popular few:
 
+- [GitHub Actions](https://github.com/features/actions)
 - [Native GitLab CI/CD](https://docs.gitlab.com/ee/ci/)
-- [Native GitHub CI/CD](https://github.com/features/actions)
 - [Travis CI](https://travis-ci.org/)
 - [Circle CI](https://circleci.com/)
 - [TeamCity](https://www.jetbrains.com/teamcity/)
@@ -58,6 +58,6 @@ Now, obviously, we're not going to make our own fully-fledged CI/CD solution. Pl
 - [CodeShip](https://codeship.com/)
 - [CodeFresh](https://g.codefresh.io/)
 
-For today's lesson, we'll only focus on GitHub's solution. However, be aware that all the concepts you'll be taught today: including pipelines, stages, jobs, artifacts; all exist in other solutions by similar/different names. For example, GitLab supports two features known as caching and artifacts; but Travis doesn't quite implement the same thing for caching and has no native support for artifacts. Therefore, while we don't discourage you from trying out other solutions, there's no "one size fits all" when designing your own CI/CD workflow.
+For today's lesson, we'll only focus on GitHub Actions. However, be aware that all the concepts you'll be taught today: including pipelines, stages, jobs, artifacts; all exist in other solutions by similar/different names. For example, GitHub or GitLab supports two features known as caching and artifacts; but Travis doesn't quite implement the same thing for caching and has no native support for artifacts. Therefore, while we don't discourage you from trying out other solutions, there's no "one size fits all" when designing your own CI/CD workflow.
 
 {% include links.md %}

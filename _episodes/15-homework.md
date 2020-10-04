@@ -5,84 +5,95 @@ exercises: 30
 objectives:
   - Add more testing, perhaps to statistics.
 questions:
-  - If you have any, ask on mattermost!
+  - If you have any, ask on Discord!
 hidden: false
 keypoints:
   - Use everything you've learned to write your own CI/CD!
 ---
 
-Like the last section, I will simply explain what you need to do. After the previous section, you should have the following in `.gitlab-ci.yml`:
+Like the last section, I will simply explain what you need to do. After the previous section, you should have the following in `.github/workflows/main.yml`:
 
 ~~~
-stages:
-  - build
-  - run
-  - plot
-  - test
+jobs:
+  build_skim:
+    runs-on: ubuntu-latest
+    container: rootproject/root-conda:6.18.04
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
 
-.build_template:
-  stage: build
-  before_script:
-   - COMPILER=$(root-config --cxx)
-   - FLAGS=$(root-config --cflags --libs)
-  script:
-   - $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-  artifacts:
-    paths:
-      - skim
-    expire_in: 1 day
+      - name: build
+        run: ${{ secrets.COMPILER }} skim.cxx -o skim `root-config --cflags --glibs`
 
-build_skim:
-  extends: .build_template
-  image: rootproject/root-conda:6.18.04
+      - uses: actions/upload-artifact@v2
+        with:
+          name: skim6.18.04
+          path: skim
 
-build_skim_latest:
-  extends: .build_template
-  image: rootproject/root-conda:latest
-  allow_failure: yes
+  skim:
+    needs: build_skim
+    runs-on: ubuntu-latest
+    container: rootproject/root-conda:6.18.04
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
 
-skim_ggH:
-  stage: run
-  dependencies:
-    - build_skim
-  image: rootproject/root-conda:6.18.04
-  before_script:
-    - printf $SERVICE_PASS | base64 -d | kinit $CERN_USER@CERN.CH
-  script:
-    - ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1 > skim_ggH.log
-  artifacts:
-    paths:
-      - skim_ggH.root
-      - skim_ggH.log
-    expire_in: 1 week
+     - uses: actions/download-artifact@v2
+       with:
+         name: skim6.18.04
 
-plot_ggH:
-  stage: plot
-  dependencies:
-    - skim_ggH
-  image: rootproject/root-conda:6.18.04
-  script:
-    - python histograms.py skim_ggH.root ggH hist_ggH.root
-  artifacts:
-    paths:
-      - hist_ggH.root
-    expire_in: 1 week
+     - name: skim
+       run: |
+         chmod +x ./skim
+         ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
 
-test_ggH:
-  stage: test
-  dependencies:
-    - skim_ggH
-    - plot_ggH
-  image: rootproject/root-conda:6.18.04
-  script:
-    - python tests/test_cutflow_ggH.py
-    - python tests/test_plot_ggH.py
+      - uses: actions/upload-artifact@v2
+        with:
+          name: processed_data
+          path: skim_ggH.root
+  
+  plot:
+    needs: build_skim
+    runs-on: ubuntu-latest
+    container: rootproject/root-conda:6.18.04
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+     - uses: actions/download-artifact@v2
+       with:
+         name: processed_data
+
+     - name: plot
+       run: python histograms.py skim_ggH.root ggH hist_ggH.root
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: histograms
+          path: hist_ggH.root
+
+  test:
+    needs: [skim,plot]
+    runs-on: ubuntu-latest
+    container: rootproject/root-conda:6.18.04
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+     - uses: actions/download-artifact@v2
+       with:
+         name: histograms
+
+     - name: test
+       run: |
+         python tests/test_cutflow_ggH.py
+         python tests/test_plot_ggH.py
 ~~~
 {: .language-yaml}
 
 In your `virtual-pipelines-eventselection` repository, you need to:
 
-1. Add more tests for physics
+1. Add more tests
 2. Go wild!
 
 {% include links.md %}

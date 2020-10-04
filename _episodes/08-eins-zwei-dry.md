@@ -1,182 +1,94 @@
 ---
-title: "Eins Zwei DRY"
+title: "Matrix"
 teaching: 5
 exercises: 10
 objectives:
   - Don't Repeat Yourself (DRY)
-  - Making reusable/flexible CI/CD jobs
+  - Use a single job for multiple jobs
 questions:
   - How can we make job templates?
 hidden: false
 keypoints:
-  - Hidden jobs can be used as templates with the `extends` parameter.
-  - Using job templates allows you to stay DRY!
+  - Using `matrix` allows to test the code against a combination of versions.
 ---
 <center>
 <iframe width="420" height="263" src="https://www.youtube.com/embed/_cKm7FUTzQs?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<iframe width="420" height="236" src="https://www.youtube.com/embed/dSy2DcATYUo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<!--iframe width="420" height="236" src="https://i.gifer.com/1K80.gif" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe-->
+<iframe width="420" height="236" src="https://i.gifer.com/1TpS.gif" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
 
-# Hidden (keys) Jobs
+# Matrix
 
-A fun [feature](https://docs.gitlab.com/ee/ci/yaml/README.html#special-yaml-features) about GitLab's CI YAML is the ability to disable entire jobs simply by prefixing the job name with a period (`.`). Naively, we could just comment it out
-
-~~~
-#hidden job:
-#  script:
-#    - make
-~~~
-{: .language-yaml}
-
-but it's much easier to simply write
+From the previous lesson, we tried to build the code against two different ROOT images by adding an extra job. We could do better using `matrix`. The latter allows us to test the code against a combination of versions.
 
 ~~~
-.hidden job:
-  script:
-    - make
-~~~
-{: .language-yaml}
+jobs:
+  greeting:
+   runs-on: ubuntu-latest
+   steps:
+     - run: echo hello world
 
-Why is this fun? We should be able to combine it with some other nice features of GitLab's CI YAML to build...
+ build_skim:
+   runs-on: ubuntu-latest
+   container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
+   strategy:
+     matrix:
+       version: [6.18.04, latest]
+   steps:
+     - name: checkout repository
+       uses: actions/checkout@v2
 
-# Job Templates
-
-From the previous lesson, our `.gitlab-ci.yml` looks like
-
-~~~
-hello world:
-  script:
-   - echo "Hello World"
-
-build_skim:
-  image: rootproject/root-conda:6.18.04
-  before_script:
-   - COMPILER=$(root-config --cxx)
-   - FLAGS=$(root-config --cflags --libs)
-  script:
-   - $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-
-build_skim_latest:
-  image: rootproject/root-conda:latest
-  before_script:
-   - COMPILER=$(root-config --cxx)
-   - FLAGS=$(root-config --cflags --libs)
-  script:
-   - $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-  allow_failure: yes
+     - name: build
+       run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
+       env:
+         COMPILER: g++
 ~~~
 {: .language-yaml}
 
-We've already started to repeat ourselves. How can we combine the two into a single job template called `.build_template`? Let's refactor things a little bit.
+Let's update our `.github/workflow/main.yml` and push the changes to GitHub and see how it will look like. **Note** that `act` doesn't run job with `matrix`.
 
-> ## Refactoring the code
->
-> Can you refactor the above code by adding a hidden job (named `.build_template`) containing parameters that `build_skim` and `build_skim_latest` have in common?
+~~~
+git add .github/workflows/main.yml
+git commit -m "add multi jobs"
+git push -u origin feature/add-ci
+~~~
+{: .language-bash}
+
+While the jobs are running, let's imagine we don't want our CI/CD to crash if that happens. We have to add `continue-on-error: true` to a job
+~~~
+runs-on: ubuntu-latest
+continue-on-error: true
+~~~
+{: .language-yaml}
+or `fail-fast: false` for the matrix case
+~~~
+strategy:
+  fail-fast: false
+~~~
+{: .language-yaml}
+
+> But what if we want to **only** allow the job with version set to `latest` to fail without failing the workflow run?
 >
 > > ## Solution
+> >
 > > ~~~
-> > hello world:
-> >   script:
-> >    - echo "Hello World"
-> >
-> > .build_template:
-> >   before_script:
-> >    - COMPILER=$(root-config --cxx)
-> >    - FLAGS=$(root-config --cflags --libs)
-> >   script:
-> >    - $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-> >
-> > build_skim:
-> >   image: rootproject/root-conda:6.18.04
-> >   before_script:
-> >    - COMPILER=$(root-config --cxx)
-> >    - FLAGS=$(root-config --cflags --libs)
-> >   script:
-> >    - $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-> >
-> > build_skim_latest:
-> >   image: rootproject/root-conda:latest
-> >   before_script:
-> >    - COMPILER=$(root-config --cxx)
-> >    - FLAGS=$(root-config --cflags --libs)
-> >   script:
-> >    - $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-> >   allow_failure: yes
+> > runs-on: ubuntu-latest
+> > container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
+> > continue-on-error: {% raw %}${{ matrix.allow_failure }}{% endraw %}
+   strategy:
+> > strategy:
+> >   fail-fast: false
+> >   matrix:
+> >     version: [6.18.04, latest]
+> >     allow_failure: [false]
+> >     include:
+> >       - version: latest
+> >         allow_failure: true
 > > ~~~
 > > {: .language-yaml}
 > {: .solution}
 {: .challenge}
 
-The idea behind not repeating yourself is to merge multiple (job) definitions together, usually a hidden job and a non-hidden job. This is done through a concept of inheritance. Interestingly enough, GitLab CI/CD also allows for `:job:extends` as an alternative to using YAML anchors. I tend to prefer this syntax as it appears to be "more readable and slightly more flexible" (according to GitLab - but I argue it's simply just more readable and has identical functionality!!!).
-
-~~~
-.only-important:
-  only:
-    - master
-    - stable
-  tags:
-    - production
-
-.in-docker:
-  tags:
-    - docker
-  image: alpine
-
-rspec:
-  extends:
-    - .only-important
-    - .in-docker
-  script:
-    - rake rspec
-~~~
-{: .language-yaml}
-
-will become
-
-~~~
-rspec:
-  only:
-    - master
-    - stable
-  tags:
-    - docker
-  image: alpine
-  script:
-    - rake rspec
-~~~
-{: .language-yaml}
-
-Note how `.in-docker` overrides `:rspec:tags` because it's "closest in scope".
-
-> ## Anchors Away?
->
-> If we use `extends` to remove duplicate code, what do we get?
->
-> > ## Solution
-> > ~~~
-> > hello world:
-> >   script:
-> >    - echo "Hello World"
-> >
-> > .build_template:
-> >   before_script:
-> >    - COMPILER=$(root-config --cxx)
-> >    - FLAGS=$(root-config --cflags --libs)
-> >   script:
-> >    - $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-> >
-> > build_skim:
-> >   extends: .build_template
-> >   image: rootproject/root-conda:6.18.04
-> >
-> > build_skim_latest:
-> >   extends: .build_template
-> >   image: rootproject/root-conda:latest
-> >   allow_failure: yes
-> > ~~~
-> > {: .language-yaml}
-> {: .solution}
-{: .challenge}
 
 Look how much cleaner you've made the code. You should now see that it's pretty easy to start adding more build jobs for other images in a relatively clean way, as you've now abstracted the actual building from the definitions.
 

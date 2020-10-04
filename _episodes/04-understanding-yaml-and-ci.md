@@ -3,20 +3,21 @@ title: "YAML and CI"
 teaching: 5
 exercises: 0
 objectives:
-  - Learn where to find more details about everything for the GitLab CI.
-  - Understand the structure of the GitLab CI YAML file.
+  - Learn where to find more details about everything for the GitHub Actions.
+  - Understand the components of GitHub Actions YAML file.
 questions:
-  - What is the GitHub CI specification?
+  - What is the GitHub Actions specification?
 hidden: false
 keypoints:
-  - You should bookmark the GitHub reference on CI/CD. You'll visit that page often.
-  - A job is defined by a name and a script, at minimum.
-  - Other than job names, reserved keywords are the top-level parameters defined in a YAML file.
+  - You should bookmark the GitHub Actions reference. You'll visit that page often.
+  - Actions are standalone commands that are combined into steps to create a job.
+  - Workflows are made up of one or more jobs and can be scheduled or triggered.
 ---
 <iframe width="420" height="263" src="https://www.youtube.com/embed/1Kz3VrzYHb0?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-# GitHub CI YAML
 
-The GitHub CI configurations are specified using a YAML file called `main.yml` stored in the`.github/workflows/` directory. Here is an example:
+# GitHub Actions YAML
+
+The GitHub Actions configurations are specified using a YAML file called `main.yml` stored in the`.github/workflows/` directory. Here is an example:
 
 ~~~
 name: example
@@ -26,10 +27,9 @@ on: push
 jobs:
   job_1:
     runs-on: ubuntu-latest
-	steps:
-	  - name: My first step
-	    run: |
-			echo This is the first step of my first job.
+    steps:
+      - name: My first step
+        run: echo This is the first step of my first job.
 ~~~
 {: .language-yaml}
 
@@ -44,39 +44,46 @@ jobs:
 > Specify the job(s) to be run. Each job runs in an environment specified by `runs-on`. Jobs run in parallel by default. To run jobs sequentially, you have to define dependencies on other jobs. We'll cover this in a later section.
 {: .callout}
 
-> ## Steps
+> ### `Steps`
 > A step is an individual task that can run commands (known as actions). Each step in a job executes on the same runner, allowing the actions in that job to share data with each other.
-
-## Take note
-
- Sometimes, commands that contain a colon (`:`) need to be wrapped in quotes so that the YAML parser knows to interpret the whole thing as a string rather than a “key: value” pair. Be careful when using special characters: `:`, `{`, `}`, `[`, `]`, `,`, `&`, `*`, `#`, `?`, `|`, `-`, `<`, `>`, `=`, `!`, `%`, `@`, `\``.
-{: .callout}
 
 ## Overall Structure
 
 Every single parameter we consider for all configurations are keys under jobs. The YAML is structured using job names. For example, we can define three jobs that run in parallel (more on parallel/serial later) with different sets of parameters.
 
 ~~~
+name: <name of your workflow>
+
+on: <event or list of events>
+
 jobs:
-  job1:
-    param1: null
-    param2: null
-
-  job2:
-    param1: null
-    param3: null
-
-  job3:
-    param2: null
-    param4: null
-    param5: null
+  job_1:
+    name: <name of the first job>
+    runs-on: <type of machine to run the job on>
+    steps:
+      - name: <step 1>
+        run: |
+          <commands>
+      - name: <step 2>
+        run: |
+          <commands>
+  job_2:
+    name: <name of the second job>
+    runs-on: <type of machine to run the job on>
+    steps:
+      - name: <step 1>
+        run: |
+          <commands>
+      - name: <step 2>
+        run: |
+          <commands>
 ~~~
 {: .language-yaml}
 
 
 ## Reference
 
-The reference guide for all GitLab CI/CD pipeline configurations is found at [workflow-syntax-for-github-actions](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions). This contains all the different parameters you can assign to a job.
+The reference guide for all GitHub Actions pipeline configurations is found at [workflow-syntax-for-github-actions](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions). This contains all the different parameters you can assign to a job.
 {: .checklist}
 
 {% include links.md %}
