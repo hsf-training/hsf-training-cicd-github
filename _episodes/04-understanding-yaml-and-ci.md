@@ -13,7 +13,9 @@ keypoints:
   - Actions are standalone commands that are combined into steps to create a job.
   - Workflows are made up of one or more jobs and can be scheduled or triggered.
 ---
+<!--
 <iframe width="420" height="263" src="https://www.youtube.com/embed/1Kz3VrzYHb0?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
 
 # GitHub Actions YAML
 

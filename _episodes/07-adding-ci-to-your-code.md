@@ -12,7 +12,9 @@ keypoints:
   - Setting up CI/CD shouldn't be mind-numbing
   - All defined jobs run in parallel by default
 ---
+<!--
 <iframe width="420" height="263" src="https://www.youtube.com/embed/GiwtSwtMYzg?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
 # Time To Skim
 
 ## The Naive Attempt
@@ -83,7 +85,7 @@ which will produce an output binary called `skim`.
 ## Check jobs
 
 ```bash
-./act -l
+act -l
 ```
 ![Act two parallel jobs]({{site.baseurl}}/fig/act_list_parallel_jobs.png)
 
@@ -104,7 +106,7 @@ Ok, so maybe we were a little naive here. Let's start debugging locally.
 
 We can reproduce this error:
 ```bash
-./act -j build_skim
+act -j build_skim
 ```
 
 You got this error when you tried to build
@@ -139,7 +141,7 @@ container: rootproject/root-conda:6.18.04
 ~~~
 {: .language-yaml}
 
-If you run again `./act -j build_skim`, you see
+If you run again `act -j build_skim`, you see
 ```
 [example/build_skim] 🚀  Start image=rootproject/root-conda:6.18.04
 ```

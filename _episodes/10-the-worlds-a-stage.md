@@ -10,7 +10,9 @@ hidden: false
 keypoints:
   - `needs` allows to specify dependencies between jobs in order to run them in serial.
 ---
+<!-- 
 <iframe width="420" height="263" src="https://www.youtube.com/embed/PBkO3TsdDUA?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
 # Defining dependencies
 
 From the last session, we're starting with

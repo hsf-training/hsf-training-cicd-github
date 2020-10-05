@@ -12,7 +12,9 @@ keypoints:
   - Pipelines are made of jobs with steps.
   - ACT is especially useful to check and run GitHub Actions jobs (locally) before pushing changes.
 ---
+<!--
 <iframe width="420" height="263" src="https://www.youtube.com/embed/LqeJzIYJCwc?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
 
 ## Adding CI/CD to a project
 
@@ -37,17 +39,11 @@ jobs:
 
 ### `Run on your computer`
 
-We need a dedicated tool: [nektos/act](https://github.com/nektos/act).
+At this point we need the [nektos/act](https://github.com/nektos/act) tool.
 
-Let's install it first.
-  ```bash
-  curl https://raw.githubusercontent.com/nektos/act/master/install.sh --output install.sh
-  bash install.sh -b .
-```
-
-Once the installation is done, you can run
+You can run
 ```bash
-./act -l  # -l stands for list (list workflows)
+act -l  # -l stands for list (list workflows)
 ```
 
 What happened??? We can see that this failed because the YAML was invalid... (Error: yaml: line ...)
@@ -56,7 +52,7 @@ We should fix this accondingly to the Error message. **Note** that `act` is not 
 
 Let's rerun:
 ```bash
-./act -l
+act -l
 ```
 This should print out the job name, *i.e* greeting:
 
@@ -65,7 +61,7 @@ This should print out the job name, *i.e* greeting:
 To run `greeting` do
 
 ```bash
-./act -j greeting  # -l stands for job (run job)
+act -j greeting  # -l stands for job (run job)
 ```
 Output:
 ![greeting job]({{site.baseurl}}/fig/act_run_greeting.png)

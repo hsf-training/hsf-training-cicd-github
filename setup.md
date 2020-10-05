@@ -26,6 +26,17 @@ To check your installation open a terminal and run
   ```
 **Note** that you may have to run with *sudo*
 
+## Set up ACT
+
+We will need also this [nektos/act](https://github.com/nektos/act) tool.
+
+Make sure you have it properly installed. Instructions can be found at this web page [https://github.com/nektos/act](https://github.com/nektos/act).
+
+Once the installation is done, you can run a quick test:
+```bash
+act -h  # -h stands for help
+```
+
 ## Set up the code
 
 - Create a new project on your personal GitHub account and name it *virtual-pipelines-eventselection*.
@@ -72,9 +83,10 @@ To check your installation open a terminal and run
   ```
   This will add the code to your GitHub account. Done!
 
+<!--
 ## Video Tutorials
 <iframe width="420" height="263" src="https://www.youtube.com/embed/NcVGX8zWzQY?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+-->
 
 If you're having issues, **please let us know immediately**
 since you might not be able to follow this lesson without a proper setup.

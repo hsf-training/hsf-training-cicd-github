@@ -11,15 +11,51 @@ hidden: false
 keypoints:
   - Using `matrix` allows to test the code against a combination of versions.
 ---
+
 <center>
+<!--
 <iframe width="420" height="263" src="https://www.youtube.com/embed/_cKm7FUTzQs?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<!--iframe width="420" height="236" src="https://i.gifer.com/1K80.gif" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe-->
+-->
 <iframe width="420" height="236" src="https://i.gifer.com/1TpS.gif" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
 
 # Matrix
 
-From the previous lesson, we tried to build the code against two different ROOT images by adding an extra job. We could do better using `matrix`. The latter allows us to test the code against a combination of versions.
+From the previous lesson, we tried to build the code against two different ROOT images by adding an extra job. 
+
+~~~
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello world
+
+  build_skim:
+    runs-on: ubuntu-latest
+    container: rootproject/root-conda:6.18.04
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+      - name: build
+        run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
+        env:
+          COMPILER: g++
+
+  build_skim_latest:
+    runs-on: ubuntu-latest
+    container: rootproject/root-conda:latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: latest
+        run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
+        env:
+          COMPILER: g++
+~~~
+{: .language-yaml}
+
+We could do better using `matrix`. The latter allows us to test the code against a combination of versions.
 
 ~~~
 jobs:
