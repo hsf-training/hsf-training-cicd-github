@@ -37,7 +37,7 @@ jobs:
 
 ## Run GitHub Actions
 
-### `Run on your computer`
+### Run on your computer
 
 At this point we need the [nektos/act](https://github.com/nektos/act) tool.
 
@@ -66,7 +66,7 @@ act -j greeting  # -l stands for job (run job)
 Output:
 ![greeting job]({{site.baseurl}}/fig/act_run_greeting.png)
 
-### `Run on GitHub`
+### Run on GitHub
 
 ```bash
 cd virtual-pipelines-eventselection/
