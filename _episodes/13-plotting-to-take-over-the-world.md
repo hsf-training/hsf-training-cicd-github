@@ -43,8 +43,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: build
-        run: {% raw %}${{ secrets.COMPILER }}{% endraw %} skim.cxx -o skim `root-config --cflags --glibs`
-
+        run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
+        env:
+	  COMPILER=g++
+	
       - uses: actions/upload-artifact@v2
         with:
           name: skim{% raw %}${{ matrix.version }}{% endraw %}
