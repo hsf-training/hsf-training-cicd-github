@@ -147,7 +147,7 @@ Note that there are some rules applied to secret names:
 > ## Access encrypted secrets
 > The secrets you've created are available to use in GitHub Actions workflows. GitHub allows to access them using secrets context: $\{\{ secrets.\<secret name\> \}\}.
 > 
-> e.g
+> e.g:
 > ~~~
 > printf {% raw %}${{ secrets.USER_PASS }}{% endraw %} | base64 -d | kinit {% raw %}${{ secrets.USER_NAME }}{% endraw %}
 > ~~~

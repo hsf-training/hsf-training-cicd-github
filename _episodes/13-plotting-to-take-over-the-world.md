@@ -45,7 +45,7 @@ jobs:
       - name: build
         run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
         env:
-	  COMPILER=g++
+          COMPILER=g++
 	
       - uses: actions/upload-artifact@v2
         with:
