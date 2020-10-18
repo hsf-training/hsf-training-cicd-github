@@ -1,5 +1,5 @@
 ---
-title: "YAML and CI"
+title: "YAML and GitHub Actions"
 teaching: 5
 exercises: 0
 objectives:
@@ -19,7 +19,7 @@ keypoints:
 
 # GitHub Actions YAML
 
-The GitHub Actions configurations are specified using a YAML file called `main.yml` stored in the`.github/workflows/` directory. Here is an example:
+The GitHub Actions configurations are specified using YAML files stored in the`.github/workflows/` directory. Here is an example of a YAML file:
 
 ~~~
 name: example
@@ -36,18 +36,21 @@ jobs:
 {: .language-yaml}
 
 
-> ## `name`
-> **Optional**. GitHub displays the names of your workflows on your repository's actions page. If you omit name, GitHub sets it to the YAML file.
-
-> ## `on`
-> **Required**. Specify the event that automatically triggers pipelines. This example uses the push event, so that the jobs run every time someone pushes a change to the repository.
+> ## `name`: **Optional**. GitHub displays the names of your workflows on your repository's actions page. If you omit name, GitHub sets it to the YAML file name.
+>
+> ## `on`: **Required**. Specify the event that automatically triggers a workflow run. This example uses the push event, so that the jobs run every time someone pushes a change to the repository. For more details, check [this link](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#on).
 
 > ## `jobs`
-> Specify the job(s) to be run. Each job runs in an environment specified by `runs-on`. Jobs run in parallel by default. To run jobs sequentially, you have to define dependencies on other jobs. We'll cover this in a later section.
+> Specify the job(s) to be run. Jobs run in parallel by default. To run jobs sequentially, you have to define dependencies on other jobs. We'll cover this in a later section. 
+>
+> `<job_id>`: Each job must have an id to associate with the job, job_1 in the above example. The key job_id is a string that is unique to the jobs object. It must start with a letter or _ and contain only alphanumeric characters, -, or _. Its value is a map of the job's configuration data.
+>
+> - `runs-on`: **Required**. Each job runs in an virtual environment (runner) specified by the key runs-on. Available environments can be found [here](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on).
+>
+> - `steps`: Specify sequence of tasks. A step is an individual task that can run commands (known as actions). Each step in a job executes on the same runner, allowing the actions in that job to share data with each other. If you do not provide a `name`, the step name will default to the text specified in the `run` command.
+>
+> [Further reading on jobs](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobs).
 {: .callout}
-
-> ### `Steps`
-> A step is an individual task that can run commands (known as actions). Each step in a job executes on the same runner, allowing the actions in that job to share data with each other.
 
 ## Overall Structure
 

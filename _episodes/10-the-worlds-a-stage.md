@@ -41,7 +41,7 @@ jobs:
 ~~~
 {: .language-yaml}
 
-We're going to talk about another useful parameter `needs`. `needs: jobs or list of jobs` allows us to specify dependencies between jobs in the order you define. For example
+We're going to talk about another useful parameter `needs`. The key-value `needs: jobs or list of jobs` allows you to specify dependencies between jobs in the order you define. For example
 ~~~
 job2:
   needs: job1
@@ -49,6 +49,7 @@ job2:
 {: .language-yaml}
 job2 waits until job1 completes successfully.
 
+> ## Dependent jobs
 > How to make `build_skim` job to run after `greeting`?
 >
 > > ## Solution
@@ -84,7 +85,6 @@ job2 waits until job1 completes successfully.
 If you do it correctly, you should see
 
 ![CI/CD Pipeline Two Stages]({{site.baseurl}}/fig/actions_multi_jobs.png)
-
 
 
 {% include links.md %}

@@ -6,29 +6,14 @@ questions:
 ---
 ## Prerequisites
 > - We assume that you already have a Github account
-> - You should have git working on your laptop
+> - You should have git working on your computer
 > - You should have an SSH key added to your Github account
 {: .prereq}
 
-## Set up Docker
-
-Part of this training needs Docker. Therefore you must have Docker installed. 
-
-If this is not the case, follow the above links for instuctions.
-
-- Linux:  [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
-- Mac OS:  [https://docs.docker.com/docker-for-mac/install/](https://docs.docker.com/docker-for-mac/install/)
-- Windows: [https://docs.docker.com/docker-for-windows/install/](https://docs.docker.com/docker-for-windows/install/)
-
-To check your installation open a terminal and run
-  ```
-  docker --version
-  ```
-**Note** that you may have to run with *sudo*
 
 ## Set up ACT
 
-We will need also this [nektos/act](https://github.com/nektos/act) tool.
+We will need the `nektos/act` tool to run GitHub Actions locally.
 
 Make sure you have it properly installed. Instructions can be found at this web page [https://github.com/nektos/act](https://github.com/nektos/act).
 
@@ -36,6 +21,23 @@ Once the installation is done, you can run a quick test:
 ```bash
 act -h  # -h stands for help
 ```
+
+## Set up Docker
+
+`nektos/act` uses `Docker` to run GitHub Actions on your computer. Therefore you must have Docker installed. 
+
+If this is not the case, follow the above links for instuctions.
+
+- Linux:  [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
+- Mac OS:  [https://docs.docker.com/docker-for-mac/install/](https://docs.docker.com/docker-for-mac/install/)
+- Windows: [https://docs.docker.com/docker-for-windows/install/](https://docs.docker.com/docker-for-windows/install/)
+
+To check your installation open a terminal and run:
+  ```bash
+  docker --version
+  ```
+**Note** that you may have to run with *sudo*.
+
 
 ## Set up the code
 
@@ -51,7 +53,7 @@ act -h  # -h stands for help
   Open a terminal and clone the repository that contains the required files.
 
   ```bash
-  git clone git@github.com:awesome-workshop/payload.git virtual-pipelines-eventselection
+  git clone git@github.com:hsf-training/hsf-training-cms-analysis.git virtual-pipelines-eventselection
   cd virtual-pipelines-eventselection
   ```
 
@@ -61,11 +63,12 @@ act -h  # -h stands for help
   ```bash
   git remote -v # -v stands for verbose
   ```
-  Output:
-  ```bash
-  origin	git@github.com:awesome-workshop/payload.git (fetch)
-  origin	git@github.com:awesome-workshop/payload.git (push)
+  
   ```
+  origin	git@github.com:hsf-training/hsf-training-cms-analysis.git (fetch)
+  origin	git@github.com:hsf-training/hsf-training-cms-analysis.git (push)
+  ```
+  {: .output}
   
   You have to change remote's URL in order to be able to add the code to your personal GitHub account. 
 

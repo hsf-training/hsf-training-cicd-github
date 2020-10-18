@@ -49,12 +49,12 @@ cd virtual-pipelines-eventselection
 docker run -it --rm -v $PWD:/virtual-pipelines-eventselection -w /virtual-pipelines-eventselection rootproject/root-conda:6.18.04 /bin/bash 
 COMPILER=g++
 $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-exit
+exit  # quit interactive Docker session
 ~~~
 {: .language-bash}
 **Note** that you may have to run `docker` with sudo.
 
-which will produce an output binary called `skim`.
+The compilation will result in an output binary called `skim`.
 
 > ## Adding a new job
 >
@@ -94,7 +94,7 @@ We can see 2 parallel jobs. Let's commit the changes we made.
 ```bash
 git add .github/workflows/main.yml
 git commit -m "add build skim job"
-git push -u origin feature/add-ci
+git push -u origin feature/add-actions
 ```
 
 ![Job failure root-config]({{site.baseurl}}/fig/actions_parallel_jobs_failure1a.png)

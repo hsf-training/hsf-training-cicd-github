@@ -23,6 +23,7 @@ The first thing we'll do is create a `.github/workflows/main.yml` file in the pr
 cd virtual-pipelines-eventselection/
 mkdir -p .github/workflows
 ```
+
 Open `.github/workflows/main.yml` with your favorite editor and add the following
 ~~~
 name: example
@@ -48,7 +49,7 @@ act -l  # -l stands for list (list workflows)
 
 What happened??? We can see that this failed because the YAML was invalid... (Error: yaml: line ...)
 
-We should fix this accondingly to the Error message. **Note** that `act` is not a YAML Validator but can help. Some YAML Validators: [https://codebeautify.org/yaml-validator](https://codebeautify.org/yaml-validator), [http://www.yamllint.com/](http://www.yamllint.com/), ...
+We should fix this accondingly to the Error message. **Note** that `act` is not a YAML Validator but can help. Some YAML Validators: [https://yamllint.readthedocs.io](https://yamllint.readthedocs.io/en/stable/), [https://codebeautify.org/yaml-validator](https://codebeautify.org/yaml-validator), [http://www.yamllint.com/](http://www.yamllint.com/), ...
 
 Let's rerun:
 ```bash
@@ -63,25 +64,26 @@ To run `greeting` do
 ```bash
 act -j greeting  # -l stands for job (run job)
 ```
-Output:
+
+```
 ![greeting job]({{site.baseurl}}/fig/act_run_greeting.png)
+```
+{: .output}
 
 ### `Run on GitHub`
 
+We've created the `.github/workflows/main.yml` file but it's not yet on GitHub. Next step we'll push these changes to GitHub so that it can run our job.
+Since we're adding a new feature (Actions) to our project, we'll work in a feature branch. This is just a human-friendly named branch to indicate that it's adding a new feature.
+
 ```bash
 cd virtual-pipelines-eventselection/
-git checkout -b feature/add-ci
+git checkout -b feature/add-actions
 git add .github/workflows/main.yml
-git commit -m "my first ci/cd"
-git push -u origin feature/add-ci
+git commit -m "my first actions"
+git push -u origin feature/add-actions
 ```
 
-> ## Feature Branches
->
-> Since we're adding a new feature (CI/CD) to our project, we'll work in a feature branch. This is just a human-friendly named branch to indicate that it's adding a new feature.
-{: .callout}
-
-Now, if you navigate to the GitHub webpage for that project and hit Actions button, you will find details of your job (status, output,...).
+And that's it! You've successfully run your CI/CD job and you can view the output. You just have to navigate to the GitHub webpage for the `virtual-pipelines-eventselection` project and hit Actions button, you will find details of your job (status, output,...).
 
 ![GitHub Actions Page]({{site.baseurl}}/fig/actions_commits_page.png)
 
@@ -89,17 +91,15 @@ From this page, click through until you can find the output for the successful j
 ![CI/CD Hello World Success Output]({{site.baseurl}}/fig/actions_first_ci-cd_success.png)
 
 
-Lastly, we'll open up a pull request for this branch, since we plan to merge this back into master when we're happy with the first iteration of the CI/CD.
+## Pull Request
 
-> ## Work In Progress?
->
-> If you expect to be working on a branch for a bit of time while you have a merge request open, it's good etiquette to mark it as a Work-In-Progress (WIP). However this is not a built-in feature of GitHub, it requires to install it from [GitHub Marketplace](https://github.com/marketplace/wip). Free for personal account.
-> ![Work In Progress](https://raw.githubusercontent.com/wip/app/master/assets/wip.gif)
-{: .callout}
+Lastly, we'll open up a pull request for this branch, since we plan to merge this back into master when we're happy with the first iteration of the Actions.
 
+### Work In Progress?
 
+If you expect to be working on a branch for a bit of time while you have a pull request open, it's good etiquette to mark it as a Work-In-Progress (WIP). However this is not a built-in feature of GitHub, it requires to install it from [GitHub Marketplace](https://github.com/marketplace/wip). Free for personal account.
 
-And that's it! You've successfully run your CI/CD job and you can view the output.
+![Work In Progress](https://raw.githubusercontent.com/wip/app/master/assets/wip.gif)
 
 
 {% include links.md %}

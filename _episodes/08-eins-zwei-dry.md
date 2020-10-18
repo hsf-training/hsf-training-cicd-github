@@ -21,7 +21,7 @@ keypoints:
 
 # Matrix
 
-From the previous lesson, we tried to build the code against two different ROOT images by adding an extra job. 
+From the previous lesson, we tried to build the code against two different ROOT images by adding an extra job: 
 
 ~~~
 jobs:
@@ -55,7 +55,7 @@ jobs:
 ~~~
 {: .language-yaml}
 
-We could do better using `matrix`. The latter allows us to test the code against a combination of versions.
+We could do better using `matrix`. The latter allows us to test the code against a combination of versions in a single job.
 
 ~~~
 jobs:
@@ -103,6 +103,7 @@ strategy:
 ~~~
 {: .language-yaml}
 
+> ## Allow a specific matrix job to fail
 > But what if we want to **only** allow the job with version set to `latest` to fail without failing the workflow run?
 >
 > > ## Solution
