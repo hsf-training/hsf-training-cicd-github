@@ -149,7 +149,7 @@ Note that there are some rules applied to secret names:
 > 
 > e.g
 > ~~~
-> printf \{\{ secrets.USER_PASS \}\} | base64 -d | kinit \{\{ secrets.USER_NAME \}\}
+> printf {{ secrets.USER_PASS }} | base64 -d | kinit {{ secrets.USER_NAME }}
 > ~~~
 > {: .language-bash}
 {: .challenge}
