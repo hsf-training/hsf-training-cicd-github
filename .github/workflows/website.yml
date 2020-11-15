@@ -1,0 +1,34 @@
+name: github pages
+
+on: push
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Add common episodes
+        run: |
+          git clone https://github.com/enibigir/hsf-training-cicd-basics-webpage.git common
+          cp common/_episodes/*.md _episodes/
+          rm -rf common
+          ls _episodes/
+
+      - name: Commit common episodes
+        uses: EndBug/add-and-commit@v5
+        with:
+          message: "Add common episodes"
+          add: "*.md --force"
+          cwd: "./_episodes/"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        run: |
+          docker run --rm --volume="${{ github.workspace }}:/home/rstudio" \
+          carpentries/lesson-docker:latest /bin/bash -c \
+          "gem install bundler && \ 
+          bundle config --local set path .vendor/bundle && \
+          bundle install && \
+          bundle exec jekyll build --trace"

@@ -12,10 +12,8 @@ keypoints:
 - CI/CD is crucial for any reproducibility and testing
 - Take advantage of automation to reduce your workload
 ---
-<!--
 <iframe width="420" height="263" src="https://www.youtube.com/embed/dTuVEL5-sSw?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 # What is CI/CD?
--->
 
 Continuous Integration (CI) is the concept of literal continuous integration of code changes. That is, every time a contributor (student, colleague, random bystander) provides new changes to your codebase, those changes are tested to make sure they don't "break" anything. Continuous Deployment (CD), similarly, is the literal continuous deployment of code changes. That means that, assuming the CI passes, you'd like to automatically deploy those changes.
 
@@ -49,8 +47,8 @@ Don't just limit yourself to thinking of CI/CD as primarily for testing changes,
 
 Now, obviously, we're not going to make our own fully-fledged CI/CD solution. Plenty exist in the wild today, and below are just a popular few:
 
-- [GitHub Actions](https://github.com/features/actions)
 - [Native GitLab CI/CD](https://docs.gitlab.com/ee/ci/)
+- [Native GitHub CI/CD](https://github.com/features/actions)
 - [Travis CI](https://travis-ci.org/)
 - [Circle CI](https://circleci.com/)
 - [TeamCity](https://www.jetbrains.com/teamcity/)
@@ -60,6 +58,6 @@ Now, obviously, we're not going to make our own fully-fledged CI/CD solution. Pl
 - [CodeShip](https://codeship.com/)
 - [CodeFresh](https://g.codefresh.io/)
 
-For today's lesson, we'll only focus on GitHub Actions. However, be aware that all the concepts you'll be taught today: including pipelines, stages, jobs, artifacts; all exist in other solutions by similar/different names. For example, GitHub or GitLab supports two features known as caching and artifacts; but Travis doesn't quite implement the same thing for caching and has no native support for artifacts. Therefore, while we don't discourage you from trying out other solutions, there's no "one size fits all" when designing your own CI/CD workflow.
+For today's lesson, we'll only focus on GitLab's solution. However, be aware that all the concepts you'll be taught today: including pipelines, stages, jobs, artifacts; all exist in other solutions by similar/different names. For example, GitLab supports two features known as caching and artifacts; but Travis doesn't quite implement the same thing for caching and has no native support for artifacts. Therefore, while we don't discourage you from trying out other solutions, there's no "one size fits all" when designing your own CI/CD workflow.
 
 {% include links.md %}

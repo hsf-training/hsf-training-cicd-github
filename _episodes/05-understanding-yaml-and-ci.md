@@ -36,7 +36,7 @@ jobs:
 {: .language-yaml}
 
 
-`name`: **Optional**. GitHub displays the names of your workflows on your repository's actions page. If you omit name, GitHub sets it to the YAML file name.
+`name`: GitHub displays the names of your workflows on your repository's actions page. If you omit name, GitHub sets it to the YAML file name.
 
 `on`: **Required**. Specify the event that automatically triggers a workflow run. This example uses the push event, so that the jobs run every time someone pushes a change to the repository. For more details, check [this link](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#on).
 
