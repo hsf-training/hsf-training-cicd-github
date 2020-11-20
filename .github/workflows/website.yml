@@ -10,7 +10,7 @@ jobs:
 
       - name: Add common episodes
         run: |
-          git clone https://github.com/enibigir/hsf-training-cicd-basics-webpage.git common
+          git clone https://github.com/hsf-training/hsf-training-cicd-basics-webpage.git common
           cp common/_episodes/*.md _episodes/
           rm -rf common
           ls _episodes/
