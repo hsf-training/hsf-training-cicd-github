@@ -65,9 +65,8 @@ To run `greeting` do
 act -j greeting  # -l stands for job (run job)
 ```
 
-```
 ![greeting job]({{site.baseurl}}/fig/act_run_greeting.png)
-```
+
 {: .output}
 
 ### `Run on GitHub`
