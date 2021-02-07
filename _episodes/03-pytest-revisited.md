@@ -17,55 +17,36 @@ This is a relatively short section, but we need to connect some things you've le
 
 # Assert Your Tests
 
-An assertion is a sanity-check carried out by the `assert` statement, useful when debugging code.
-
-Let's create a file called `python_assert.py` with the following content:
-~~~
-x = "hello"
-
-assert x == "hello"
-
-assert x == "goodbye"
-~~~
-{: .language-python}
-
-and then run it with `python python_assert.py`. 
-
-What happens when an assertion fails in python?
+Recall in the previous session, you made a `test_mean.py` that asserted lots of statements. For example `assert obs == exp`. What happens when an assertion fails in python? An exception is raised, `AssertionError`. The nice thing about python is that all unhandled exceptions return a non-zero exit code. If an exit code is not set, this defaults to `1`. Let's just quickly do a sanity check with `python -c` which allows for executing arbitrary python commands.
 
 ~~~
+> python -c "assert True"
+> echo $?
+0
+> python -c "assert False"
 Traceback (most recent call last):
-  File "./python_assert.py", line 5, in <module>
-    assert x == "goodbye"
+  File "<string>", line 1, in <module>
 AssertionError
-~~~
-{: .output}
-
-An exception is raised, `AssertionError`. The nice thing about python is that all unhandled exceptions return a non-zero exit code. If an exit code is not set, this defaults to `1`.
-~~~
 > echo $?
 1
 ~~~
-{: .language-bash}
+{: .source}
 
 Ignoring what would cause the assertion to be `True` or `False`, we can see that assertions automatically indicate failure in a script.
 
 # What about pytest?
 
-Pytest, thankfully, handles these assertion failures intuitively. To try this out quickly, go ahead and modify `python_assert.py` as follows:
+Pytest, thankfully, handles these assertion failures intuitively. That is, running `pytest test_mean.py` will produce an expected exit code depending on whether the test passed or failed. To try this out quickly, go ahead and create a file called `test_assert.py` with the following:
 
 ~~~
-x = "hello"
-
 def test_assert_success():
-    assert x == "hello"
+  assert True
 
 def test_assert_failure():
-    assert x == "goodbye"
+  assert False
 ~~~
 {: .language-python}
 
-Running `pytest python_assert.py` will produce an expected exit code depending on whether the test passed or failed.
-You should be able to confirm that the exit codes are useful here.
+and then running `pytest test_assert.py` followed up with `echo $?`, you should be able to confirm that the exit codes are useful here.
 
 {% include links.md %}
