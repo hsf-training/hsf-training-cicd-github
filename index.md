@@ -6,19 +6,6 @@ permalink: index.html  # Is the only page that doesn't follow the pattern /:path
 ---
 {% include gh_variables.html %}
 
-> ## Prerequisites
->
-> This assumes that you'll have some basic background with your command line, for example:
->
-> 1. How to execute custom shell scripts
-> 2. How to run python scripts
->
-> as well as having gone through all previous sessions in this workshop.
-{: .prereq}
-
-Introduction
-------------
-
 GitHub is a version control distributed git platform used for code hosting and collaboration. Yet it can be used to automatically run the hosted code on Github's servers via GitHub Actions. Actions are workflow automation scripts. We'll learn how to develop on to make our code robust to errors, preserved, and reproducible.
 
 The aim of this module is to:
@@ -33,5 +20,14 @@ The aim of this module is to:
 > 4.  The GitHub permissions model
 > 5.  Protecting secret information while allowing jobs to run
 {: .checklist}
+
+> ## Prerequisites
+>
+> This assumes that 
+> 1. you have some basic background with your command line, for example:
+>   - How to execute custom shell scripts
+>   - How to run python scripts
+> 2. you have gone through all previous sessions in this workshop.
+{: .prereq}
 
 {% include links.md %}
