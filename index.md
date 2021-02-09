@@ -17,8 +17,7 @@ The aim of this module is to:
 > 1.  Making scripts exit correctly
 > 2.  Building a CI/CD workflow of unlimited potential
 > 3.  Understanding how job runners work (and get access to your clones)
-> 4.  The GitHub permissions model
-> 5.  Protecting secret information while allowing jobs to run
+> 4.  Protecting secret information while allowing jobs to run
 {: .checklist}
 
 > ## Prerequisites
