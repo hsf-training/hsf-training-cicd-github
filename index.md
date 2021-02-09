@@ -12,14 +12,6 @@ The aim of this module is to:
 - explore what it means to build a CI/CD workflow
 - guide you through building a CI/CD workflow
 
-> ## The skills we'll focus on:
->
-> 1.  Making scripts exit correctly
-> 2.  Building a CI/CD workflow of unlimited potential
-> 3.  Understanding how job runners work (and get access to your clones)
-> 4.  Protecting secret information while allowing jobs to run
-{: .checklist}
-
 > ## Prerequisites
 >
 > This assumes that 
@@ -28,5 +20,13 @@ The aim of this module is to:
 >   - How to run python scripts
 > 2. you have gone through all previous sessions in this workshop.
 {: .prereq}
+
+> ## The skills we'll focus on:
+>
+> 1.  Making scripts exit correctly
+> 2.  Building a CI/CD workflow of unlimited potential
+> 3.  Understanding how job runners work (and get access to your clones)
+> 4.  Protecting secret information while allowing jobs to run
+{: .checklist}
 
 {% include links.md %}
