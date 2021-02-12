@@ -90,7 +90,7 @@ Try out some other commands on your system, and see what things look like.
 
 # Printing Exit Codes
 
-As you've seen above, the exit code from the last executed command is stored in the `$?` environment variable. Accessing from a shell is easy `echo $?`. What about from python? There are many different ways depending on which library you use. Using similar examples above, we can use the (note: deprecated) `os.system` call:
+As you've seen above, the exit code from the last executed command is stored in the `$?` environment variable. Accessing from a shell is easy `echo $?`. What about from python? There are many different ways depending on which library you use. Using similar examples above, we can use the `getstatusoutput()` call:
 
 > ## Snake Charming
 >
@@ -99,6 +99,7 @@ As you've seen above, the exit code from the last executed command is stored in 
 > Once inside the Python interpreter, simply type `exit()` then press enter, to exit.
 {: .callout}
 
+<!--
 ~~~
 >>> import os,subprocess
 >>> ret = os.system('ls')
@@ -109,8 +110,19 @@ As you've seen above, the exit code from the last executed command is stored in 
 1
 ~~~
 {: .language-python}
+-->
+~~~
+>>> from subprocess import getstatusoutput # for python2: from commands import getstatusoutput
+>>> status,output=getstatusoutput('ls')
+>>> status
+0
+>>> status,output=getstatusoutput('ls nonexistent-file')
+>>> status
+2
+~~~
+{: .language-python}
 
-One will note that this returned a different exit code than from the command line (indicating there's some internal implementation in Python). All you need to be concerned with is that the exit code was non-zero (there was an error).
+It may happen that this returns a different exit code than from the command line (indicating there's some internal implementation in Python). All you need to be concerned with is that the exit code was non-zero (there was an error).
 
 # Setting Exit Codes
 
