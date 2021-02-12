@@ -40,9 +40,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: build
-        run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-        env:
-          COMPILER=g++
+        run: |
+          COMPILER=$(root-config --cxx)
+          FLAGS=$(root-config --cflags --libs)
+          $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 ~~~
 {: .language-yaml}
 
@@ -128,9 +129,10 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >       uses: actions/checkout@v2
 > >
 > >     - name: build
-> >       run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-> >       env:
-> >         COMPILER=g++
+> >       run: |
+> >         COMPILER=$(root-config --cxx)
+> >         FLAGS=$(root-config --cflags --libs)
+> >         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 > >
 > >     - uses: actions/upload-artifact@v2
 > >       with:

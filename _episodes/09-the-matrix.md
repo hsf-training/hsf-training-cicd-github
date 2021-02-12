@@ -37,9 +37,10 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v2
       - name: build
-        run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-        env:
-          COMPILER: g++
+        run: |
+          COMPILER=$(root-config --cxx)
+          FLAGS=$(root-config --cflags --libs)
+          $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 
   build_skim_latest:
     runs-on: ubuntu-latest
@@ -47,11 +48,11 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
-
       - name: latest
-        run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-        env:
-          COMPILER: g++
+        run: |
+          COMPILER=$(root-config --cxx)
+          FLAGS=$(root-config --cflags --libs)
+          $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 ~~~
 {: .language-yaml}
 
@@ -75,9 +76,10 @@ jobs:
        uses: actions/checkout@v2
 
      - name: build
-       run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-       env:
-         COMPILER: g++
+        run: |
+          COMPILER=$(root-config --cxx)
+          FLAGS=$(root-config --cflags --libs)
+          $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 ~~~
 {: .language-yaml}
 

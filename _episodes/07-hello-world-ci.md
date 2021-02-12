@@ -38,7 +38,7 @@ jobs:
 
 ## Run GitHub Actions
 
-### `Run on your computer`
+### Run on your computer
 
 At this point we need the [nektos/act](https://github.com/nektos/act) tool.
 
@@ -56,8 +56,13 @@ Let's rerun:
 act -l
 ```
 This should print out the job name, *i.e* greeting:
+<!--![Hello world list]({{site.baseurl}}/fig/act_list_greeting.png)-->
 
-![Hello world list]({{site.baseurl}}/fig/act_list_greeting.png)
+```
+ID          Stage  Name       
+greeting    0      greeting
+```
+{: .output}
 
 To run `greeting` do
 
@@ -65,11 +70,17 @@ To run `greeting` do
 act -j greeting  # -l stands for job (run job)
 ```
 
-![greeting job]({{site.baseurl}}/fig/act_run_greeting.png)
-
+<!--![greeting job]({{site.baseurl}}/fig/act_run_greeting.png)-->
+```
+[example/greeting] 🚀  Start image=catthehacker/ubuntu:act-latest
+[example/greeting]   🐳  docker run image=catthehacker/ubuntu:act-latest entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
+[example/greeting] ⭐  Run echo hello world
+| hello world
+[example/greeting]   ✅  Success - echo hello world
+```
 {: .output}
 
-### `Run on GitHub`
+### Run on GitHub
 
 We've created the `.github/workflows/main.yml` file but it's not yet on GitHub. Next step we'll push these changes to GitHub so that it can run our job.
 Since we're adding a new feature (Actions) to our project, we'll work in a feature branch. This is just a human-friendly named branch to indicate that it's adding a new feature.

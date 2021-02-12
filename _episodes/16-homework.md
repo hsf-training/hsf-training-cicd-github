@@ -13,6 +13,7 @@ keypoints:
 
 Like the last section, I will simply explain what you need to do. After the previous section, you should have the following in `.github/workflows/main.yml`:
 
+<!--run: {% raw %}${{ secrets.COMPILER }}{% endraw %} skim.cxx -o skim `root-config --cflags --glibs`-->
 ~~~
 jobs:
   build_skim:
@@ -22,8 +23,11 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v2
 
-      - name: build
-        run: {% raw %}${{ secrets.COMPILER }}{% endraw %} skim.cxx -o skim `root-config --cflags --glibs`
+      - name: build      
+        run: |
+          COMPILER=$(root-config --cxx)
+          FLAGS=$(root-config --cflags --libs)
+          $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS        
 
       - uses: actions/upload-artifact@v2
         with:
