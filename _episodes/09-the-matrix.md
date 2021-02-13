@@ -56,35 +56,70 @@ jobs:
 ~~~
 {: .language-yaml}
 
-We could do better using `matrix`. The latter allows us to test the code against a combination of versions in a single job.
+> ## Building a matrix across different versions
+> 
+> We could do better using `matrix`. The latter allows us to test the code against a combination of versions in a single job.
+> 
+> ~~~
+> jobs:
+>   greeting:
+>    runs-on: ubuntu-latest
+>    steps:
+>      - run: echo hello world
+> 
+>  build_skim:
+>    runs-on: ubuntu-latest
+>    container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
+>      matrix:
+>        version: [6.18.04, latest]
+>    steps:
+>      - name: checkout repository
+>        uses: actions/checkout@v2
+> 
+>      - name: build
+>         run: |
+>           COMPILER=$(root-config --cxx)
+>           FLAGS=$(root-config --cflags --libs)
+>           $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
+> ~~~
+> {: .language-yaml}
+> More details on matrix: [https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix).
+{: .callout}
 
-~~~
-jobs:
-  greeting:
-   runs-on: ubuntu-latest
-   steps:
-     - run: echo hello world
+Let's update our `.github/workflow/main.yml` and use `act` to run the job with `matrix`.
+```bash
+act -j build_skim
+```
 
- build_skim:
-   runs-on: ubuntu-latest
-   container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
-   strategy:
-     matrix:
-       version: [6.18.04, latest]
-   steps:
-     - name: checkout repository
-       uses: actions/checkout@v2
+```
+[example/build_skim-1] 🧪  Matrix: map[version:6.18.04]
+[example/build_skim-1] 🚀  Start image=rootproject/root-conda:6.18.04
+[example/build_skim-2] 🧪  Matrix: map[version:latest]
+[example/build_skim-2] 🚀  Start image=rootproject/root-conda:latest
+[example/build_skim-1]   🐳  docker run image=rootproject/root-conda:6.18.04 entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
+[example/build_skim-1]   🐳  docker cp src=/tmp/eventselection/. dst=/github/workspace
+[example/build_skim-1] ⭐  Run checkout repository
+[example/build_skim-1]   ✅  Success - checkout repository
+[example/build_skim-1] ⭐  Run COMPILER=$(root-config --cxx)
+FLAGS=$(root-config --cflags --libs)
+$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
+[example/build_skim-1]   ✅  Success - COMPILER=$(root-config --cxx)
+FLAGS=$(root-config --cflags --libs)
+$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
+[example/build_skim-2]   🐳  docker run image=rootproject/root-conda:latest entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
+[example/build_skim-2]   🐳  docker cp src=/tmp/eventselection/. dst=/github/workspace
+[example/build_skim-2] ⭐  Run checkout repository
+[example/build_skim-2]   ✅  Success - checkout repository
+[example/build_skim-2] ⭐  Run COMPILER=$(root-config --cxx)
+FLAGS=$(root-config --cflags --libs)
+$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
+[example/build_skim-2]   ✅  Success - COMPILER=$(root-config --cxx)
+FLAGS=$(root-config --cflags --libs)
+$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
+```
+{: .output}
 
-     - name: build
-        run: |
-          COMPILER=$(root-config --cxx)
-          FLAGS=$(root-config --cflags --libs)
-          $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-~~~
-{: .language-yaml}
-
-Let's update our `.github/workflow/main.yml` and push the changes to GitHub and see how it will look like. **Note** that `act` doesn't run job with `matrix`.
-
+We can push the changes to GitHub and see how it will look like. 
 ~~~
 git add .github/workflows/main.yml
 git commit -m "add multi jobs"
@@ -114,7 +149,6 @@ strategy:
 > > runs-on: ubuntu-latest
 > > container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
 > > continue-on-error: {% raw %}${{ matrix.allow_failure }}{% endraw %}
-   strategy:
 > > strategy:
 > >   fail-fast: false
 > >   matrix:
