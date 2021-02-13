@@ -141,6 +141,8 @@ strategy:
 ~~~
 {: .language-yaml}
 
+More details: [https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idcontinue-on-error).
+
 > ## Allow a specific matrix job to fail
 > But what if we want to **only** allow the job with version set to `latest` to fail without failing the workflow run?
 >
