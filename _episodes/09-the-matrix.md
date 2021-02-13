@@ -70,6 +70,7 @@ jobs:
 >  build_skim:
 >    runs-on: ubuntu-latest
 >    container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
+>    strategy:
 >      matrix:
 >        version: [6.18.04, latest]
 >    steps:
