@@ -38,7 +38,7 @@ keypoints:
 >
 >     - uses: actions/upload-artifact@v2
 >       with:
->         name: skim${{ matrix.root }}
+>         name: skim{% raw %}${{ matrix.version }}{% endraw %}
 >         path: skim
 > skim:
 >   needs: build_skim
