@@ -61,14 +61,19 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v2
 
-     - uses: actions/download-artifact@v2
-       with:
-         name: skim6.18.04
+      - uses: actions/download-artifact@v2
+        with:
+          name: skim6.18.04
 
-     - name: skim
-       run: |
-         chmod +x ./skim
+      - name: skim
+        run: |
+          chmod +x ./skim
          ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: skim_ggH
+          path: skim_ggH.root
 ~~~
 {: .language-yaml}
 
@@ -132,7 +137,9 @@ jobs:
 > {: .solution}
 {: .challenge}
 
+<!--
 ![Actions_secret_variable]({{site.baseurl}}/fig/actions_artifacts_final.png)
+-->
 
 Once we're done, we should probably start thinking about how to test some of these outputs we've made. We now have a skimmed ggH ROOT file and a file of histograms of the skimmed ggH.
 
