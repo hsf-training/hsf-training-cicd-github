@@ -9,9 +9,9 @@ questions:
   - How can I give my GitHub actions private information?
 hidden: false
 keypoints:
-  - Service accounts provide an extra layer of security between the outside world and your account
-  - Environment variables in GitHub actions allow you to hide protected information from others who can see your code
+  - Encrypted secrets in GitHub actions allow you to hide protected information from others who can see your code
 ---
+<!-- Service accounts provide an extra layer of security between the outside world and your account-->
 <!--
 <iframe width="420" height="263" src="https://www.youtube.com/embed/XNhi1dw6jxI?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 -->
@@ -53,7 +53,9 @@ keypoints:
 >         name: skim6.18.04
 >
 >     - name: skim
->       run: ./skim
+>       run: |
+>         chmod +x ./skim
+>        ./skim
 > ~~~
 > {: .language-yaml}
 {: .challenge}
@@ -89,7 +91,9 @@ Our YAML file should look like
          name: skim6.18.04
 
      - name: skim
-       run: ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
+       run: |
+         chmod +x ./skim
+         ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
 ~~~
 {: .language-yaml}
 
@@ -103,10 +107,10 @@ Error: n <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3010] Una
 # Access Control
 
 The data we're using are on CERN User Storage (EOS). As a general rule, access to protected data should be authenticated, CERN can’t just grab it!.
-It means we need to give our GitHub Actions access to our data.
+It means we need to give our GitHub Actions access to our data. CERN uses `kinit` for access control.
 
 
-Anyhow, this is done by pretty much done by executing `printf $USER_PASS | base64 -d | kinit $USER_NAME` assuming that we've set the corresponding environment variables by safely encoding them (`printf "hunter42" | base64`).
+Anyhow, this is done by pretty much done by executing `printf $USER_PASS | base64 -d | kinit $USER_NAME@CERN.CH` assuming that we've set the corresponding environment variables by safely encoding them (`printf "hunter42" | base64`).
 
 > ## Running example
 >
@@ -128,10 +132,15 @@ We first have to store our sensitive information in GitHub:
 
 1. navigate to the main page of the repository.
 2. select `Settings`.
-3. in the left sidebar, go to `Secrets` and then `New secret`.
+3. in the left sidebar, go to `Secrets` and then `New repository secret`.
 4. type `USER_NAME` in the Name input box and add the secret value.
 5. similarly add `USER_PASS` as well.
 6. Click to save the variables.
+
+> ## DON'T PEEK
+>
+> DON'T PEEK AT YOUR FRIEND'S SCREEN WHILE DOING THIS.
+{: .testimonial}
 
 
 ## Naming your secrets
@@ -149,21 +158,66 @@ Note that there are some rules applied to secret names:
 > The secrets you've created are available to use in GitHub Actions workflows. GitHub allows to access them using secrets context: $\{\{ secrets.\<secret name\> \}\}.
 > 
 > e.g:
+>
 > ~~~
-> printf {% raw %}${{ secrets.USER_PASS }}{% endraw %} | base64 -d | kinit {% raw %}${{ secrets.USER_NAME }}{% endraw %}
+> printf {% raw %}${{ secrets.USER_PASS }}{% endraw %} | base64 -d | kinit {% raw %}${{ secrets.USER_NAME }}{% endraw %}@CERN.CH
 > ~~~
 > {: .language-bash}
 {: .challenge}
 
 
 
-
+<!--
 ![Actions_secret_variable]({{site.baseurl}}/fig/actions_secret_variable.png)
-
+-->
 
 
 > ## Further Reading
 > - [https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)
 {: .checklist}
+
+# Adding Artifacts on Success
+
+As it seems like we have a complete CI/CD that does physics - we should see what came out. We just need to add artifacts for the `skim` job. This is left as an exercise to you.
+
+> ## Adding Artifacts
+>
+> Let's add `artifacts` to our `skim` job to save the `skim_ggH.root` file. Let's have the artifacts expire in a week instead.
+>
+> > ## Solution
+> > ~~~
+> > ...
+> > skim:
+> >    needs: build_skim
+> >    runs-on: ubuntu-latest
+> >    container: rootproject/root-conda:6.18.04
+> >    steps:
+> >      - name: checkout repository
+> >        uses: actions/checkout@v2
+> > 
+> >      - uses: actions/download-artifact@v2
+> >        with:
+> >          name: skim6.18.04
+> > 
+> >      - name: access control
+> >        run: printf {% raw %}${{ secrets.USER_PASS }}{% endraw %} | base64 -d | kinit {% raw %}${{ secrets.USER_NAME }}{% endraw %}@CERN.CH
+> > 
+> >      - name: skim
+> >        run: |
+> >          chmod +x ./skim
+> >          ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
+> >
+> >      - uses: actions/upload-artifact@v2
+> >        with:
+> >          name: skim_ggH
+> >          path: skim_ggH.root
+> > ~~~
+> > {: .language-yaml}
+> If you are not a CERN user, don't worry. We have a backup solution for you! 
+> <br/>CERN public storage: `root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root`.
+> {: .solution}
+{: .challenge}
+
+And this allows us to download artifacts from the successfully run job.
 
 {% include links.md %}
