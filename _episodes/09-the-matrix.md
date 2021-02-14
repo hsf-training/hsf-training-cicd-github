@@ -134,7 +134,7 @@ runs-on: ubuntu-latest
 continue-on-error: true
 ~~~
 {: .language-yaml}
-or `fail-fast: false` for the matrix case
+For the matrix case, Github Actions fails the entire workflow and stops all the running jobs if any of the jobs in the matrix fails. This can be prevented by using `fail-fast: false` key:value.
 ~~~
 strategy:
   fail-fast: false
@@ -153,9 +153,8 @@ More details: [https://docs.github.com/en/actions/reference/workflow-syntax-for-
 > > container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
 > > continue-on-error: {% raw %}${{ matrix.allow_failure }}{% endraw %}
 > > strategy:
-> >   fail-fast: false
 > >   matrix:
-> >     version: [6.18.04, latest]
+> >     version: [6.18.04]
 > >     allow_failure: [false]
 > >     include:
 > >       - version: latest
