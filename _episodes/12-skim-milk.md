@@ -66,18 +66,38 @@ skim:
 ~~~
 {: .language-yaml}
 
+Let's do a quick check
+```bash
+act -l
+```
+```
+ID          Stage  Name        
+greeting    0      greeting    
+build_skim  1      build_skim  
+skim        2      skima
+```
+{: .output}
+
 After you've added the `skim` job you can push your changes to GitHub:
 ~~~
 git add .github/workflows/main.yml
 git commit -m "add skim job"
 git push -u origin feature/add-actions
 ~~~
-{: .language-bash
+{: .language-bash}
 
-~~~
-./skim: not found
-~~~
-{: .output}
+![Skim waiting]({{site.baseurl}}/fig/actions_skim_job_wait.png)
+
+![Skim waiting]({{site.baseurl}}/fig/actions_skim_job_failure1.png)
+
+> ## Failed???
+>
+> Let's have a look at the log message
+> ~~~
+> ./skim: not found
+> ~~~
+> {: .output}
+{: .challenge}
 
 # We're too naive
 
@@ -136,7 +156,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >
 > >     - uses: actions/upload-artifact@v2
 > >       with:
-> >         name: skim${{ matrix.root }}
+> >         name: skim{% raw %}${{ matrix.version }}{% endraw %}
 > >         path: skim
 > >
 > > skim:
@@ -157,10 +177,6 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > > {: .language-yaml}
 > {: .solution}
 {: .challenge}
-
-![Skim waiting]({{site.baseurl}}/fig/actions_skim_job_wait.png)
-
-![Skim waiting]({{site.baseurl}}/fig/actions_skim_job_failure1.png)
 
 
 > ## What happened?
