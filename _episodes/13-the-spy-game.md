@@ -110,7 +110,7 @@ The data we're using are on CERN User Storage (EOS). As a general rule, access t
 It means we need to give our GitHub Actions access to our data. CERN uses `kinit` for access control.
 
 
-Anyhow, this is done by pretty much done by executing `printf $USER_PASS | base64 -d | kinit $USER_NAME@CERN.CH` assuming that we've set the corresponding environment variables by safely encoding them (`printf "hunter42" | base64`).
+Anyhow, this is pretty much done by executing `printf $USER_PASS | base64 -d | kinit $USER_NAME@CERN.CH` assuming that we've set the corresponding environment variables by safely encoding them (`printf "hunter42" | base64`).
 
 > ## Running example
 >
