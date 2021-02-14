@@ -214,7 +214,7 @@ As it seems like we have a complete CI/CD that does physics - we should see what
 > > ~~~
 > > {: .language-yaml}
 > If you are not a CERN user, don't worry. We have a backup solution for you! 
-> <br/>CERN public storage: `root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root`.
+> <br/>CERN public storage: `root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root`.
 > {: .solution}
 {: .challenge}
 
