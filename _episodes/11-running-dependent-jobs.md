@@ -89,8 +89,24 @@ We're going to talk about another useful parameter `needs`.
 > {: .solution}
 {: .challenge}
 
+If you do
+```bash
+act -l
+```
+you should see stages: `build_skim` will run after `greeting`
+```
+ID          Stage  Name        
+greeting    0      greeting    
+build_skim  1      build_skim
+```
+{: .output}
 
-If you do it correctly, you should see
+Let's go ahead and add those changes and look at GitHub.
+```bash
+git add .github/workflows/main.yml
+git commit -m "add dependent jobs"
+git push -u origin feature/add-actions
+```
 
 ![CI/CD Pipeline Two Stages]({{site.baseurl}}/fig/actions_multi_jobs.png)
 
