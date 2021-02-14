@@ -42,13 +42,19 @@ jobs:
 ~~~
 {: .language-yaml}
 
-We're going to talk about another useful parameter `needs`. The key-value `needs: jobs or list of jobs` allows you to specify dependencies between jobs in the order you define. For example
-~~~
-job2:
-  needs: job1
-~~~
-{: .language-yaml}
-job2 waits until job1 completes successfully.
+We're going to talk about another useful parameter `needs`.  
+
+> ## Specify dependencies between jobs
+>
+> The key-value `needs: jobs or list of jobs` allows you to specify dependencies between jobs in the order you define.
+> <br/>Example:
+> ~~~
+> job2:
+>   needs: job1
+> ~~~
+> {: .language-yaml}
+> job2 waits until job1 completes successfully. [Further reading](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idneeds).
+{: .callout}
 
 > ## Dependent jobs
 > How to make `build_skim` job to run after `greeting`?
