@@ -74,9 +74,10 @@ act -l
 ID          Stage  Name        
 greeting    0      greeting    
 build_skim  1      build_skim  
-skim        2      skima
+skim        2      skim
 ```
 {: .output}
+We now have 3 stages.
 
 After you've added the `skim` job you can push your changes to GitHub:
 ~~~
