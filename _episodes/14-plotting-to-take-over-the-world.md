@@ -110,7 +110,7 @@ jobs:
 > >
 > >     - uses: actions/upload-artifact@v2
 > >       with:
-> >         name: processed_data
+> >         name: skim_ggH
 > >         path: skim_ggH.root
 > >
 > >  plot:
@@ -123,7 +123,7 @@ jobs:
 > >
 > >     - uses: actions/download-artifact@v2
 > >       with:
-> >         name: processed_data
+> >         name: skim_ggH
 > >
 > >     - name: plot
 > >       run: python histograms.py skim_ggH.root ggH hist_ggH.root
