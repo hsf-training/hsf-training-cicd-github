@@ -13,6 +13,9 @@ questions:
 > as well as having Python installed
 {: .prereq}
 
+<!--## Video Tutorials-->
+<iframe width="420" height="263" src="https://www.youtube.com/watch?v=-Xd5D6xKugk&list=PLKZ9c4ONm-Vl3kwsjrNRlPYNQFbPO2no4&index=1&t=8s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 ## Set up Python
 
@@ -93,11 +96,6 @@ To check your installation open a terminal and run:
   > git push -u origin master
   > ```
   > This will add the code to your GitHub account. Done!
-
-<!--
-## Video Tutorials
-<iframe width="420" height="263" src="https://www.youtube.com/embed/NcVGX8zWzQY?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
--->
 
 If you're having issues, **please let us know immediately**
 since you might not be able to follow this lesson without a proper setup.
