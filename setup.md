@@ -14,7 +14,7 @@ questions:
 {: .prereq}
 
 <!--## Video Tutorials-->
-<iframe width="420" height="263" src="https://www.youtube.com/watch?v=-Xd5D6xKugk&list=PLKZ9c4ONm-Vl3kwsjrNRlPYNQFbPO2no4&index=1&t=8s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<!--<iframe width="420" height="263" src="https://www.youtube.com/watch?v=-Xd5D6xKugk&list=PLKZ9c4ONm-Vl3kwsjrNRlPYNQFbPO2no4&index=1&t=8s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
 
 
 ## Set up Python
