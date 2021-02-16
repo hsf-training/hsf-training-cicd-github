@@ -12,9 +12,7 @@ keypoints:
   - Setting up CI/CD shouldn't be mind-numbing
   - All defined jobs run in parallel by default
 ---
-<!--
-<iframe width="420" height="263" src="https://www.youtube.com/embed/GiwtSwtMYzg?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
--->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fjIBMRUKVOI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 # Time To Skim
 
 ## The Naive Attempt

@@ -12,9 +12,7 @@ keypoints:
   - Pipelines are made of jobs with steps.
   - ACT is especially useful to check and run GitHub Actions jobs (locally) before pushing changes.
 ---
-<!--
-<iframe width="420" height="263" src="https://www.youtube.com/embed/LqeJzIYJCwc?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
--->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/iAOMjGiksUc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Adding CI/CD to a project
 

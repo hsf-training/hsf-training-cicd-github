@@ -5,7 +5,7 @@ exercises: 30
 objectives:
   - Add more testing, perhaps to statistics.
 questions:
-  - If you have any, ask on Discord!
+  - If you have any, ask on Mattermost channel!
 hidden: false
 keypoints:
   - Use everything you've learned to write your own CI/CD!
@@ -49,12 +49,14 @@ jobs:
      - name: skim
        run: |
          chmod +x ./skim
-         ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
+         ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1 > skim_ggH.log
 
       - uses: actions/upload-artifact@v2
         with:
-          name: processed_data
-          path: skim_ggH.root
+          name: skim_ggH
+          path: |
+            skim_ggH.root
+            skim_ggH.log
   
   plot:
     needs: build_skim
@@ -66,7 +68,7 @@ jobs:
 
      - uses: actions/download-artifact@v2
        with:
-         name: processed_data
+         name: skim_ggH
 
      - name: plot
        run: python histograms.py skim_ggH.root ggH hist_ggH.root
@@ -77,21 +79,28 @@ jobs:
           path: hist_ggH.root
 
   test:
-    needs: [skim,plot]
+    needs: plot
     runs-on: ubuntu-latest
     container: rootproject/root-conda:6.18.04
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
 
-     - uses: actions/download-artifact@v2
-       with:
-         name: histograms
+      - name: Download from skim
+        uses: actions/download-artifact@v2
+        with:
+          name: skim_ggH
 
-     - name: test
-       run: |
-         python tests/test_cutflow_ggH.py
-         python tests/test_plot_ggH.py
+      - name: Download from plot
+        uses: actions/download-artifact@v2
+        with:
+          name: histograms
+
+      - name: cutflow test
+        run: python tests/test_cutflow_ggH.py
+
+      - name: plot test
+        run: python tests/test_plot_ggH.py
 ~~~
 {: .language-yaml}
 
