@@ -14,6 +14,7 @@ keypoints:
 ---
 
 This is a relatively short section, but we need to connect some things you've learned from testing in python with exit codes.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Nk1wkQCEPt8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 # Assert Your Tests
 
