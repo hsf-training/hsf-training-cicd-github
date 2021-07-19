@@ -29,4 +29,6 @@ The aim of this module is to:
 > 4.  Protecting secret information while allowing jobs to run
 {: .checklist}
 
+{% include curriculum.html %}
+
 {% include links.md %}
