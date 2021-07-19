@@ -9,11 +9,10 @@ questions:
 hidden: false
 keypoints:
   - YAML is a plain-text format, similar to JSON, useful for configuration
-  - YAML is a superset of JSON, so it contains additional features like comments and anchors, while still supporting JSON.
+  - YAML is a superset of JSON, so it contains additional features like comments, while still supporting JSON.
 ---
-<!--
-<iframe width="420" height="263" src="https://www.youtube.com/embed/c2sUhK3pDGo?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
--->
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PdXLfgE4wsI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 # YAML
 
 YAML is Yet Another Markup Language is a human-readable data-serialization language. It is commonly used for configuration files and in applications where data is being stored or transmitted. CI systems' modus operandi typically rely on YAML for configuration. We'll cover, briefly, some of the native types involved and what the structure looks like.
@@ -133,6 +132,7 @@ foo: bar # this is a comment, too
 ~~~
 {: .language-yaml}
 
+<!--
 > ## Anchors
 >
 > YAML also has a handy feature called 'anchors', which let you easily duplicate content across your document. Anchors look like references `&` in C/C++ and named anchors can be dereferenced using `*`.
@@ -156,5 +156,6 @@ foo: bar # this is a comment, too
 >
 > The `<<` allows you to merge the items in a dereferenced anchor. Both `bar` and `foo` will have a `name` key.
 {: .callout}
+-->
 
 {% include links.md %}

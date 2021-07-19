@@ -11,9 +11,7 @@ keypoints:
   - This kind of test is a regression test, as we're testing assuming the code up to this point was correct.
   - This is not a unit test. Unit tests would be testing individual pieces of the Framework code-base, or specific functionality you wrote into your algorithms.
 ---
-<!--
-<iframe width="420" height="263" src="https://www.youtube.com/embed/C9auGFgIHns?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
--->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VgFgvCrXl9o" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 So at this point, I'm going to be very hands-off, and just explain what you will be doing. Here's where you should be starting from:
 
@@ -40,7 +38,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
 
     - uses: actions/upload-artifact@v2
       with:
-        name: processed_data
+        name: skim_ggH
         path: skim_ggH.root
 
  plot:
@@ -53,7 +51,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
 
     - uses: actions/download-artifact@v2
       with:
-        name: processed_data
+        name: skim_ggH
 
     - name: plot
       run: python histograms.py skim_ggH.root ggH hist_ggH.root
@@ -67,18 +65,17 @@ So at this point, I'm going to be very hands-off, and just explain what you will
 
 > # Adding a regression test
 >
-> 1. Add a `test` stage after the `plot` stage.
-> 2. Add a test job, `test_ggH`, part of the `test` stage, and has the right `dependencies`
+> 1. Add a test job, `test_ggH` that has the right `dependencies`
 >   - Note: `./skim` needs to be updated to produce a `skim_ggH.log` (hint: `./skim .... > skim_ggH.log`)
 >   - We also need the hist_ggH.root file produced by the plot job
-> 3. Create a directory called `tests/` and make two python files in it named `test_cutflow_ggH.py` and `test_plot_ggH.py` that uses `PyROOT` and `python3`
+> 2. Create a directory called `tests/` and make two python files in it named `test_cutflow_ggH.py` and `test_plot_ggH.py` that uses `PyROOT` and `python3`
 >   - you might find the following lines (below) helpful to set up the tests
-> 4. Write a few different tests of your choosing that tests (and asserts) something about `hist_ggH.root`. Some ideas are:
+> 3. Write a few different tests of your choosing that tests (and asserts) something about `hist_ggH.root`. Some ideas are:
 >   - check the structure (does `ggH_pt_1` exist?)
 >   - check that the integral of a histogram matches a value you expect
 >   - check that the bins of a histogram matches the values you expect
-> 5. Update your `test_ggH` job to execute the regression tests
-> 6. Try causing your CI/CD to fail on the `test_ggH` job
+> 4. Update your `test_ggH` job to execute the regression tests
+> 5. Try causing your CI/CD to fail on the `test_ggH` job
 >
 > > ## Done?
 > >

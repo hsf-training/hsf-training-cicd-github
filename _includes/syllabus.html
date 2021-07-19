@@ -8,14 +8,14 @@
 {% include manual_episode_order.html %}
 
 <div class="syllabus">
-  <h2 id="video-tutorials">Video Tutorials</h2>
+  <!--<h2 id="video-tutorials">Video Tutorials</h2>
 
   <p>
   The video tutorials for this lesson are uploaded to a <a href="https://www.youtube.com/watch?v=NcVGX8zWzQY&list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb&index=1">playlist on YouTube</a>.
   </p>
   <p>
   <iframe width="560" height="315" src="https://www.youtube.com/embed/NcVGX8zWzQY?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb"> </iframe>
-  </p>
+  </p>-->
 
   <h2 id="schedule">Schedule</h2>
 
@@ -39,7 +39,9 @@
     {% if multiday %}<td class="col-md-1"></td>{% endif %}
     <td class="{% if multiday %}col-md-1{% else %}col-md-2{% endif %}"></td>
     <td class="col-md-3"><a href="{{ relative_root_path }}{% link setup.md %}">Setup</a></td>
-    <td class="col-md-7">Make sure GitLab works for you, and create a repo!</td>
+    <td class="col-md-7">
+      What do I need to start?
+    </td>
   </tr>
 
   {% for lesson_episode in lesson_episodes %}

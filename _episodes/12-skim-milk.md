@@ -12,12 +12,12 @@ keypoints:
   - Artifacts are pretty neat.
   - We're too naive.
 ---
-<!--
-<iframe width="420" height="263" src="https://www.youtube.com/embed/omYX4uRxCKI?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
--->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-cO4yHz5dp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 # The First Naive Attempt
 
-Let's just attempt to try and get the code working as it is. Since it worked for us already locally, surely the CI/CD must be able to run it??? As a reminder of what we've ended with from the last session:
+Let's just attempt to try and get the code working as it is. Since it worked for us already locally, surely the CI/CD must be able to run it???
+
+As a reminder of what we've ended with from the last session:
 
 ~~~
 jobs:
@@ -38,9 +38,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: build
-        run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-        env:
-          COMPILER=g++
+        run: |
+          COMPILER=$(root-config --cxx)
+          FLAGS=$(root-config --cflags --libs)
+          $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 ~~~
 {: .language-yaml}
 
@@ -63,18 +64,39 @@ skim:
 ~~~
 {: .language-yaml}
 
+Let's do a quick check
+```bash
+act -l
+```
+```
+ID          Stage  Name        
+greeting    0      greeting    
+build_skim  1      build_skim  
+skim        2      skim
+```
+{: .output}
+We now have 3 stages.
 
+After you've added the `skim` job you can push your changes to GitHub:
 ~~~
 git add .github/workflows/main.yml
 git commit -m "add skim job"
-git push -u origin feature/add-ci
+git push -u origin feature/add-actions
 ~~~
-{: .language-bash
+{: .language-bash}
 
-~~~
-./skim: not found
-~~~
-{: .output}
+![Skim waiting]({{site.baseurl}}/fig/actions_skim_job_wait.png)
+
+![Skim waiting]({{site.baseurl}}/fig/actions_skim_job_failure1.png)
+
+> ## Failed???
+>
+> Let's have a look at the log message
+> ~~~
+> ./skim: not found
+> ~~~
+> {: .output}
+{: .challenge}
 
 # We're too naive
 
@@ -103,11 +125,11 @@ Artifacts are used to upload (`upload-artifact`) and download  (`download-artifa
 > {: .language-yaml}
 {: .callout}
 
-The artifact name should not contain any of the following characters `"`,`:`,`<`,`>`,`|`,`*`,`?`,`\`,`/`.
+**Note** that the artifact name should not contain any of the following characters `"`,`:`,`<`,`>`,`|`,`*`,`?`,`\`,`/`.
 
-In order to take advantage of this, one combines `download-artifact` with `needs`.
+In order to take advantage of passing data between two jobs, one combines `download-artifact` with `needs`.
 
->
+> ## Combining `download-artifact` with `needs`
 > Let's do it.
 >
 > > ## Solution
@@ -126,13 +148,14 @@ In order to take advantage of this, one combines `download-artifact` with `needs
 > >       uses: actions/checkout@v2
 > >
 > >     - name: build
-> >       run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-> >       env:
-> >         COMPILER=g++
+> >       run: |
+> >         COMPILER=$(root-config --cxx)
+> >         FLAGS=$(root-config --cflags --libs)
+> >         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 > >
 > >     - uses: actions/upload-artifact@v2
 > >       with:
-> >         name: skim${{ matrix.root }}
+> >         name: skim{% raw %}${{ matrix.version }}{% endraw %}
 > >         path: skim
 > >
 > > skim:
@@ -154,17 +177,13 @@ In order to take advantage of this, one combines `download-artifact` with `needs
 > {: .solution}
 {: .challenge}
 
-![Skim waiting]({{site.baseurl}}/fig/actions_skim_job_wait.png)
 
-![Skim waiting]({{site.baseurl}}/fig/actions_skim_job_failure1.png)
-
-> 
->
-> What happened?
+> ## What happened?
 >
 > ~~~
 > ./skim: Permission denied
 > ~~~
+> {: .output}
 > 
 > Permissions can be changed using the `chmod` command.
 > > ## Solution
@@ -175,13 +194,17 @@ In order to take advantage of this, one combines `download-artifact` with `needs
 > > ~~~
 > > {: .language-yaml}
 > {: .solution}
-{: .output}
+{: .challenge}
 
+From the log message, one can see that we are missing arguments.
 ~~~
 Use executable with following arguments: ./skim input output cross_section integrated_luminosity scale
 ~~~
 {: .output}
 
+We will deal with that in the next lesson.
+
+<!--
 Our executable takes 5 arguments: input (remote data), output (processed data), cross-section, integrated luminosity, and scale.
 
 Let's consider the following value
@@ -214,6 +237,6 @@ Our YAML file should look like
 {: .language-yaml}
 
 This will produce a file `skim_ggH.root` containing processed data.
-
+-->
 
 {% include links.md %}

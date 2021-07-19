@@ -19,9 +19,7 @@ keypoints:
 
 As we enter the first episode of the Continuous Integration / Continuous Deployment (CI/CD) session, we learn how to exit.
 
-<!--
-<iframe width="420" height="263" src="https://www.youtube.com/embed/NpJcaQPvLC0?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
--->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uFC4IgW-qWM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 # Start by Exiting
 
 How does a general task know whether or not a script finished correctly or not? You could parse (`grep`) the output:
@@ -29,7 +27,7 @@ How does a general task know whether or not a script finished correctly or not? 
 ~~~
 > ls nonexistent-file
 ~~~
-{: .source}
+{: .language-bash}
 
 ~~~
 ls: cannot access 'nonexistent-file': No such file or directory
@@ -42,13 +40,13 @@ But every command outputs something differently. Instead, scripts also have an (
 > ls nonexistent-file
 > echo $?
 ~~~
-{: .source}
+{: .language-bash}
 
 ~~~
 ls: cannot access 'nonexistent-file': No such file or directory
 2
 ~~~
-{: .output}
+{: .language-bash}
 
 The exit code is `2` indicating failure. What about on success? The exit code is `0` like so:
 
@@ -56,7 +54,7 @@ The exit code is `2` indicating failure. What about on success? The exit code is
 > echo
 > echo $?
 ~~~
-{: .source}
+{: .language-bash}
 
 ~~~
 
@@ -70,7 +68,7 @@ But this works for any command you run on the command line! For example, if I mi
 > git stauts
 > echo $?
 ~~~
-{: .source}
+{: .language-bash}
 
 ~~~
 git: 'stauts' is not a git command. See 'git --help'.
@@ -92,7 +90,7 @@ Try out some other commands on your system, and see what things look like.
 
 # Printing Exit Codes
 
-As you've seen above, the exit code from the last executed command is stored in the `$?` environment variable. Accessing from a shell is easy `echo $?`. What about from python? There are many different ways depending on which library you use. Using similar examples above, we can use the (note: deprecated) `os.system` call:
+As you've seen above, the exit code from the last executed command is stored in the `$?` environment variable. Accessing from a shell is easy `echo $?`. What about from python? There are many different ways depending on which library you use. Using similar examples above, we can use the `getstatusoutput()` call:
 
 > ## Snake Charming
 >
@@ -101,6 +99,7 @@ As you've seen above, the exit code from the last executed command is stored in 
 > Once inside the Python interpreter, simply type `exit()` then press enter, to exit.
 {: .callout}
 
+<!--
 ~~~
 >>> import os,subprocess
 >>> ret = os.system('ls')
@@ -111,8 +110,19 @@ As you've seen above, the exit code from the last executed command is stored in 
 1
 ~~~
 {: .language-python}
+-->
+~~~
+>>> from subprocess import getstatusoutput # for python2: from commands import getstatusoutput
+>>> status,output=getstatusoutput('ls')
+>>> status
+0
+>>> status,output=getstatusoutput('ls nonexistent-file')
+>>> status
+2
+~~~
+{: .language-python}
 
-One will note that this returned a different exit code than from the command line (indicating there's some internal implementation in Python). All you need to be concerned with is that the exit code was non-zero (there was an error).
+It may happen that this returns a different exit code than from the command line (indicating there's some internal implementation in Python). All you need to be concerned with is that the exit code was non-zero (there was an error).
 
 # Setting Exit Codes
 
@@ -160,14 +170,14 @@ To finish up this section, one thing you'll notice sometimes (in ATLAS or CMS) i
 ~~~
 > :(){ return 1; };: || echo ignore failure
 ~~~
-{: .source}
+{: .language-bash}
 
 The `command_1 || command_2` operator means to execute `command_2` only if `command_1` has failed (non-zero exit code). Similarly, the `command_1 && command_2` operator means to execute `command_2` only if `command_1` has succeeded. Try this out using one of scripts you made in the previous session:
 
 ~~~
 > ./python_exit.py goodbye || echo ignore
 ~~~
-{: .source}
+{: .language-bash}
 
 What does that give you?
 

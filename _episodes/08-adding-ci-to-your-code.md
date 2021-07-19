@@ -12,9 +12,7 @@ keypoints:
   - Setting up CI/CD shouldn't be mind-numbing
   - All defined jobs run in parallel by default
 ---
-<!--
-<iframe width="420" height="263" src="https://www.youtube.com/embed/GiwtSwtMYzg?list=PLKZ9c4ONm-VmmTObyNWpz4hB3Hgx8ZWSb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
--->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fjIBMRUKVOI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 # Time To Skim
 
 ## The Naive Attempt
@@ -22,6 +20,7 @@ keypoints:
 As of right now, your `.github/workflows/main.yml` should look like
 
 ~~~
+name: example
 on: push
 jobs:
   greeting:
@@ -31,34 +30,23 @@ jobs:
 ~~~
 {: .language-yaml}
 
-Let's go ahead and teach our CI to build our code. Let's add another job (named `build_skim`) that runs in parallel for right now, and runs the compiler `ROOT` uses. 
+Let's go ahead and teach our CI to build our code. Let's add another job (named `build_skim`) that runs in parallel for right now, and runs the compiler `ROOT` uses.
+<br/>
+**Note**: `ROOT` is a open source framework uses in High Energy Physics.<!-- ([https://root.cern/](https://root.cern/)).-->
 
-This should work. But let's give a try.
+Let's give a try.
 
-If you already have ROOT installed on your computer use
 ~~~
-cd virtual-pipelines-eventselection
-COMPILER=g++
-$COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-~~~
-{: .language-bash}
-
-No worries if you don't have ROOT, use `Docker` instead
-~~~
-cd virtual-pipelines-eventselection
-docker run -it --rm -v $PWD:/virtual-pipelines-eventselection -w /virtual-pipelines-eventselection rootproject/root-conda:6.18.04 /bin/bash 
-COMPILER=g++
-$COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-exit
+COMPILER=$(root-config --cxx)
+$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 ~~~
 {: .language-bash}
-**Note** that you may have to run `docker` with sudo.
 
-which will produce an output binary called `skim`.
+The compilation will result in an output binary called `skim`.
 
 > ## Adding a new job
 >
-> How do we change the CI in order to add a new parallel job that compiles our code?
+> How do we change the CI in order to add a new job that compiles our code?
 >
 > > ## Solution
 > > ~~~
@@ -73,8 +61,8 @@ which will produce an output binary called `skim`.
 > >     steps:
 > >       - name: build
 > >         run: |
-> >           COMPILER=g++
-> >           $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
+> >           COMPILER=$(root-config --cxx)
+> >           $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 > > ~~~
 > > {: .language-yaml}
 > {: .solution}
@@ -87,14 +75,20 @@ which will produce an output binary called `skim`.
 ```bash
 act -l
 ```
-![Act two parallel jobs]({{site.baseurl}}/fig/act_list_parallel_jobs.png)
+<!--![Act two parallel jobs]({{site.baseurl}}/fig/act_list_parallel_jobs.png)-->
+```
+ID          Stage  Name        
+build_skim  0      build_skim  
+greeting    0      greeting
+```
+{: .output}
 
 We can see 2 parallel jobs. Let's commit the changes we made.
 
 ```bash
 git add .github/workflows/main.yml
 git commit -m "add build skim job"
-git push -u origin feature/add-ci
+git push -u origin feature/add-actions
 ```
 
 ![Job failure root-config]({{site.baseurl}}/fig/actions_parallel_jobs_failure1a.png)
@@ -110,7 +104,15 @@ act -j build_skim
 ```
 
 You got this error when you tried to build
-![CI/CD Two Parallel Jobs]({{site.baseurl}}/fig/act_run_parallel_jobs_failure.png)
+<!--![CI/CD Two Parallel Jobs]({{site.baseurl}}/fig/act_run_parallel_jobs_failure.png)-->
+```
+[example/build_skim] 🚀  Start image=catthehacker/ubuntu:act-latest
+[example/build_skim]   🐳  docker run image=catthehacker/ubuntu:act-latest entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
+[example/build_skim] ⭐  Run COMPILER=$(root-config --cxx)
+$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
+| /github/workflow/0: line 1: root-config: command not found
+[example/build_skim]   ❌  Failure - COMPILER=$(root-config --cxx)
+```
 {: .output}
 
 > ## Broken Build
@@ -120,8 +122,8 @@ You got this error when you tried to build
 > > ## Answer
 > > It turns out we had the wrong docker image for our build. If you look at the log, you'll see
 > > ~~~
-> > 🚀  Start image=node:12.6-buster-slim
-> >   🐳  docker run image=node:12.6-buster-slim entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
+> > 🚀  Start image=catthehacker/ubuntu:act-latest
+> >   🐳  docker run image=catthehacker/ubuntu:act-latest entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
 > > ~~~
 > > {: .output}
 > > How do we fix it? We need to define the image with ROOT installed.
@@ -151,7 +153,8 @@ If you run again `act -j build_skim`, you see
 > ## Failed again???
 >
 > What's that?
-> ![Error no such file]({{site.baseurl}}/fig/act_error_no_such_file.png)
+<!-- ![Error no such file]({{site.baseurl}}/fig/act_error_no_such_file.png)-->
+> <br/>error: skim.cxx: No such file or directory
 >
 > > ## Answer
 > > It seems the job cannot access the repository. We need to instruct GitHub actions to checkout the repository. 
@@ -161,12 +164,56 @@ If you run again `act -j build_skim`, you see
 > >      uses: actions/checkout@v2
 > > ~~~
 > > {: .language-yaml}
+> > Let’s go ahead and tell our CI to checkout the repository.
+> {: .solution}
+{: .challenge}
+
+
+> ## Still failed??? What the hell.
+>
+> What happened?
+>
+> > ## Answer
+> > It turns out we just forgot the include flags needed for compilation. If you look at the log, you'll see
+> > ~~~
+> >  | skim.cxx:11:10: fatal error: ROOT/RDataFrame.hxx: No such file or directory
+> >  |  #include "ROOT/RDataFrame.hxx"
+> >  |           ^~~~~~~~~~~~~~~~~~~~~
+> >   #include "ROOT/RDataFrame.hxx"
+> >            ^~~~~~~~~~~~~~~~~~~~~
+> >  | compilation terminated.
+> >  Error: exit with `FAILURE`: 1
+> > ~~~
+> > {: .output}
+> > How do we fix it? We just need to add another variable to add the flags at the end via `$FLAGS` defined as `FLAGS=$(root-config --cflags --libs)`.
 > {: .solution}
 {: .challenge}
 
 Ok, let's go ahead and update our `.github/workflow/main.yml` again, and it better be fixed or so help me...
 
-We could separate the environment variables being set like `COMPILER=g++` in the last step since this is actually preparation for setting up our environment -- rather than part of the script we want to test! For example,
+
+<!--If you already have ROOT installed on your computer, you can run
+~~~
+cd virtual-pipelines-eventselection
+COMPILER=$(root-config --cxx)
+$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
+~~~
+{: .language-bash}
+No worries if you don't have ROOT, use `Docker` instead
+~~~
+cd virtual-pipelines-eventselection
+docker run -it --rm -v $PWD:/virtual-pipelines-eventselection -w /virtual-pipelines-eventselection rootproject/root-conda:6.18.04 /bin/bash 
+COMPILER=$(root-config --cxx)
+$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
+exit  # quit interactive Docker session
+~~~
+{: .language-bash}
+**Note** that you may have to run `docker` with sudo.-->
+
+<!--
+## Environment variables
+
+We could separate the environment variables being set like `COMPILER=$(root-config --cxx)` in the last step since this is actually preparation for setting up our environment -- rather than part of the script we want to test! For example,
 
 ~~~
 build_skim:
@@ -179,10 +226,11 @@ build_skim:
     - name: build
       run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
       env:
-        COMPILER: g++
+        COMPILER: $(root-config --cxx)
 ~~~
 {: .language-yaml}
-`env` can be set under `job:steps:` or under `job:` as well.
+`env` can be set under `job:steps:` or under `job:` as well. For more details, you can checkout out: [https://docs.github.com/en/actions/reference/environment-variables](https://docs.github.com/en/actions/reference/environment-variables).
+-->
 
 # Building multiple versions
 
@@ -209,9 +257,10 @@ Great, so we finally got it working... CI/CD isn't obviously powerful when you'r
 > >         uses: actions/checkout@v2
 > >
 > >       - name: build
-> >         run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-> >         env:
-> >           COMPILER: g++
+> >         run: |
+> >           COMPILER=$(root-config --cxx)
+> >           FLAGS=$(root-config --cflags --libs)
+> >           $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 > >
 > >   build_skim_latest:
 > >     runs-on: ubuntu-latest
@@ -221,9 +270,10 @@ Great, so we finally got it working... CI/CD isn't obviously powerful when you'r
 > >         uses: actions/checkout@v2
 > >
 > >       - name: latest
-> >         run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-> >         env:
-> >           COMPILER: g++
+> >         run: |
+> >           COMPILER=$(root-config --cxx)
+> >           FLAGS=$(root-config --cflags --libs)
+> >           $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 > > ~~~
 > > {: .language-yaml}
 > {: .solution}
