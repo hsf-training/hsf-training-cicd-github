@@ -1,5 +1,5 @@
 [![Build Status](hhttps://travis-ci.org/hsf-training/hsf-training-cicd.svg?branch=gh-page)](https://travis-ci.org/carpentries/lesson-example)
-
+[![HSF Training Center](https://img.shields.io/badge/HSF%20Training%20Center-browse-ff69b4)](https://hepsoftwarefoundation.org/training/curriculum.html)
 HSF Training CI/CD -- Github Edition
 ====================================
 
