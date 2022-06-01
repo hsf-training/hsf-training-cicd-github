@@ -9,7 +9,6 @@ license][cc-by-human]. The following is a human-readable summary of
 (and not a substitute for) the [full legal text of the CC BY 4.0
 license][cc-by-legal].
 
-
 You are free:
 
 * to **Share**---copy and redistribute the material in any medium or format
@@ -25,7 +24,7 @@ Under the following terms:
 * **Attribution**---You must give appropriate credit (mentioning that
   your work is derived from work that is Copyright © Software
   Carpentry and, where practical, linking to
-  http://hepsoftwarefoundation.org/), provide a [link to the
+  <http://hepsoftwarefoundation.org/>), provide a [link to the
   license][cc-by-human], and indicate if changes were made. You may do
   so in any reasonable manner, but not in any way that suggests the
   licensor endorses you or your use.
@@ -71,7 +70,7 @@ Under the following terms:
 * **Attribution**---You must give appropriate credit (mentioning that
   your work is derived from work that is Copyright © Software
   Carpentry and, where practical, linking to
-  http://software-carpentry.org/), provide a [link to the
+  <http://software-carpentry.org/>), provide a [link to the
   license][cc-by-human], and indicate if changes were made. You may do
   so in any reasonable manner, but not in any way that suggests the
   licensor endorses you or your use.

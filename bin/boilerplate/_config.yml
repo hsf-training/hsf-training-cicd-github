@@ -31,7 +31,7 @@ kind: "lesson"
 repository: <USERNAME>/<PROJECT>
 
 # Email address, no mailto:
-email: "team@carpentries.org"
+email: "hsf-training-wg@googlegroups.com"
 
 # Sites.
 amy_site: "https://amy.carpentries.org/"
@@ -100,3 +100,6 @@ exclude:
 
 # Turn on built-in syntax highlighting.
 highlighter: rouge
+
+# show authors managed by allcontributors bot
+show_authors: false
