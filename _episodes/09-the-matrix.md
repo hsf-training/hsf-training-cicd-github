@@ -19,7 +19,7 @@ keypoints:
 
 # Matrix
 
-From the previous lesson, we tried to build the code against two different ROOT images by adding an extra job: 
+From the previous lesson, we tried to build the code against two different ROOT images by adding an extra job:
 
 ~~~
 jobs:
@@ -55,16 +55,16 @@ jobs:
 {: .language-yaml}
 
 > ## Building a matrix across different versions
-> 
+>
 > We could do better using `matrix`. The latter allows us to test the code against a combination of versions in a single job.
-> 
+>
 > ~~~
 > jobs:
 >   greeting:
 >    runs-on: ubuntu-latest
 >    steps:
 >      - run: echo hello world
-> 
+>
 >  build_skim:
 >    runs-on: ubuntu-latest
 >    container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
@@ -74,7 +74,7 @@ jobs:
 >    steps:
 >      - name: checkout repository
 >        uses: actions/checkout@v2
-> 
+>
 >      - name: build
 >         run: |
 >           COMPILER=$(root-config --cxx)
@@ -118,7 +118,7 @@ $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 ```
 {: .output}
 
-We can push the changes to GitHub and see how it will look like. 
+We can push the changes to GitHub and see how it will look like.
 ~~~
 git add .github/workflows/main.yml
 git commit -m "add multi jobs"

@@ -77,8 +77,8 @@ act -l
 ```
 <!--![Act two parallel jobs]({{site.baseurl}}/fig/act_list_parallel_jobs.png)-->
 ```
-ID          Stage  Name        
-build_skim  0      build_skim  
+ID          Stage  Name
+build_skim  0      build_skim
 greeting    0      greeting
 ```
 {: .output}
@@ -157,7 +157,7 @@ If you run again `act -j build_skim`, you see
 > <br/>error: skim.cxx: No such file or directory
 >
 > > ## Answer
-> > It seems the job cannot access the repository. We need to instruct GitHub actions to checkout the repository. 
+> > It seems the job cannot access the repository. We need to instruct GitHub actions to checkout the repository.
 > > ~~~
 > > steps:
 > >    - name: checkout repository
@@ -202,7 +202,7 @@ $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 No worries if you don't have ROOT, use `Docker` instead
 ~~~
 cd virtual-pipelines-eventselection
-docker run -it --rm -v $PWD:/virtual-pipelines-eventselection -w /virtual-pipelines-eventselection rootproject/root-conda:6.18.04 /bin/bash 
+docker run -it --rm -v $PWD:/virtual-pipelines-eventselection -w /virtual-pipelines-eventselection rootproject/root-conda:6.18.04 /bin/bash
 COMPILER=$(root-config --cxx)
 $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 exit  # quit interactive Docker session

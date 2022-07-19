@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo hello world
- 
+
   build_skim:
     needs: greeting
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
 ~~~
 {: .language-yaml}
 
-Since the `skim` binary is built, let's see if we can run it. We need to add a job , with name `skim`. 
+Since the `skim` binary is built, let's see if we can run it. We need to add a job , with name `skim`.
 
 `skim` is meant to process data (skimming) we are going to run on.
 
@@ -69,9 +69,9 @@ Let's do a quick check
 act -l
 ```
 ```
-ID          Stage  Name        
-greeting    0      greeting    
-build_skim  1      build_skim  
+ID          Stage  Name
+greeting    0      greeting
+build_skim  1      build_skim
 skim        2      skim
 ```
 {: .output}
@@ -184,7 +184,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > ./skim: Permission denied
 > ~~~
 > {: .output}
-> 
+>
 > Permissions can be changed using the `chmod` command.
 > > ## Solution
 > > ~~~

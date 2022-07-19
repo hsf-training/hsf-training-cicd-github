@@ -23,11 +23,11 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v2
 
-      - name: build      
+      - name: build
         run: |
           COMPILER=$(root-config --cxx)
           FLAGS=$(root-config --cflags --libs)
-          $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS        
+          $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 
       - uses: actions/upload-artifact@v2
         with:
@@ -57,7 +57,7 @@ jobs:
           path: |
             skim_ggH.root
             skim_ggH.log
-  
+
   plot:
     needs: build_skim
     runs-on: ubuntu-latest
