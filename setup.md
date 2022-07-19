@@ -36,7 +36,7 @@ act --version
 
 ## Set up Docker
 
-`nektos/act` uses `Docker` to run GitHub Actions on your computer. Therefore you must have Docker installed. 
+`nektos/act` uses `Docker` to run GitHub Actions on your computer. Therefore you must have Docker installed.
 
 If this is not the case, follow the above link for instuctions.
 
@@ -57,12 +57,12 @@ To check your installation open a terminal and run:
 
   Make sure you click Public for the visibility level of the new project so that everyone can see your awesome work.
   ![example of a properly-filled-in blank project form for gitlab]({{site.baseurl}}/fig/blank-project-form.png)
-  {: .callout}  
+  {: .callout}
 
 - Get the code
 
   Open a terminal and clone the repository that contains files required for this lesson.
-    
+
   ```bash
   git clone git@github.com:hsf-training/hsf-training-cms-analysis.git virtual-pipelines-eventselection
   cd virtual-pipelines-eventselection
@@ -74,15 +74,15 @@ To check your installation open a terminal and run:
   ```bash
   git remote -v # -v stands for verbose
   ```
-  
+
   ```
   origin	git@github.com:hsf-training/hsf-training-cms-analysis.git (fetch)
   origin	git@github.com:hsf-training/hsf-training-cms-analysis.git (push)
   ```
   {: .output}
-  
-  You have to change remote's URL in order to be able to add the code to your personal GitHub account. 
-  
+
+  You have to change remote's URL in order to be able to add the code to your personal GitHub account.
+
   ```bash
   git remote set-url origin git@github.com:<GitHub username>/virtual-pipelines-eventselection.git
   ```
@@ -90,7 +90,7 @@ To check your installation open a terminal and run:
   ```bash
   git remote -v
   ```
-  
+
   The last step is to run the push command as follows
   ```bash
   git push -u origin master

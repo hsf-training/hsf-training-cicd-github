@@ -57,7 +57,7 @@ This should print out the job name, *i.e* greeting:
 <!--![Hello world list]({{site.baseurl}}/fig/act_list_greeting.png)-->
 
 ```
-ID          Stage  Name       
+ID          Stage  Name
 greeting    0      greeting
 ```
 {: .output}

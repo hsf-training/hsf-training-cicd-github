@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo hello world
- 
+
   build_skim:
     needs: greeting
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
           COMPILER=$(root-config --cxx)
           FLAGS=$(root-config --cflags --libs)
           $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-	
+
       - uses: actions/upload-artifact@v2
         with:
           name: skim{% raw %}${{ matrix.version }}{% endraw %}

@@ -68,7 +68,7 @@ cross_section: 19.6
 integrated_luminosity: 11467.0
 scale: 0.1
 ```
-<!-- 
+<!--
 root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root
 root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root
 -->
@@ -154,7 +154,7 @@ Note that there are some rules applied to secret names:
 
 > ## Access encrypted secrets
 > The secrets you've created are available to use in GitHub Actions workflows. GitHub allows to access them using secrets context: $\{\{ secrets.\<secret name\> \}\}.
-> 
+>
 > e.g:
 >
 > ~~~
@@ -192,14 +192,14 @@ As it seems like we have a complete CI/CD that does physics - we should see what
 > >    steps:
 > >      - name: checkout repository
 > >        uses: actions/checkout@v2
-> > 
+> >
 > >      - uses: actions/download-artifact@v2
 > >        with:
 > >          name: skim6.18.04
-> > 
+> >
 > >      - name: access control
 > >        run: printf {% raw %}${{ secrets.USER_PASS }}{% endraw %} | base64 -d | kinit {% raw %}${{ secrets.USER_NAME }}{% endraw %}@CERN.CH
-> > 
+> >
 > >      - name: skim
 > >        run: |
 > >          chmod +x ./skim
@@ -211,7 +211,7 @@ As it seems like we have a complete CI/CD that does physics - we should see what
 > >          path: skim_ggH.root
 > > ~~~
 > > {: .language-yaml}
-> If you are not a CERN user, don't worry. We have a backup solution for you! 
+> If you are not a CERN user, don't worry. We have a backup solution for you!
 > <br/>CERN public storage: `root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root`.
 > {: .solution}
 {: .challenge}

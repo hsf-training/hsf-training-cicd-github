@@ -30,7 +30,7 @@ assert x == "goodbye"
 ~~~
 {: .language-python}
 
-and then run it with `python python_assert.py`. 
+and then run it with `python python_assert.py`.
 
 What happens when an assertion fails in python?
 
