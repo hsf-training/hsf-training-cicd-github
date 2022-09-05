@@ -38,7 +38,7 @@ act --version
 
 `nektos/act` uses `Docker` to run GitHub Actions on your computer. Therefore you must have Docker installed.
 
-If this is not the case, follow the above link for instuctions.
+If this is not the case, follow the above link for instructions.
 
 - Install Docker:  [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
 <!-- Mac OS:  [https://docs.docker.com/docker-for-mac/install/](https://docs.docker.com/docker-for-mac/install/)-->
