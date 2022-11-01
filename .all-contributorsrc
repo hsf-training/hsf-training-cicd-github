@@ -3,12 +3,22 @@
     "README.md",
     "_includes/authors.html"
   ],
-  "projectName": "test-module",
+  "projectName": "hsf-training-cicd-github",
   "projectOwner": "hsf-training",
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true,
   "contributors": [
+    {
+      "login": "enibigir",
+      "name": "Emery Nibigira",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38688778?v=4",
+      "profile": "https://github.com/enibigir",
+      "contributions": [
+        "content"
+      ]
+    }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "commitConvention": "angular"
 }
