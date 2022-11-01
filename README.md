@@ -32,6 +32,14 @@ the content of the lesson:
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://github.com/enibigir"><img src="https://avatars.githubusercontent.com/u/38688778?v=4?s=100" width="100px;" alt="Emery Nibigira"/><br /><sub><b>Emery Nibigira</b></sub></a><br /><a href="#content-enibigir" title="Content">🖋</a></td>
+    </tr>
+  </tbody>
+</table>
+
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
