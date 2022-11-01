@@ -5,8 +5,8 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/hsf-training/hsf-training-cicd-github/main.svg)](https://results.pre-commit.ci/latest/github/hsf-training/hsf-training-cicd-github/main)
-[![github pages](https://github.com/hsf-training/hsf-training-cicd-github/actions/workflows/website.yml/badge.svg)](https://github.com/hsf-training/hsf-training-cicd-github/actions/workflows/website.yml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/hsf-training/hsf-training-cicd-github/gh-pages.svg)](https://results.pre-commit.ci/latest/github/hsf-training/hsf-training-cicd-github/gh-pages)
+[![pages-build-deployment](https://github.com/hsf-training/hsf-training-cicd-github/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/hsf-training/hsf-training-cicd-github/actions/workflows/pages/pages-build-deployment)
 
 HSF Training CI/CD -- Github Edition
 ====================================
