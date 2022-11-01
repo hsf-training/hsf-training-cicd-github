@@ -92,7 +92,7 @@ Instead, all regular contributors are listed on our [HSF Training Community page
 [hsf-training-center]: https://hepsoftwarefoundation.org/training/curriculum.html
 [training-center-badge]: https://img.shields.io/badge/HSF%20Training%20Center-browse-ff69b4
 [schools]: https://hepsoftwarefoundation.org/Schools/events.html
-[issues]: https://github.com/hsf-training/{{cookiecutter.project_name}}/issues
+[issues]: https://github.com/hsf-training/hsf-training-cicd-github/issues
 [progit]: http://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project
 [jekyll]: https://jekyllrb.com/
 [allcontrib-emoji-key]: https://allcontributors.org/docs/en/emoji-key
