@@ -21,3 +21,21 @@ This training module is part of an initiative of the [HEP Software foundation](h
     or push to your repository's `gh-pages` branch
     and let GitHub take care of the rendering.
 2.  Run `make lesson-check` to check that your files follow our formatting rules.
+
+## 💖 Authors
+
+<!-- If we have a primary author/maintainer, who kicked off the whole lessen etc, he should get a dedicated shoutout here -->
+
+Thanks goes to these wonderful people ([emoji key][allcontrib-emoji-key]) who contributed to
+the content of the lesson:
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+Even more people contributed to the framework, but they are too many to list!
+Instead, all regular contributors are listed on our [HSF Training Community page][hsf-training-community].
