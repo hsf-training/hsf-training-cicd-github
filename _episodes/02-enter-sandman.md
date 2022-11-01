@@ -154,6 +154,8 @@ Create a file called `python_exit.py` with the following content:
 #!/usr/bin/env python
 
 import sys
+
+
 if sys.argv[1] == "hello":
   sys.exit(0)
 else:
@@ -168,7 +170,7 @@ and then make it executable `chmod +x python_exit.py`. Now, try running it with 
 To finish up this section, one thing you'll notice sometimes (in ATLAS or CMS) is that a script you run doesn't seem to respect exit codes. A notable example in ATLAS is the use of `setupATLAS` which returns non-zero exit status codes even though it runs successfully! This can be very annoying when you start development with the assumption that exit status codes are meaningful (such as with CI). In these cases, you'll need to ignore the exit code. An easy way to do this is to execute a second command that always gives `exit 0` if the first command doesn't, like so:
 
 ~~~
-> :(){ return 1; };: || echo ignore failure
+> ls nonexistent-file || echo ignore failure
 ~~~
 {: .language-bash}
 
