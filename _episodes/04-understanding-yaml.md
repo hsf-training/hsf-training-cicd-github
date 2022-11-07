@@ -54,13 +54,18 @@ date: 2002-12-14
 
 ## Lists and Dictionaries
 
+Elements of a list start with a "- " (a dash and a space) at the same indentation level.
 ~~~
 jedis:
   - Yoda
   - Qui-Gon Jinn
   - Obi-Wan Kenobi
   - Luke Skywalker
+~~~
+{: .language-yaml}
 
+Elements of a dictionary are in the form of "key: value" (the colon must followed by a space).
+~~~
 jedi:
   name: Obi-Wan Kenobi
   home-planet: Stewjon
