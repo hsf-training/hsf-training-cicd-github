@@ -27,7 +27,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
      - name: checkout repository
        uses: actions/checkout@v2
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: skim6.22.06
 
@@ -49,7 +49,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
      - name: checkout repository
        uses: actions/checkout@v2
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: skim_ggH
 

@@ -46,7 +46,7 @@ keypoints:
 >     - name: checkout repository
 >       uses: actions/checkout@v2
 >
->     - uses: actions/download-artifact@v2
+>     - uses: actions/download-artifact@v3
 >       with:
 >         name: skim6.22.06
 >
@@ -84,7 +84,7 @@ Our YAML file should look like
      - name: checkout repository
        uses: actions/checkout@v2
 
-     - uses: actions/download-artifact@v2
+     - uses: actions/download-artifact@v3
        with:
          name: skim6.22.06
 
@@ -193,7 +193,7 @@ As it seems like we have a complete CI/CD that does physics - we should see what
 > >      - name: checkout repository
 > >        uses: actions/checkout@v2
 > >
-> >      - uses: actions/download-artifact@v2
+> >      - uses: actions/download-artifact@v3
 > >        with:
 > >          name: skim6.22.06
 > >

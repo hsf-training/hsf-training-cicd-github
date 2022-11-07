@@ -117,7 +117,7 @@ Artifacts are used to upload (`upload-artifact`) and download  (`download-artifa
 >       name: <name>
 >       path: <file>
 > job_2:
->   - uses: actions/download-artifact@v2
+>   - uses: actions/download-artifact@v3
 >     with:
 >       name: <name>
 > ~~~
@@ -165,7 +165,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >     - name: checkout repository
 > >       uses: actions/checkout@v2
 > >
-> >     - uses: actions/download-artifact@v2
+> >     - uses: actions/download-artifact@v3
 > >       with:
 > >         name: skim6.22.06
 > >
@@ -226,7 +226,7 @@ Our YAML file should look like
      - name: checkout repository
        uses: actions/checkout@v2
 
-     - uses: actions/download-artifact@v2
+     - uses: actions/download-artifact@v3
        with:
          name: skim6.22.06
 
