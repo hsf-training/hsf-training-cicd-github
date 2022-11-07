@@ -59,7 +59,7 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: skim6.22.06
 
@@ -97,7 +97,7 @@ jobs:
 > >      - name: checkout repository
 > >        uses: actions/checkout@v2
 > >
-> >     - uses: actions/download-artifact@v2
+> >     - uses: actions/download-artifact@v3
 > >       with:
 > >         name: skim6.22.06
 > >
@@ -119,7 +119,7 @@ jobs:
 > >      - name: checkout repository
 > >        uses: actions/checkout@v2
 > >
-> >     - uses: actions/download-artifact@v2
+> >     - uses: actions/download-artifact@v3
 > >       with:
 > >         name: skim_ggH
 > >
