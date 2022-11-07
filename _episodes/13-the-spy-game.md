@@ -20,10 +20,10 @@ keypoints:
 > build_skim:
 >   needs: greeting
 >   runs-on: ubuntu-latest
->   container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
+>   container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
 >   strategy:
 >     matrix:
->       version: [6.18.04, latest]
+>       version: [6.22.06-conda, latest]
 >   steps:
 >     - name: checkout repository
 >       uses: actions/checkout@v2
@@ -41,14 +41,14 @@ keypoints:
 > skim:
 >   needs: build_skim
 >   runs-on: ubuntu-latest
->   container: rootproject/root-conda:6.18.04
+>   container: rootproject/root:6.22.06-conda
 >   steps:
 >     - name: checkout repository
 >       uses: actions/checkout@v2
 >
 >     - uses: actions/download-artifact@v2
 >       with:
->         name: skim6.18.04
+>         name: skim6.22.06
 >
 >     - name: skim
 >       run: |
@@ -79,14 +79,14 @@ Our YAML file should look like
  skim:
    needs: build_skim
    runs-on: ubuntu-latest
-   container: rootproject/root-conda:6.18.04
+   container: rootproject/root:6.22.06-conda
    steps:
      - name: checkout repository
        uses: actions/checkout@v2
 
      - uses: actions/download-artifact@v2
        with:
-         name: skim6.18.04
+         name: skim6.22.06
 
      - name: skim
        run: |
@@ -188,14 +188,14 @@ As it seems like we have a complete CI/CD that does physics - we should see what
 > > skim:
 > >    needs: build_skim
 > >    runs-on: ubuntu-latest
-> >    container: rootproject/root-conda:6.18.04
+> >    container: rootproject/root:6.22.06-conda
 > >    steps:
 > >      - name: checkout repository
 > >        uses: actions/checkout@v2
 > >
 > >      - uses: actions/download-artifact@v2
 > >        with:
-> >          name: skim6.18.04
+> >          name: skim6.22.06
 > >
 > >      - name: access control
 > >        run: printf {% raw %}${{ secrets.USER_PASS }}{% endraw %} | base64 -d | kinit {% raw %}${{ secrets.USER_NAME }}{% endraw %}@CERN.CH

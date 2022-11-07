@@ -24,10 +24,10 @@ jobs:
 
  build_skim:
    runs-on: ubuntu-latest
-   container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
+   container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
    strategy:
      matrix:
-       version: [6.18.04, latest]
+       version: [6.22.06-conda, latest]
    steps:
      - name: checkout repository
        uses: actions/checkout@v2
@@ -69,10 +69,10 @@ We're going to talk about another useful parameter `needs`.
 > > build_skim:
 > >   needs: greeting
 > >   runs-on: ubuntu-latest
-> >   container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
+> >   container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
 > >   strategy:
 > >     matrix:
-> >       version: [6.18.04, latest]
+> >       version: [6.22.06-conda, latest]
 > >   steps:
 > >     - name: checkout repository
 > >       uses: actions/checkout@v2

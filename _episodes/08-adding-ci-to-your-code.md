@@ -135,17 +135,17 @@ $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 > Don't panic. You do not need to understand docker to be able to use it.
 {: .callout}
 
-Let's go ahead and update our `.github/workflow/main.yml` and fix it to use a versioned docker image that has `root`: `rootproject/root-conda:6.18.04` from the [rootproject/root-conda](https://hub.docker.com/r/rootproject/root-conda) docker hub page.
+Let's go ahead and update our `.github/workflow/main.yml` and fix it to use a versioned docker image that has `root`: `rootproject/root:6.22.06-conda` from the [rootproject/root](https://hub.docker.com/r/rootproject/root) docker hub page.
 
 ~~~
 runs-on: ubuntu-latest
-container: rootproject/root-conda:6.18.04
+container: rootproject/root:6.22.06-conda
 ~~~
 {: .language-yaml}
 
 If you run again `act -j build_skim`, you see
 ```
-[example/build_skim] 🚀  Start image=rootproject/root-conda:6.18.04
+[example/build_skim] 🚀  Start image=rootproject/root:6.22.06-conda
 ```
 {: .output}
 
@@ -202,7 +202,7 @@ $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 No worries if you don't have ROOT, use `Docker` instead
 ~~~
 cd virtual-pipelines-eventselection
-docker run -it --rm -v $PWD:/virtual-pipelines-eventselection -w /virtual-pipelines-eventselection rootproject/root-conda:6.18.04 /bin/bash
+docker run -it --rm -v $PWD:/virtual-pipelines-eventselection -w /virtual-pipelines-eventselection rootproject/root:6.22.06-conda /bin/bash
 COMPILER=$(root-config --cxx)
 $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 exit  # quit interactive Docker session
@@ -218,7 +218,7 @@ We could separate the environment variables being set like `COMPILER=$(root-conf
 ~~~
 build_skim:
   runs-on: ubuntu-latest
-  container: rootproject/root-conda:latest
+  container: rootproject/root:latest
   steps:
     - name: checkout repository
       uses: actions/checkout@v2
@@ -234,7 +234,7 @@ build_skim:
 
 # Building multiple versions
 
-Great, so we finally got it working... CI/CD isn't obviously powerful when you're only building one thing. Let's build both the version of the code we're testing and also test that the latest ROOT image (`rootproject/root-conda:latest`) works with our code. Call this new job `build_skim_latest`.
+Great, so we finally got it working... CI/CD isn't obviously powerful when you're only building one thing. Let's build both the version of the code we're testing and also test that the latest ROOT image (`rootproject/root:latest`) works with our code. Call this new job `build_skim_latest`.
 
 > ## Adding the `build_skim_latest` job
 >
@@ -251,7 +251,7 @@ Great, so we finally got it working... CI/CD isn't obviously powerful when you'r
 > >
 > >   build_skim:
 > >     runs-on: ubuntu-latest
-> >     container: rootproject/root-conda:6.18.04
+> >     container: rootproject/root:6.22.06-conda
 > >     steps:
 > >       - name: checkout repository
 > >         uses: actions/checkout@v2
@@ -264,7 +264,7 @@ Great, so we finally got it working... CI/CD isn't obviously powerful when you'r
 > >
 > >   build_skim_latest:
 > >     runs-on: ubuntu-latest
-> >     container: rootproject/root-conda:latest
+> >     container: rootproject/root:latest
 > >     steps:
 > >       - name: checkout repository
 > >         uses: actions/checkout@v2
