@@ -30,7 +30,7 @@ jobs:
 
   build_skim:
     runs-on: ubuntu-latest
-    container: rootproject/root-conda:6.18.04
+    container: rootproject/root:6.22.06-conda
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
@@ -42,7 +42,7 @@ jobs:
 
   build_skim_latest:
     runs-on: ubuntu-latest
-    container: rootproject/root-conda:latest
+    container: rootproject/root:latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
@@ -67,10 +67,10 @@ jobs:
 >
 >  build_skim:
 >    runs-on: ubuntu-latest
->    container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
+>    container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
 >    strategy:
 >      matrix:
->        version: [6.18.04, latest]
+>        version: [6.22.06-conda, latest]
 >    steps:
 >      - name: checkout repository
 >        uses: actions/checkout@v2
@@ -91,11 +91,11 @@ act -j build_skim
 ```
 
 ```
-[example/build_skim-1] 🧪  Matrix: map[version:6.18.04]
-[example/build_skim-1] 🚀  Start image=rootproject/root-conda:6.18.04
+[example/build_skim-1] 🧪  Matrix: map[version:6.22.06-conda]
+[example/build_skim-1] 🚀  Start image=rootproject/root:6.22.06-conda
 [example/build_skim-2] 🧪  Matrix: map[version:latest]
-[example/build_skim-2] 🚀  Start image=rootproject/root-conda:latest
-[example/build_skim-1]   🐳  docker run image=rootproject/root-conda:6.18.04 entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
+[example/build_skim-2] 🚀  Start image=rootproject/root:latest
+[example/build_skim-1]   🐳  docker run image=rootproject/root:6.22.06-conda entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
 [example/build_skim-1]   🐳  docker cp src=/tmp/eventselection/. dst=/github/workspace
 [example/build_skim-1] ⭐  Run checkout repository
 [example/build_skim-1]   ✅  Success - checkout repository
@@ -105,7 +105,7 @@ $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 [example/build_skim-1]   ✅  Success - COMPILER=$(root-config --cxx)
 FLAGS=$(root-config --cflags --libs)
 $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-[example/build_skim-2]   🐳  docker run image=rootproject/root-conda:latest entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
+[example/build_skim-2]   🐳  docker run image=rootproject/root:latest entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
 [example/build_skim-2]   🐳  docker cp src=/tmp/eventselection/. dst=/github/workspace
 [example/build_skim-2] ⭐  Run checkout repository
 [example/build_skim-2]   ✅  Success - checkout repository
@@ -148,11 +148,11 @@ More details: [https://docs.github.com/en/actions/reference/workflow-syntax-for-
 > >
 > > ~~~
 > > runs-on: ubuntu-latest
-> > container: rootproject/root-conda:{% raw %}${{ matrix.version }}{% endraw %}
+> > container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
 > > continue-on-error: {% raw %}${{ matrix.allow_failure }}{% endraw %}
 > > strategy:
 > >   matrix:
-> >     version: [6.18.04]
+> >     version: [6.22.06-conda]
 > >     allow_failure: [false]
 > >     include:
 > >       - version: latest
