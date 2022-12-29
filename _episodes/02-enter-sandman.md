@@ -57,7 +57,6 @@ The exit code is `2` indicating failure. What about on success? The exit code is
 {: .language-bash}
 
 ~~~
-
 0
 ~~~
 {: .output}
