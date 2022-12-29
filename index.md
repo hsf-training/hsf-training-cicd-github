@@ -14,11 +14,9 @@ The aim of this module is to:
 
 > ## Prerequisites
 >
-> This assumes that 
-> 1. you have some basic background with your command line, for example:
->   - How to execute custom shell scripts
->   - How to run python scripts
-> 2. you have gone through all previous sessions in this workshop.
+> This assumes that you have some basic background with your command line, for example:
+> - How to execute custom shell scripts
+> - How to run python scripts
 {: .prereq}
 
 > ## The skills we'll focus on:
