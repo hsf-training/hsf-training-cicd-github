@@ -8,7 +8,7 @@ questions:
   - How do you make some jobs run after other jobs?
 hidden: false
 keypoints:
-  - The key value `needs` allows to specify dependencies between jobs in order to run them in serial.
+  - We can specify dependencies between jobs running in a series using the needs value.
 ---
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1pnxBc33oyo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 # Defining dependencies
