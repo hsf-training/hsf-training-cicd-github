@@ -9,7 +9,9 @@ questions:
 > - We assume that you already have a GitHub account (In case you don’t have one already, simply go to: [https://github.com/join](https://github.com/join))
 > - You should have an SSH key added to your Github account
 > - You should have git working on your computer
->
+> We also assume assumes that you have some basic background with your command line, for example:
+> - How to execute custom shell scripts
+> - How to run python scripts
 > as well as having Python installed
 {: .prereq}
 
