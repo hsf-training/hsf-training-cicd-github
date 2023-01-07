@@ -4,15 +4,6 @@ questions:
 - "What do I need to start?"
 ---
 
-> ## Prerequisites
->
-> - We assume that you already have a GitHub account (In case you don’t have one already, simply go to: [https://github.com/join](https://github.com/join))
-> - You should have an SSH key added to your Github account
-> - You should have git working on your computer
->
-> as well as having Python installed
-{: .prereq}
-
 <!--## Video Tutorials-->
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-Xd5D6xKugk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
