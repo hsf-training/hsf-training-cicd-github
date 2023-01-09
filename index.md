@@ -1,12 +1,11 @@
 ---
 layout: lesson
-title: Introduction
 root: .  # Is the only page that doesn't follow the pattern /:path/index.html
 permalink: index.html  # Is the only page that doesn't follow the pattern /:path/index.html
 ---
 {% include gh_variables.html %}
 
-GitHub is a version control distributed git platform used for code hosting and collaboration. Yet it can be used to automatically run the hosted code on Github's servers via GitHub Actions. Actions are workflow automation scripts. We'll learn how to develop on to make our code robust to errors, preserved, and reproducible.
+GitHub is a distributed git platform used for code hosting and collaboration. It can also be used to automatically run the hosted code on Github's servers via GitHub Actions. Actions are workflow automation scripts. We'll learn how to develop on to make our code robust to errors, preserved, and reproducible.
 
 The aim of this module is to:
 - explore what it means to build a CI/CD workflow
@@ -14,13 +13,11 @@ The aim of this module is to:
 
 > ## Prerequisites
 >
-> - We assume that you already have a GitHub account (In case you don’t have one already, simply go to: [https://github.com/join](https://github.com/join))
-> - You should have an SSH key added to your Github account
-> - You should have git working on your computer
-> We also assume assumes that you have some basic background with your command line, for example:
-> - How to execute custom shell scripts
-> - How to run python scripts
-> as well as having Python installed
+> This assumes that
+> 1. you have some basic background with your command line, for example:
+>   - How to execute custom shell scripts
+>   - How to run python scripts
+> 2. you have gone through all previous sessions in this workshop.
 {: .prereq}
 
 > ## The skills we'll focus on:
