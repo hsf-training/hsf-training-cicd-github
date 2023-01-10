@@ -17,7 +17,7 @@ This training module is part of an initiative of the [HEP Software foundation](h
 
 ## 📅 Past events and videos
 
-* 🎥 [Fixme Sample event Dec 1 - 13, 2022](indico.cern.ch/)
+* 🎥 [Feb 2021](https://indico.cern.ch/event/1001128/)
 
 Emoji key: 🎥 (full video recordings availabile), ⛏️ (hackathon)
 
