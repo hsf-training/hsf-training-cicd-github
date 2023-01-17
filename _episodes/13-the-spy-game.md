@@ -53,7 +53,7 @@ keypoints:
 >     - name: skim
 >       run: |
 >         chmod +x ./skim
->        ./skim
+>         ./skim
 > ~~~
 > {: .language-yaml}
 {: .challenge}
