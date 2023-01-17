@@ -13,11 +13,11 @@ The aim of this module is to:
 
 > ## Prerequisites
 >
-> This assumes that
-> 1. you have some basic background with your command line, for example:
->   - How to execute custom shell scripts
->   - How to run python scripts
-> 2. you have gone through all previous sessions in this workshop.
+> This assumes that you'll have some basic background with your command line, for example:
+>
+> 1. How to execute custom shell scripts (if you are not familiar with the shell, click [here](https://swcarpentry.github.io/shell-novice/))
+> 2. How to run python scripts (if you are not familiar with python, click [here](https://swcarpentry.github.io/python-novice-inflammation/))
+> 3. How to interact with remotes in git (if you are not familiar with git, click [here](https://swcarpentry.github.io/git-novice/); for simplified authentication with the `gh` command line interface, see [this version of the git training](https://mambelli.github.io/git-novice/07-github/index.html))
 {: .prereq}
 
 > ## The skills we'll focus on:
