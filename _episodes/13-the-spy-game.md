@@ -48,7 +48,7 @@ keypoints:
 >
 >     - uses: actions/download-artifact@v3
 >       with:
->         name: skim6.22.06
+>         name: skim6.22.06-conda
 >
 >     - name: skim
 >       run: |
