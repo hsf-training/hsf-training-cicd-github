@@ -53,7 +53,7 @@ For more details, check [this link](https://docs.github.com/en/free-pro-team@lat
 
 ## Overall Structure
 
-Every single parameter we consider for all configurations are keys under jobs. The YAML is structured using job names. For example, we can define three jobs that run in parallel (more on parallel/serial later) with different sets of parameters.
+Every single parameter we consider for all configurations are keys under jobs. The YAML is structured using job names. For example, we can define two jobs that run in parallel (more on parallel/serial later) with different sets of parameters.
 
 ~~~
 name: <name of your workflow>
