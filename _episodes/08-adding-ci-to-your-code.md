@@ -279,8 +279,4 @@ Great, so we finally got it working... Let's build both the version of the code 
 > {: .solution}
 {: .challenge}
 
-
-We're ready for a coffee break.
-
-
 {% include links.md %}
