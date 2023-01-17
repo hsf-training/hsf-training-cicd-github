@@ -36,9 +36,18 @@ jobs:
 
 ## Run GitHub Actions
 
+Now, let's see it in action!
+
 ### Run on your computer
 
-At this point we need the [nektos/act](https://github.com/nektos/act) tool.
+It is always nice to first test that everything works well locally before
+pushing to the git remote. For this, we need the [nektos/act](https://github.com/nektos/act) tool.
+
+> ## If you cannot install `act`
+> `act` requires docker to work. If you have trouble with the installation
+> (for example because you are working from a cluster where `docker` is not
+> available), simply skip this section.
+{:.callout}
 
 You can run
 ```bash
