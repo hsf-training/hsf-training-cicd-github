@@ -34,7 +34,7 @@ jobs:
         version: [6.22.06-conda, latest]
     steps:
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: build
         run: |
@@ -56,7 +56,7 @@ skim:
   container: rootproject/root:6.22.06-conda
   steps:
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: skim
         run: ./skim
@@ -144,7 +144,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >       version: [6.22.06-conda, latest]
 > >   steps:
 > >     - name: checkout repository
-> >       uses: actions/checkout@v2
+> >       uses: actions/checkout@v3
 > >
 > >     - name: build
 > >       run: |
@@ -163,7 +163,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >   container: rootproject/root:6.22.06-conda
 > >   steps:
 > >     - name: checkout repository
-> >       uses: actions/checkout@v2
+> >       uses: actions/checkout@v3
 > >
 > >     - uses: actions/download-artifact@v3
 > >       with:
@@ -224,7 +224,7 @@ Our YAML file should look like
    container: rootproject/root:6.22.06-conda
    steps:
      - name: checkout repository
-       uses: actions/checkout@v2
+       uses: actions/checkout@v3
 
      - uses: actions/download-artifact@v3
        with:

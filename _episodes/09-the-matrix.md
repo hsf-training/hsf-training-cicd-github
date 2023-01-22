@@ -33,7 +33,7 @@ jobs:
     container: rootproject/root:6.22.06-conda
     steps:
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: build
         run: |
           COMPILER=$(root-config --cxx)
@@ -45,7 +45,7 @@ jobs:
     container: rootproject/root:latest
     steps:
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: latest
         run: |
           COMPILER=$(root-config --cxx)
@@ -73,7 +73,7 @@ jobs:
 >        version: [6.22.06-conda, latest]
 >    steps:
 >      - name: checkout repository
->        uses: actions/checkout@v2
+>        uses: actions/checkout@v3
 >
 >      - name: build
 >         run: |
