@@ -30,7 +30,7 @@ jobs:
        version: [6.22.06-conda, latest]
    steps:
      - name: checkout repository
-       uses: actions/checkout@v2
+       uses: actions/checkout@v3
 
      - name: build
        run: |
@@ -75,7 +75,7 @@ We're going to talk about another useful parameter `needs`.
 > >       version: [6.22.06-conda, latest]
 > >   steps:
 > >     - name: checkout repository
-> >       uses: actions/checkout@v2
+> >       uses: actions/checkout@v3
 > >
 > >     - name: build
 > >       run: |

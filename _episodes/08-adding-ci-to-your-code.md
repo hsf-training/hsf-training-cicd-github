@@ -161,7 +161,7 @@ If you run again `act -j build_skim`, you see
 > > ~~~
 > > steps:
 > >    - name: checkout repository
-> >      uses: actions/checkout@v2
+> >      uses: actions/checkout@v3
 > > ~~~
 > > {: .language-yaml}
 > > Let’s go ahead and tell our CI to checkout the repository.
@@ -221,7 +221,7 @@ build_skim:
   container: rootproject/root:latest
   steps:
     - name: checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: build
       run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
@@ -254,7 +254,7 @@ Great, so we finally got it working... Let's build both the version of the code 
 > >     container: rootproject/root:6.22.06-conda
 > >     steps:
 > >       - name: checkout repository
-> >         uses: actions/checkout@v2
+> >         uses: actions/checkout@v3
 > >
 > >       - name: build
 > >         run: |
@@ -267,7 +267,7 @@ Great, so we finally got it working... Let's build both the version of the code 
 > >     container: rootproject/root:latest
 > >     steps:
 > >       - name: checkout repository
-> >         uses: actions/checkout@v2
+> >         uses: actions/checkout@v3
 > >
 > >       - name: latest
 > >         run: |

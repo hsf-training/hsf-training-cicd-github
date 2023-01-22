@@ -25,7 +25,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
    container: rootproject/root:6.22.06-conda
    steps:
      - name: checkout repository
-       uses: actions/checkout@v2
+       uses: actions/checkout@v3
 
     - uses: actions/download-artifact@v3
       with:
@@ -47,7 +47,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
    container: rootproject/root:6.22.06-conda
    steps:
      - name: checkout repository
-       uses: actions/checkout@v2
+       uses: actions/checkout@v3
 
     - uses: actions/download-artifact@v3
       with:

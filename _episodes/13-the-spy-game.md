@@ -26,7 +26,7 @@ keypoints:
 >       version: [6.22.06-conda, latest]
 >   steps:
 >     - name: checkout repository
->       uses: actions/checkout@v2
+>       uses: actions/checkout@v3
 >
 >     - name: build
 >       run: |
@@ -44,7 +44,7 @@ keypoints:
 >   container: rootproject/root:6.22.06-conda
 >   steps:
 >     - name: checkout repository
->       uses: actions/checkout@v2
+>       uses: actions/checkout@v3
 >
 >     - uses: actions/download-artifact@v3
 >       with:
@@ -82,7 +82,7 @@ Our YAML file should look like
    container: rootproject/root:6.22.06-conda
    steps:
      - name: checkout repository
-       uses: actions/checkout@v2
+       uses: actions/checkout@v3
 
      - uses: actions/download-artifact@v3
        with:
@@ -191,7 +191,7 @@ As it seems like we have a complete CI/CD that does physics - we should see what
 > >    container: rootproject/root:6.22.06-conda
 > >    steps:
 > >      - name: checkout repository
-> >        uses: actions/checkout@v2
+> >        uses: actions/checkout@v3
 > >
 > >      - uses: actions/download-artifact@v3
 > >        with:

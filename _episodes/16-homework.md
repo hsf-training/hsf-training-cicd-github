@@ -21,7 +21,7 @@ jobs:
     container: rootproject/root:6.22.06-conda
     steps:
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: build
         run: |
@@ -40,7 +40,7 @@ jobs:
     container: rootproject/root:6.22.06-conda
     steps:
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
      - uses: actions/download-artifact@v3
        with:
@@ -64,7 +64,7 @@ jobs:
     container: rootproject/root:6.22.06-conda
     steps:
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
      - uses: actions/download-artifact@v3
        with:
@@ -84,7 +84,7 @@ jobs:
     container: rootproject/root:6.22.06
     steps:
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Download from skim
         uses: actions/download-artifact@v3
