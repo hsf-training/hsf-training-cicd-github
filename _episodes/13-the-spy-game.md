@@ -34,7 +34,7 @@ keypoints:
 >         FLAGS=$(root-config --cflags --libs)
 >         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 >
->     - uses: actions/upload-artifact@v2
+>     - uses: actions/upload-artifact@v3
 >       with:
 >         name: skim{% raw %}${{ matrix.version }}{% endraw %}
 >         path: skim
@@ -205,7 +205,7 @@ As it seems like we have a complete CI/CD that does physics - we should see what
 > >          chmod +x ./skim
 > >          ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
 > >
-> >      - uses: actions/upload-artifact@v2
+> >      - uses: actions/upload-artifact@v3
 > >        with:
 > >          name: skim_ggH
 > >          path: skim_ggH.root

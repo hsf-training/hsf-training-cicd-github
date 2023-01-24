@@ -36,7 +36,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
         chmod +x ./skim
         ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: skim_ggH
         path: skim_ggH.root
@@ -56,7 +56,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
     - name: plot
       run: python histograms.py skim_ggH.root ggH hist_ggH.root
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: histograms
         path: hist_ggH.root
