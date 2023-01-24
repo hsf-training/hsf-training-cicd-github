@@ -81,7 +81,7 @@ jobs:
   test:
     needs: plot
     runs-on: ubuntu-latest
-    container: rootproject/root:6.22.06
+    container: rootproject/root:6.26.10
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
