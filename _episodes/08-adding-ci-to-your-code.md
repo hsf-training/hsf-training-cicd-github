@@ -135,17 +135,17 @@ $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 > Don't panic. You do not need to understand docker to be able to use it.
 {: .callout}
 
-Let's go ahead and update our `.github/workflow/main.yml` and fix it to use a versioned docker image that has `root`: `rootproject/root:6.22.06-conda` from the [rootproject/root](https://hub.docker.com/r/rootproject/root) docker hub page.
+Let's go ahead and update our `.github/workflow/main.yml` and fix it to use a versioned docker image that has `root`: `rootproject/root:6.26.10-conda` from the [rootproject/root](https://hub.docker.com/r/rootproject/root) docker hub page.
 
 ~~~
 runs-on: ubuntu-latest
-container: rootproject/root:6.22.06-conda
+container: rootproject/root:6.26.10-conda
 ~~~
 {: .language-yaml}
 
 If you run again `act -j build_skim`, you see
 ```
-[example/build_skim] 🚀  Start image=rootproject/root:6.22.06-conda
+[example/build_skim] 🚀  Start image=rootproject/root:6.26.10-conda
 ```
 {: .output}
 
@@ -202,7 +202,7 @@ $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 No worries if you don't have ROOT, use `Docker` instead
 ~~~
 cd virtual-pipelines-eventselection
-docker run -it --rm -v $PWD:/virtual-pipelines-eventselection -w /virtual-pipelines-eventselection rootproject/root:6.22.06-conda /bin/bash
+docker run -it --rm -v $PWD:/virtual-pipelines-eventselection -w /virtual-pipelines-eventselection rootproject/root:6.26.10-conda /bin/bash
 COMPILER=$(root-config --cxx)
 $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 exit  # quit interactive Docker session
@@ -251,7 +251,7 @@ Great, so we finally got it working... Let's build both the version of the code 
 > >
 > >   build_skim:
 > >     runs-on: ubuntu-latest
-> >     container: rootproject/root:6.22.06-conda
+> >     container: rootproject/root:6.26.10-conda
 > >     steps:
 > >       - name: checkout repository
 > >         uses: actions/checkout@v3

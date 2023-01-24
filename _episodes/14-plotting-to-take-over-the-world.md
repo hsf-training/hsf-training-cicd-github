@@ -35,7 +35,7 @@ jobs:
     container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
     strategy:
       matrix:
-        version: [6.22.06-conda, latest]
+        version: [6.26.10-conda, latest]
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
@@ -54,14 +54,14 @@ jobs:
   skim:
     needs: build_skim
     runs-on: ubuntu-latest
-    container: rootproject/root:6.22.06-conda
+    container: rootproject/root:6.26.10-conda
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
 
       - uses: actions/download-artifact@v3
         with:
-          name: skim6.22.06
+          name: skim6.26.10
 
       - name: skim
         run: |
@@ -92,14 +92,14 @@ jobs:
 > >  skim:
 > >    needs: build_skim
 > >    runs-on: ubuntu-latest
-> >    container: rootproject/root:6.22.06-conda
+> >    container: rootproject/root:6.26.10-conda
 > >    steps:
 > >      - name: checkout repository
 > >        uses: actions/checkout@v3
 > >
 > >     - uses: actions/download-artifact@v3
 > >       with:
-> >         name: skim6.22.06
+> >         name: skim6.26.10
 > >
 > >     - name: skim
 > >       run: |
@@ -114,7 +114,7 @@ jobs:
 > >  plot:
 > >    needs: skim
 > >    runs-on: ubuntu-latest
-> >    container: rootproject/root:6.22.06
+> >    container: rootproject/root:6.26.10
 > >    steps:
 > >      - name: checkout repository
 > >        uses: actions/checkout@v3

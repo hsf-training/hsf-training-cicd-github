@@ -18,7 +18,7 @@ Like the last section, I will simply explain what you need to do. After the prev
 jobs:
   build_skim:
     runs-on: ubuntu-latest
-    container: rootproject/root:6.22.06-conda
+    container: rootproject/root:6.26.10-conda
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
@@ -31,20 +31,20 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: skim6.22.06
+          name: skim6.26.10
           path: skim
 
   skim:
     needs: build_skim
     runs-on: ubuntu-latest
-    container: rootproject/root:6.22.06-conda
+    container: rootproject/root:6.26.10-conda
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
 
      - uses: actions/download-artifact@v3
        with:
-         name: skim6.22.06
+         name: skim6.26.10
 
      - name: skim
        run: |
@@ -61,7 +61,7 @@ jobs:
   plot:
     needs: build_skim
     runs-on: ubuntu-latest
-    container: rootproject/root:6.22.06-conda
+    container: rootproject/root:6.26.10-conda
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
@@ -81,7 +81,7 @@ jobs:
   test:
     needs: plot
     runs-on: ubuntu-latest
-    container: rootproject/root:6.22.06
+    container: rootproject/root:6.26.10
     steps:
       - name: checkout repository
         uses: actions/checkout@v3

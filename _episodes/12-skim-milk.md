@@ -31,7 +31,7 @@ jobs:
     container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
     strategy:
       matrix:
-        version: [6.22.06-conda, latest]
+        version: [6.26.10-conda, latest]
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
@@ -53,7 +53,7 @@ Let's go ahead and figure out how to define a run job. Seems too easy to be true
 skim:
   needs: build_skim
   runs-on: ubuntu-latest
-  container: rootproject/root:6.22.06-conda
+  container: rootproject/root:6.26.10-conda
   steps:
       - name: checkout repository
         uses: actions/checkout@v3
@@ -141,7 +141,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >   container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
 > >   strategy:
 > >     matrix:
-> >       version: [6.22.06-conda, latest]
+> >       version: [6.26.10-conda, latest]
 > >   steps:
 > >     - name: checkout repository
 > >       uses: actions/checkout@v3
@@ -160,14 +160,14 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > > skim:
 > >   needs: build_skim
 > >   runs-on: ubuntu-latest
-> >   container: rootproject/root:6.22.06-conda
+> >   container: rootproject/root:6.26.10-conda
 > >   steps:
 > >     - name: checkout repository
 > >       uses: actions/checkout@v3
 > >
 > >     - uses: actions/download-artifact@v3
 > >       with:
-> >         name: skim6.22.06
+> >         name: skim6.26.10
 > >
 > >     - name: skim
 > >       run: ./skim
@@ -221,14 +221,14 @@ Our YAML file should look like
  skim:
    needs: build_skim
    runs-on: ubuntu-latest
-   container: rootproject/root:6.22.06-conda
+   container: rootproject/root:6.26.10-conda
    steps:
      - name: checkout repository
        uses: actions/checkout@v3
 
      - uses: actions/download-artifact@v3
        with:
-         name: skim6.22.06
+         name: skim6.26.10
 
      - name: skim
        run: ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
