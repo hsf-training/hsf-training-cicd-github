@@ -112,7 +112,7 @@ Artifacts are used to upload (`upload-artifact`) and download  (`download-artifa
 > ## Passing data between two jobs in a workflow
 > ~~~
 > job_1:
->   - uses: actions/upload-artifact@v2
+>   - uses: actions/upload-artifact@v3
 >     with:
 >       name: <name>
 >       path: <file>
@@ -152,7 +152,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >         FLAGS=$(root-config --cflags --libs)
 > >         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 > >
-> >     - uses: actions/upload-artifact@v2
+> >     - uses: actions/upload-artifact@v3
 > >       with:
 > >         name: skim{% raw %}${{ matrix.version }}{% endraw %}
 > >         path: skim

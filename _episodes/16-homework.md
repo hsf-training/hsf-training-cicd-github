@@ -29,7 +29,7 @@ jobs:
           FLAGS=$(root-config --cflags --libs)
           $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: skim6.22.06
           path: skim
@@ -51,7 +51,7 @@ jobs:
          chmod +x ./skim
          ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1 > skim_ggH.log
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: skim_ggH
           path: |
@@ -73,7 +73,7 @@ jobs:
      - name: plot
        run: python histograms.py skim_ggH.root ggH hist_ggH.root
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: histograms
           path: hist_ggH.root
