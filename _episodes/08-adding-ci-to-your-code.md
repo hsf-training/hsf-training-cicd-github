@@ -286,7 +286,7 @@ Github actions are accompanied by the tags ("@v2"...) which are versions/tags of
 
 However, this process can be automated by using "Dependabot" which ensures that the workflow references the updated version of the action. If that is not the case, the Dependabot will open a pull request updating the tag of the Github action.
 
-The dependabot action can be added to a Github repository by creating file `dependabot.yml` in the `.github/` folder. The content of the file looks like this: 
+The dependabot action can be added to a Github repository by creating file `dependabot.yml` in the `.github/` folder. The content of the file looks like this:
 
 ~~~
 version: 2
