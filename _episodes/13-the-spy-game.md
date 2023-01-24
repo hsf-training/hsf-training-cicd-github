@@ -86,7 +86,7 @@ Our YAML file should look like
 
      - uses: actions/download-artifact@v3
        with:
-         name: skim6.22.06
+         name: skim6.26.10
 
      - name: skim
        run: |
@@ -195,7 +195,7 @@ As it seems like we have a complete CI/CD that does physics - we should see what
 > >
 > >      - uses: actions/download-artifact@v3
 > >        with:
-> >          name: skim6.22.06
+> >          name: skim6.26.10
 > >
 > >      - name: access control
 > >        run: printf {% raw %}${{ secrets.USER_PASS }}{% endraw %} | base64 -d | kinit {% raw %}${{ secrets.USER_NAME }}{% endraw %}@CERN.CH

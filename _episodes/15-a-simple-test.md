@@ -29,7 +29,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
 
     - uses: actions/download-artifact@v3
       with:
-        name: skim6.22.06
+        name: skim6.26.10
 
     - name: skim
       run: |

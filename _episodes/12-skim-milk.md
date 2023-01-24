@@ -167,7 +167,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >
 > >     - uses: actions/download-artifact@v3
 > >       with:
-> >         name: skim6.22.06
+> >         name: skim6.26.10
 > >
 > >     - name: skim
 > >       run: ./skim
@@ -228,7 +228,7 @@ Our YAML file should look like
 
      - uses: actions/download-artifact@v3
        with:
-         name: skim6.22.06
+         name: skim6.26.10
 
      - name: skim
        run: ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1

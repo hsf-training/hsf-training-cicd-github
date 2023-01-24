@@ -61,7 +61,7 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: skim6.22.06
+          name: skim6.26.10
 
       - name: skim
         run: |
@@ -99,7 +99,7 @@ jobs:
 > >
 > >     - uses: actions/download-artifact@v3
 > >       with:
-> >         name: skim6.22.06
+> >         name: skim6.26.10
 > >
 > >     - name: skim
 > >       run: |

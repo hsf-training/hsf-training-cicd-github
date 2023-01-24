@@ -31,7 +31,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: skim6.22.06
+          name: skim6.26.10
           path: skim
 
   skim:
@@ -44,7 +44,7 @@ jobs:
 
      - uses: actions/download-artifact@v3
        with:
-         name: skim6.22.06
+         name: skim6.26.10
 
      - name: skim
        run: |
