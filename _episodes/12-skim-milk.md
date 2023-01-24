@@ -31,7 +31,7 @@ jobs:
     container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
     strategy:
       matrix:
-        version: [6.22.06-conda, latest]
+        version: [6.26.10-conda, latest]
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
@@ -141,7 +141,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >   container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
 > >   strategy:
 > >     matrix:
-> >       version: [6.22.06-conda, latest]
+> >       version: [6.26.10-conda, latest]
 > >   steps:
 > >     - name: checkout repository
 > >       uses: actions/checkout@v3

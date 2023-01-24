@@ -70,7 +70,7 @@ jobs:
 >    container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
 >    strategy:
 >      matrix:
->        version: [6.22.06-conda, latest]
+>        version: [6.26.10-conda, latest]
 >    steps:
 >      - name: checkout repository
 >        uses: actions/checkout@v3
@@ -91,7 +91,7 @@ act -j build_skim
 ```
 
 ```
-[example/build_skim-1] 🧪  Matrix: map[version:6.22.06-conda]
+[example/build_skim-1] 🧪  Matrix: map[version:6.26.10-conda]
 [example/build_skim-1] 🚀  Start image=rootproject/root:6.26.10-conda
 [example/build_skim-2] 🧪  Matrix: map[version:latest]
 [example/build_skim-2] 🚀  Start image=rootproject/root:latest
@@ -152,7 +152,7 @@ More details: [https://docs.github.com/en/actions/reference/workflow-syntax-for-
 > > continue-on-error: {% raw %}${{ matrix.allow_failure }}{% endraw %}
 > > strategy:
 > >   matrix:
-> >     version: [6.22.06-conda]
+> >     version: [6.26.10-conda]
 > >     allow_failure: [false]
 > >     include:
 > >       - version: latest

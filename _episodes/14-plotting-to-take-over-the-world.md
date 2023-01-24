@@ -35,7 +35,7 @@ jobs:
     container: rootproject/root:{% raw %}${{ matrix.version }}{% endraw %}
     strategy:
       matrix:
-        version: [6.22.06-conda, latest]
+        version: [6.26.10-conda, latest]
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
