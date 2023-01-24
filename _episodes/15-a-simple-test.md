@@ -22,7 +22,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
  skim:
    needs: build_skim
    runs-on: ubuntu-latest
-   container: rootproject/root:6.22.06-conda
+   container: rootproject/root:6.26.10-conda
    steps:
      - name: checkout repository
        uses: actions/checkout@v3
@@ -44,7 +44,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
  plot:
    needs: skim
    runs-on: ubuntu-latest
-   container: rootproject/root:6.22.06-conda
+   container: rootproject/root:6.26.10-conda
    steps:
      - name: checkout repository
        uses: actions/checkout@v3

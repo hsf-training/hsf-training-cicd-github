@@ -54,7 +54,7 @@ jobs:
   skim:
     needs: build_skim
     runs-on: ubuntu-latest
-    container: rootproject/root:6.22.06-conda
+    container: rootproject/root:6.26.10-conda
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
@@ -92,7 +92,7 @@ jobs:
 > >  skim:
 > >    needs: build_skim
 > >    runs-on: ubuntu-latest
-> >    container: rootproject/root:6.22.06-conda
+> >    container: rootproject/root:6.26.10-conda
 > >    steps:
 > >      - name: checkout repository
 > >        uses: actions/checkout@v3

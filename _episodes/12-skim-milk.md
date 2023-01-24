@@ -53,7 +53,7 @@ Let's go ahead and figure out how to define a run job. Seems too easy to be true
 skim:
   needs: build_skim
   runs-on: ubuntu-latest
-  container: rootproject/root:6.22.06-conda
+  container: rootproject/root:6.26.10-conda
   steps:
       - name: checkout repository
         uses: actions/checkout@v3
@@ -160,7 +160,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > > skim:
 > >   needs: build_skim
 > >   runs-on: ubuntu-latest
-> >   container: rootproject/root:6.22.06-conda
+> >   container: rootproject/root:6.26.10-conda
 > >   steps:
 > >     - name: checkout repository
 > >       uses: actions/checkout@v3
@@ -221,7 +221,7 @@ Our YAML file should look like
  skim:
    needs: build_skim
    runs-on: ubuntu-latest
-   container: rootproject/root:6.22.06-conda
+   container: rootproject/root:6.26.10-conda
    steps:
      - name: checkout repository
        uses: actions/checkout@v3

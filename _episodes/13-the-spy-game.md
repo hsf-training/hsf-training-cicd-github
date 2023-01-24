@@ -41,7 +41,7 @@ keypoints:
 > skim:
 >   needs: build_skim
 >   runs-on: ubuntu-latest
->   container: rootproject/root:6.22.06-conda
+>   container: rootproject/root:6.26.10-conda
 >   steps:
 >     - name: checkout repository
 >       uses: actions/checkout@v3
@@ -79,7 +79,7 @@ Our YAML file should look like
  skim:
    needs: build_skim
    runs-on: ubuntu-latest
-   container: rootproject/root:6.22.06-conda
+   container: rootproject/root:6.26.10-conda
    steps:
      - name: checkout repository
        uses: actions/checkout@v3
@@ -188,7 +188,7 @@ As it seems like we have a complete CI/CD that does physics - we should see what
 > > skim:
 > >    needs: build_skim
 > >    runs-on: ubuntu-latest
-> >    container: rootproject/root:6.22.06-conda
+> >    container: rootproject/root:6.26.10-conda
 > >    steps:
 > >      - name: checkout repository
 > >        uses: actions/checkout@v3
