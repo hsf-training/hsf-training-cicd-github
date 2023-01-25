@@ -279,4 +279,28 @@ Great, so we finally got it working... Let's build both the version of the code 
 > {: .solution}
 {: .challenge}
 
+
+## Dependabot for updating gh action version
+
+Github actions are accompanied by the tags ("@v2"...) which are versions/tags of that action. One might need to update this tags for example from "@v2" to "@v3" because the Github actions developers may fix existing bugs to the action or there may be other updates.
+
+However, this process can be automated by using "Dependabot" which ensures that the workflow references the updated version of the action. If that is not the case, the Dependabot will open a pull request updating the tag of the Github action.
+
+The dependabot action can be added to a Github repository by creating the file `dependabot.yml` in the `.github/` folder. The content of the file looks like this [(Link to the dependabot.yml)](https://github.com/hsf-training/hsf-training-cicd-github/blob/gh-pages/.github/dependabot.yml):
+
+~~~
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+ ~~~
+{: .language-yaml}
+
+where interval is the frequency of looking for updates to Github actions.
+
+For more information on Dependabot, see e.g., [here.](https://docs.github.com/en/code-security/dependabot)
+
 {% include links.md %}
