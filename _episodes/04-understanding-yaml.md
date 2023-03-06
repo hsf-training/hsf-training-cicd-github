@@ -15,7 +15,7 @@ keypoints:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PdXLfgE4wsI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 # YAML
 
-YAML is Yet Another Markup Language is a human-readable data-serialization language. It is commonly used for configuration files and in applications where data is being stored or transmitted. CI systems' modus operandi typically rely on YAML for configuration. We'll cover, briefly, some of the native types involved and what the structure looks like.
+YAML (Yet Another Markup Language or sometimes popularly referred to as YAML Ain't Markup Language (a recursive acronym)) is a human-readable data-serialization language. It is commonly used for configuration files and in applications where data is being stored or transmitted. CI systems' modus operandi typically rely on YAML for configuration. We'll cover, briefly, some of the native types involved and what the structure looks like.
 
 > ## Tabs or Spaces?
 >
