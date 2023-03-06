@@ -7,7 +7,7 @@ questions:
 objectives:
 - Understand why CI/CD is important
 - Learn what can be possible with CI/CD
-- Find resources to explore in more depthg
+- Find resources to explore in more depth
 keypoints:
 - CI/CD is crucial for any reproducibility and testing
 - Take advantage of automation to reduce your workload
