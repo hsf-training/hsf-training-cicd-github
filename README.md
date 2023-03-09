@@ -3,7 +3,7 @@
 [![Twitter Follow][twitter-badge]][twitter]
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/hsf-training/hsf-training-cicd-github/gh-pages.svg)](https://results.pre-commit.ci/latest/github/hsf-training/hsf-training-cicd-github/gh-pages)
@@ -77,6 +77,7 @@ the content of the lesson:
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/enibigir"><img src="https://avatars.githubusercontent.com/u/38688778?v=4?s=100" width="100px;" alt="Emery Nibigira"/><br /><sub><b>Emery Nibigira</b></sub></a><br /><a href="#content-enibigir" title="Content">🖋</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/fleble"><img src="https://avatars.githubusercontent.com/u/69905035?v=4?s=100" width="100px;" alt="Florian Eble"/><br /><sub><b>Florian Eble</b></sub></a><br /><a href="https://github.com/hsf-training/hsf-training-cicd-github/issues?q=author%3Afleble" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/amanmdesai"><img src="https://avatars.githubusercontent.com/u/98302868?v=4?s=100" width="100px;" alt="Aman Desai"/><br /><sub><b>Aman Desai</b></sub></a><br /><a href="#content-amanmdesai" title="Content">🖋</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://saransh-cpp.github.io/"><img src="https://avatars.githubusercontent.com/u/74055102?v=4?s=100" width="100px;" alt="Saransh Chopra"/><br /><sub><b>Saransh Chopra</b></sub></a><br /><a href="#content-Saransh-cpp" title="Content">🖋</a></td>
     </tr>
   </tbody>
 </table>
