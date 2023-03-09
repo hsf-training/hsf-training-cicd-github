@@ -82,6 +82,12 @@ jobs:
 >           $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 > ~~~
 > {: .language-yaml}
+> YAML truncates trailing zeroes from a floating point number, which means that `version: [3.9, 3.10, 3.11]` will automatically
+> be converted to `version: [3.9, 3.1, 3.11]` (notice `3.1` instead of `3.10`). The conversion will lead to unexpected failures
+> as your CI will be running on a version not specified by you. This behavior resulted in several failed jobs after the release
+> of Python 3.10 on GitHub Actions. The conversion (and the build failure) can be avoided by converting the floating point number
+> to strings - `version: ['3.9', '3.10', '3.11']`.
+>
 > More details on matrix: [https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix).
 {: .callout}
 
