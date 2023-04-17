@@ -5,7 +5,8 @@ exercises: 30
 objectives:
   - Add more testing, perhaps to statistics.
 questions:
-  - If you have any, ask on Mattermost channel!
+  - Where to go next?
+  - Want some homework?
 hidden: false
 keypoints:
   - Use everything you've learned to write your own CI/CD!

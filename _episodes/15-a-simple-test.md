@@ -5,7 +5,7 @@ exercises: 20
 objectives:
   - Actually add a test on the output of running physics
 questions:
-  - I'm out of questions.
+  - How does a realistic workflow look for a physics analysis?
 hidden: false
 keypoints:
   - This kind of test is a regression test, as we're testing assuming the code up to this point was correct.
