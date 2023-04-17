@@ -32,16 +32,8 @@ RUN apt-get update \
     libxft-dev libxext-dev python3 libssl-dev libgsl0-dev libtiff-dev \
     python3-pip -y
 
- RUN pip3 install numpy \
-  && pip3 install awkward \
-  && pip3 install uproot4 \
-  && pip3 install particle \
-  && pip3 install hepunits \
-  && pip3 install matplotlib \
-  && pip3 install mplhep \
-  && pip3 install vector \
-  && pip3 install fastjet \
-  && pip3 install iminuit
+RUN pip3 install numpy awkward uproot4 particle hepunits matplotlib \
+  mplhep vector fastjet iminuit
 ```
 
 As we see, several packages are installed.
