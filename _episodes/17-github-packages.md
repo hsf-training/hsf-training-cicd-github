@@ -13,9 +13,8 @@ keypoints:
 ---
 
 > ## Prerequisites
-> For this lesson, you will need,
-> * Knowledge of Git [SW Carpentry Git-Novice Lesson](https://swcarpentry.github.io/git-novice/)
-> * Knowledge of GitHub CI/CD [HSF Github CI/CD Lesson](https://hsf-training.github.io/hsf-training-cicd-github/)
+> For this lesson you should already be familiar with Docker images.
+> Head over to [our training on Docker](https://hsf-training.github.io/hsf-training-docker/) if you aren't already!
 {: .prereq}
 
 ## Docker Container for python packages
@@ -28,10 +27,10 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
- && apt-get install wget -y \
- && apt-get install dpkg-dev cmake g++ gcc binutils libx11-dev libxpm-dev \
-  libxft-dev libxext-dev python3 libssl-dev libgsl0-dev libtiff-dev \
-  python3-pip -y
+  && apt-get install wget -y \
+  && apt-get install dpkg-dev cmake g++ gcc binutils libx11-dev libxpm-dev \
+    libxft-dev libxext-dev python3 libssl-dev libgsl0-dev libtiff-dev \
+    python3-pip -y
 
  RUN pip3 install numpy \
   && pip3 install awkward \
@@ -45,9 +44,7 @@ RUN apt-get update \
   && pip3 install iminuit
 ```
 
-
 As we see, several packages are installed.
-
 
 ## Publish Docker images with GitHub Packages and share them!
 
@@ -58,7 +55,8 @@ To do so, one needs to use GitHub CI/CD. A step-by-step guide is presented here.
 * **Step 2**: In the empty repository, make a folder called `.github/workflows`. In this folder we will store the file containing the YAML script for a GitHub workflow, named `Docker-build-deploy.yml` (the name doesn't really matter).
 * **Step 3**: In the top directory of your GitHub repository, create a file named `Dockerfile`.
 * **Step 4**: Copy-paste the content above and add it to the Dockerfile. (In principle it is possible to build this image locally, but we will not do that here, as we wish to build it with GitHub CI/CD).
-* **Step 5**: In the `Docker-build-deploy.yml` file, add the following content:
+* **Step 5**: In the `Docker-build-deploy.yml` file, add the content below.
+* **Step 6**: Add LICENSE and README as recommended in the [SW Carpentry Git-Novice Lesson](https://swcarpentry.github.io/git-novice/), and then the repository is good to go.
 
 ```text
 name: Create and publish a Docker image
@@ -104,8 +102,3 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 ```
-
-The above script is designed to build and publish a Docker image with [GitHub packages](https://github.com/features/packages).
-
-
-* **Step 6**: Add LICENSE and README as recommended in the [SW Carpentry Git-Novice Lesson](https://swcarpentry.github.io/git-novice/), and then the repository is good to go.
