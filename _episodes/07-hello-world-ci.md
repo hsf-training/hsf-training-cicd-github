@@ -74,7 +74,7 @@ greeting    0      greeting
 To run `greeting` do
 
 ```bash
-act -j greeting  # -l stands for job (run job)
+act -j greeting  # -j stands for job (run job)
 ```
 
 <!--![greeting job]({{site.baseurl}}/fig/act_run_greeting.png)-->
