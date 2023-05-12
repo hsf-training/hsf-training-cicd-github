@@ -150,7 +150,7 @@ and then make it executable `chmod +x bash_exit.sh`. Now, try running it with `.
 >>> status
 ~~~
 {: .language-python}
-See what those exit codes are. 
+See what those exit codes are.
 
 ## Python
 
