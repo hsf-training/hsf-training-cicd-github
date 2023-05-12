@@ -46,7 +46,7 @@ But every command outputs something differently. Instead, scripts also have an (
 ls: cannot access 'nonexistent-file': No such file or directory
 2
 ~~~
-{: .language-bash}
+{: .output}
 
 The exit code is `2` indicating failure. What about on success? The exit code is `0` like so:
 
@@ -93,9 +93,7 @@ As you've seen above, the exit code from the last executed command is stored in 
 
 > ## Snake Charming
 >
-> To enter the Python interpreter, simply type `python` in your command line.
->
-> Once inside the Python interpreter, simply type `exit()` then press enter, to exit.
+> To enter the Python interpreter, simply type `python` in your command line. If you do not have `python`, but rather `python3` then use python3 instead. You will have to then swap `python` with `python3` in the Python code block in the Python section.
 {: .callout}
 
 <!--
@@ -121,7 +119,7 @@ As you've seen above, the exit code from the last executed command is stored in 
 ~~~
 {: .language-python}
 
-It may happen that this returns a different exit code than from the command line (indicating there's some internal implementation in Python). All you need to be concerned with is that the exit code was non-zero (there was an error).
+After these commands are typed inside the Python interpreter, simply type `exit()` then press enter, to exit. It may happen that this returns a different exit code than from the command line (indicating there's some internal implementation in Python). All you need to be concerned with is that the exit code was non-zero (there was an error).
 
 # Setting Exit Codes
 
@@ -143,7 +141,16 @@ fi
 ~~~
 {: .language-bash}
 
-and then make it executable `chmod +x bash_exit.sh`. Now, try running it with `./bash_exit.sh hello` and `./bash_exit.sh goodbye` and see what those exit codes are.
+and then make it executable `chmod +x bash_exit.sh`. Now, try running it with `./bash_exit.sh hello` and `./bash_exit.sh goodbye`.
+~~~
+>>> from subprocess import getstatusoutput # for python2: from commands import getstatusoutput
+>>> status,output=getstatusoutput('./bash_exit.sh hello')
+>>> status
+>>> status,output=getstatusoutput('./bash_exit.sh goodbye')
+>>> status
+~~~
+{: .language-python}
+See what those exit codes are. 
 
 ## Python
 
