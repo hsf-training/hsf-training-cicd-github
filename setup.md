@@ -16,7 +16,7 @@ To know whether your Python has `pytest`, just run `python -c "import pytest"`. 
 
 ## Set up ACT
 
-An optional substitute for running GitHub Actions locally is the `nektos/act` tool.
+An optional substitute for running GitHub Actions is the `nektos/act` tool, which runs GitHub commands locally.
 
 Make sure you have it properly installed. Instructions can be found at this web page [https://github.com/nektos/act](https://github.com/nektos/act#installation).
 
