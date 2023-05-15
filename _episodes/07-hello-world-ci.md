@@ -41,7 +41,7 @@ Now, let's see it in action!
 ### Run on your computer
 
 It is always nice to first test that everything works well locally before
-pushing to the git remote. For this, we need the [nektos/act](https://github.com/nektos/act) tool.
+pushing to the git remote. For this, we need the [nektos/act](https://github.com/nektos/act) tool. It should be noted from here on, the use of `act` commands are optional. One can simply use `git` to push their code to their repository instead.
 
 > ## If you cannot install `act`
 > `act` requires docker to work. If you have trouble with the installation
