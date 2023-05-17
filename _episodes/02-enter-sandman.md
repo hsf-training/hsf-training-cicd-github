@@ -141,7 +141,7 @@ fi
 ~~~
 {: .language-bash}
 
-and then make it executable `chmod +x bash_exit.sh`. Now, try running it with `./bash_exit.sh hello` and `./bash_exit.sh goodbye`. 
+and then make it executable `chmod +x bash_exit.sh`. Now, try running it with `./bash_exit.sh hello` and `./bash_exit.sh goodbye`.
 ~~~
 >>> from subprocess import getstatusoutput # for python2: from commands import getstatusoutput
 >>> status,output=getstatusoutput('./bash_exit.sh hello')
