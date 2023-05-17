@@ -46,7 +46,7 @@ pushing to the git remote. For this, we need the [nektos/act](https://github.com
 > ## If you cannot install `act`
 > `act` requires docker to work. If you have trouble with the installation
 > (for example because you are working from a cluster where `docker` is not
-> available), simply skip this section.
+> available), simply go to the github section below.
 {:.callout}
 
 You can run
