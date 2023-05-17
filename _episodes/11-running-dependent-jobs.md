@@ -87,6 +87,8 @@ We're going to talk about another useful parameter `needs`.
 > {: .solution}
 {: .challenge}
 
+>## Remeber `act` is optional
+
 If you do
 ```bash
 act -l
