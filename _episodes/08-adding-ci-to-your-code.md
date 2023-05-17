@@ -72,6 +72,8 @@ The compilation will result in an output binary called `skim`.
 
 ## Check jobs
 
+>## Remeber `act` is optional
+
 ```bash
 act -l
 ```
