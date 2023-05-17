@@ -86,7 +86,7 @@ We're going to talk about another useful parameter `needs`.
 > > {: .language-yaml}
 > {: .solution}
 {: .challenge}
-
+>## Remember `act` is optional.
 If you do
 ```bash
 act -l
