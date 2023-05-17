@@ -90,7 +90,7 @@ jobs:
 >
 > More details on matrix: [https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix).
 {: .callout}
-
+>## Remember `act` is optional.
 Let's update our `.github/workflow/main.yml` and use `act` to run the job with `matrix`.
 ```bash
 act -j build_skim

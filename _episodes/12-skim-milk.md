@@ -62,7 +62,7 @@ skim:
         run: ./skim
 ~~~
 {: .language-yaml}
-
+>## Remember `act` is optional.
 Let's do a quick check
 ```bash
 act -l
