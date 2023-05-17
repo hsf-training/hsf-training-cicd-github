@@ -63,6 +63,8 @@ skim:
 ~~~
 {: .language-yaml}
 
+>## Remeber `act` is optional
+
 Let's do a quick check
 ```bash
 act -l
