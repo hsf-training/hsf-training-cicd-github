@@ -94,7 +94,7 @@ jobs:
 >## `act` is optional.
 >
 > Remember that `act` is not required but encouraged for completeing this workshop.
-{: .callout} 
+{: .callout}
 
 Let's update our `.github/workflow/main.yml` and use `act` to run the job with `matrix`.
 ```bash
