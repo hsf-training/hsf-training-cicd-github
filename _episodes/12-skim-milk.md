@@ -62,7 +62,12 @@ skim:
         run: ./skim
 ~~~
 {: .language-yaml}
->## Remember `act` is optional.
+
+>## `act` is optional.
+>
+> Remember that `act` is not required but encouraged for completeing this workshop.
+{: .callout} 
+
 Let's do a quick check
 ```bash
 act -l
