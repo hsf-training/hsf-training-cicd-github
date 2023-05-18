@@ -90,7 +90,7 @@ We're going to talk about another useful parameter `needs`.
 >## `act` is optional.
 >
 > Remember that `act` is not required but encouraged for completeing this workshop.
-{: .callout} 
+{: .callout}
 
 If you do
 ```bash
