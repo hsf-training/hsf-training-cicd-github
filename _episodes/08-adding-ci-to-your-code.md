@@ -71,7 +71,12 @@ The compilation will result in an output binary called `skim`.
 <!--![CI/CD Two Parallel Jobs]({{site.baseurl}}/fig/ci-cd-two-parallel-jobs.png)-->
 
 ## Check jobs
->## Remember `act` is optional.
+
+>## `act` is optional.
+>
+> Remember that `act` is not required but encouraged for completeing this workshop.
+{: .callout} 
+
 ```bash
 act -l
 ```
