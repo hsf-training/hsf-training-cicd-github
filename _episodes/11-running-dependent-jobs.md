@@ -86,7 +86,12 @@ We're going to talk about another useful parameter `needs`.
 > > {: .language-yaml}
 > {: .solution}
 {: .challenge}
->## Remember `act` is optional.
+
+>## `act` is optional.
+>
+> Remember that `act` is not required but encouraged for completeing this workshop.
+{: .callout} 
+
 If you do
 ```bash
 act -l
