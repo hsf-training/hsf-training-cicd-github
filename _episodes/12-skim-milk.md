@@ -66,7 +66,7 @@ skim:
 >## `act` is optional.
 >
 > Remember that `act` is not required but encouraged for completeing this workshop.
-{: .callout} 
+{: .callout}
 
 Let's do a quick check
 ```bash
