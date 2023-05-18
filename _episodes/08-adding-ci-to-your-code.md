@@ -75,7 +75,7 @@ The compilation will result in an output binary called `skim`.
 >## `act` is optional.
 >
 > Remember that `act` is not required but encouraged for completeing this workshop.
-{: .callout} 
+{: .callout}
 
 ```bash
 act -l
