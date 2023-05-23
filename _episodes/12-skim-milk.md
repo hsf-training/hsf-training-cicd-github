@@ -65,7 +65,7 @@ skim:
 
 >## `act` is optional.
 >
-> Remember that `act` is not required but encouraged for completeing this workshop.
+> Remember, `act` is not required but encouraged for completeing this workshop.
 {: .callout}
 
 Let's do a quick check
