@@ -141,19 +141,13 @@ fi
 ~~~
 {: .language-bash}
 
-and then make it executable `chmod +x bash_exit.sh`. Now, try running it with `./bash_exit.sh hello` and `./bash_exit.sh goodbye`.
-~~~
->>> from subprocess import getstatusoutput # for python2: from commands import getstatusoutput
->>> status,output=getstatusoutput('./bash_exit.sh hello')
->>> status
->>> status,output=getstatusoutput('./bash_exit.sh goodbye')
->>> status
-~~~
-{: .language-python}
+and then make it an executable `chmod +x bash_exit.sh`.  Let's check the exit code wit `echo $?`.
+
 See what those exit codes are.
+
 ## Python
 
-Create a file called `python_exit.py` with the following content:
+The same can be done in a python file. Create a file called `python_exit.py` with the following content:
 
 ~~~
 #!/usr/bin/env python3
@@ -168,7 +162,7 @@ else:
 ~~~
 {: .language-python}
 
-and then make it executable `chmod +x python_exit.py`. Now, try running it with `./python_exit.py hello` and `./python_exit.py goodbye` and see what those exit codes are. Déjà vu?
+and then make it an executable `chmod +x python_exit.py`.  Let's check the exit code wit `echo $?`. Déjà vu?
 
 # Ignoring Exit Codes
 
