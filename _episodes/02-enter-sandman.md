@@ -119,6 +119,7 @@ As you've seen above, the exit code from the last executed command is stored in 
 2
 ~~~
 {: .language-python}
+
 Once inside the Python interpreter, simply type `exit()` then press enter, to exit. It may happen that this returns a different exit code than from the command line (indicating there's some internal implementation in Python). All you need to be concerned with is that the exit code was non-zero (there was an error).
 
 # Setting Exit Codes
@@ -141,7 +142,7 @@ fi
 ~~~
 {: .language-bash}
 
-and then make it an executable `chmod +x bash_exit.sh`.  Let's check the exit code wit `echo $?`. See what those exit codes are.
+and then make it an executable `chmod +x bash_exit.sh`.  Let's check the exit code with `echo $?`. See what those exit codes are.
 
 ## Python
 
@@ -160,7 +161,7 @@ else:
 ~~~
 {: .language-python}
 
-and then make it an executable `chmod +x python_exit.py`.  Let's check the exit code wit `echo $?`. Déjà vu?
+and then make it an executable `chmod +x python_exit.py`.  Let's check the exit code with `echo $?`. Déjà vu?
 
 # Ignoring Exit Codes
 
