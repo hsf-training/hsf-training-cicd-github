@@ -142,11 +142,11 @@ fi
 {: .language-bash}
 
 and then make it an executable `chmod +x bash_exit.sh`.  Let's check the exit code wit `echo $?`. See what those exit codes are.
+
 ## Python
 
 The same can be done in a python file. Create a file called `python_exit.py` with the following content:
 
-{: .callout}
 ~~~
 #!/usr/bin/env python3
 
