@@ -46,7 +46,7 @@ But every command outputs something differently. Instead, scripts also have an (
 ls: cannot access 'nonexistent-file': No such file or directory
 2
 ~~~
-{: .language-bash}
+{: .output}
 
 The exit code is `2` indicating failure. What about on success? The exit code is `0` like so:
 
@@ -93,9 +93,8 @@ As you've seen above, the exit code from the last executed command is stored in 
 
 > ## Snake Charming
 >
-> To enter the Python interpreter, simply type `python` in your command line.
+> To enter the Python interpreter, simply type `python3` in your command line. On some systems, you need to use the `python` command instead of `python3`. Check which version you have with `python3 --version`.
 >
-> Once inside the Python interpreter, simply type `exit()` then press enter, to exit.
 {: .callout}
 
 <!--
@@ -121,11 +120,11 @@ As you've seen above, the exit code from the last executed command is stored in 
 ~~~
 {: .language-python}
 
-It may happen that this returns a different exit code than from the command line (indicating there's some internal implementation in Python). All you need to be concerned with is that the exit code was non-zero (there was an error).
+Once inside the Python interpreter, simply type `exit()` then press enter, to exit. It may happen that this returns a different exit code than from the command line (indicating there's some internal implementation in Python). All you need to be concerned with is that the exit code was non-zero (there was an error).
 
 # Setting Exit Codes
 
-So now that we can get those exit codes, how can we set them? Let's explore this in `shell` and in `python`.
+So now that we can get those exit codes, how can we set them? Let's explore this in `shell` and in `python3`.
 
 ## Shell
 
@@ -143,14 +142,14 @@ fi
 ~~~
 {: .language-bash}
 
-and then make it executable `chmod +x bash_exit.sh`. Now, try running it with `./bash_exit.sh hello` and `./bash_exit.sh goodbye` and see what those exit codes are.
+and then make it executable `chmod +x bash_exit.sh`. Now, try running it with `./bash_exit.sh hello` and `./bash_exit.sh goodbye` and see what those exit codes are with `echo $?`.
 
 ## Python
 
-Create a file called `python_exit.py` with the following content:
+The same can be done in a python file. Create a file called `python_exit.py` with the following content:
 
 ~~~
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 

@@ -72,6 +72,11 @@ The compilation will result in an output binary called `skim`.
 
 ## Check jobs
 
+> ## `act` is optional.
+>
+> Remember, `act` is not required but encouraged for completing this workshop.
+{: .callout}
+
 ```bash
 act -l
 ```
