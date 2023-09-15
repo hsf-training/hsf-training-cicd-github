@@ -142,7 +142,7 @@ fi
 ~~~
 {: .language-bash}
 
-and then make it an executable `chmod +x bash_exit.sh`.  Let's check the exit code with `echo $?`. See what those exit codes are.
+and then make it executable `chmod +x bash_exit.sh`. Now, try running it with `./bash_exit.sh hello` and `./bash_exit.sh goodbye` and see what those exit codes are with `echo $?`.
 
 ## Python
 
@@ -161,7 +161,7 @@ else:
 ~~~
 {: .language-python}
 
-and then make it an executable `chmod +x python_exit.py`.  Let's check the exit code with `echo $?`. Déjà vu?
+and then make it executable `chmod +x python_exit.py`. Now, try running it with `./python_exit.py hello` and `./python_exit.py goodbye` and see what those exit codes are. Déjà vu?
 
 # Ignoring Exit Codes
 
