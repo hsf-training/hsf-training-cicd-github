@@ -87,7 +87,7 @@ We're going to talk about another useful parameter `needs`.
 > {: .solution}
 {: .challenge}
 
->## `act` is optional.
+> ## `act` is optional.
 >
 > Remember, `act` is not required but encouraged for completeing this workshop.
 {: .callout}

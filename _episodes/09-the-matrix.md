@@ -91,7 +91,7 @@ jobs:
 > More details on matrix: [https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix).
 {: .callout}
 
->## `act` is optional.
+> ## `act` is optional.
 >
 > Remember, `act` is not required but encouraged for completeing this workshop.
 {: .callout}
