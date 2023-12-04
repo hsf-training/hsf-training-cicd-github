@@ -84,7 +84,7 @@ To check your installation open a terminal and run:
 
   The last step is to run the push command as follows
   ```bash
-  git push -u origin master
+  git push -u origin main
   ```
   This will add the code to your GitHub account. Done!
 
