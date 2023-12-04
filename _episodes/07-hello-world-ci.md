@@ -110,7 +110,7 @@ From this page, click through until you can find the output for the successful j
 
 ## Pull Request
 
-Lastly, we'll open up a pull request for this branch, since we plan to merge this back into master when we're happy with the first iteration of the Actions.
+Lastly, we'll open up a pull request for this branch, since we plan to merge this back into main when we're happy with the first iteration of the Actions.
 
 ### Work In Progress?
 
