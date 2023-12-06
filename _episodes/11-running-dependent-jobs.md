@@ -89,7 +89,7 @@ We're going to talk about another useful parameter `needs`.
 
 > ## `act` is optional.
 >
-> Remember, `act` is not required but encouraged for completeing this workshop.
+> Remember, `act` is not required but encouraged for completing this workshop.
 {: .callout}
 
 If you do
