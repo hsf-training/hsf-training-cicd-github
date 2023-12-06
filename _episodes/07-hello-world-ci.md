@@ -112,11 +112,8 @@ From this page, click through until you can find the output for the successful j
 
 Lastly, we'll open up a pull request for this branch, since we plan to merge this back into main when we're happy with the first iteration of the Actions.
 
-### Work In Progress?
+### Draft Pull Requests
 
-If you expect to be working on a branch for a bit of time while you have a pull request open, it's good etiquette to mark it as a Work-In-Progress (WIP). However this is not a built-in feature of GitHub, it requires to install it from [GitHub Marketplace](https://github.com/marketplace/wip). Free for personal account.
-
-![Work In Progress](https://raw.githubusercontent.com/wip/app/master/assets/wip.gif)
-
+If you expect to be working on a branch for a bit of time while you have a pull request open, it's good etiquette to mark it as a "draft pull request." This makes clear to everyone that you will continue to add new commits and that it may not yet be the right time to review the pull request. Once you are ready with the work, you can mark the pull request as "ready for review."
 
 {% include links.md %}
