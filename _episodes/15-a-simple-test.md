@@ -79,7 +79,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
 >
 > > ## Done?
 > >
-> > Once you're happy with setting up the regression test, mark your merge request as ready by clicking the `Resolve WIP Status` button, and then merge it in to master.
+> > Once you're happy with setting up the regression test, mark your merge request as ready by clicking the `Resolve WIP Status` button, and then merge it in to main.
 > {: .solution}
 {: .challenge}
 
