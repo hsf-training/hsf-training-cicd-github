@@ -34,7 +34,7 @@ jobs:
         version: [6.26.10-conda, latest]
     steps:
       - name: checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: build
         run: |
@@ -56,30 +56,13 @@ skim:
   container: rootproject/root:6.26.10-conda
   steps:
       - name: checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: skim
         run: ./skim
 ~~~
 {: .language-yaml}
 
-> ## `act` is optional.
->
-> Remember, `act` is not required but encouraged for completing this workshop.
-{: .callout}
-
-Let's do a quick check
-```bash
-act -l
-```
-```
-ID          Stage  Name
-greeting    0      greeting
-build_skim  1      build_skim
-skim        2      skim
-```
-{: .output}
-We now have 3 stages.
 
 After you've added the `skim` job you can push your changes to GitHub:
 ~~~
@@ -111,18 +94,18 @@ Ok, fine. That was way too easy. It seems we have a few issues to deal with. The
 Artifacts are used to upload (`upload-artifact`) and download  (`download-artifact`) files and directories which should be attached to the job after this one has completed. That way it can share those files with another job in the same workflow.
 
 > ## More Reading
-> - [https://docs.github.com/en/free-pro-team@latest/actions/guides/storing-workflow-data-as-artifacts](https://docs.github.com/en/free-pro-team@latest/actions/guides/storing-workflow-data-as-artifacts)
+> - [https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts](https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts)
 {: .checklist}
 
 > ## Passing data between two jobs in a workflow
 > ~~~
 > job_1:
->   - uses: actions/upload-artifact@v3
+>   - uses: actions/upload-artifact@v4
 >     with:
 >       name: <name>
 >       path: <file>
 > job_2:
->   - uses: actions/download-artifact@v3
+>   - uses: actions/download-artifact@v4
 >     with:
 >       name: <name>
 > ~~~
@@ -149,7 +132,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >       version: [6.26.10-conda, latest]
 > >   steps:
 > >     - name: checkout repository
-> >       uses: actions/checkout@v3
+> >       uses: actions/checkout@v4
 > >
 > >     - name: build
 > >       run: |
@@ -157,7 +140,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >         FLAGS=$(root-config --cflags --libs)
 > >         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 > >
-> >     - uses: actions/upload-artifact@v3
+> >     - uses: actions/upload-artifact@v4
 > >       with:
 > >         name: skim{% raw %}${{ matrix.version }}{% endraw %}
 > >         path: skim
@@ -168,9 +151,9 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >   container: rootproject/root:6.26.10-conda
 > >   steps:
 > >     - name: checkout repository
-> >       uses: actions/checkout@v3
+> >       uses: actions/checkout@v4
 > >
-> >     - uses: actions/download-artifact@v3
+> >     - uses: actions/download-artifact@v4
 > >       with:
 > >         name: skim6.26.10
 > >

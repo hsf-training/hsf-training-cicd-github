@@ -9,7 +9,7 @@ questions:
   - How can I give my GitHub actions private information?
 hidden: false
 keypoints:
-  - Encrypted secrets in GitHub actions allow you to hide protected information from others who can see your code
+  - Secrets in GitHub actions allow you to hide protected information from others who can see your code
 ---
 <!-- Service accounts provide an extra layer of security between the outside world and your account-->
 <iframe width="560" height="315" src="https://www.youtube.com/embed/arfeBX-wOxs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -26,7 +26,7 @@ keypoints:
 >       version: [6.26.10-conda, latest]
 >   steps:
 >     - name: checkout repository
->       uses: actions/checkout@v3
+>       uses: actions/checkout@v4
 >
 >     - name: build
 >       run: |
@@ -34,7 +34,7 @@ keypoints:
 >         FLAGS=$(root-config --cflags --libs)
 >         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 >
->     - uses: actions/upload-artifact@v3
+>     - uses: actions/upload-artifact@v4
 >       with:
 >         name: skim{% raw %}${{ matrix.version }}{% endraw %}
 >         path: skim
@@ -44,9 +44,9 @@ keypoints:
 >   container: rootproject/root:6.26.10-conda
 >   steps:
 >     - name: checkout repository
->       uses: actions/checkout@v3
+>       uses: actions/checkout@v4
 >
->     - uses: actions/download-artifact@v3
+>     - uses: actions/download-artifact@v4
 >       with:
 >         name: skim6.26.10-conda
 >
@@ -82,9 +82,9 @@ Our YAML file should look like
    container: rootproject/root:6.26.10-conda
    steps:
      - name: checkout repository
-       uses: actions/checkout@v3
+       uses: actions/checkout@v4
 
-     - uses: actions/download-artifact@v3
+     - uses: actions/download-artifact@v4
        with:
          name: skim6.26.10
 
@@ -107,33 +107,29 @@ Error: n <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3010] Una
 The data we're using are on CERN User Storage (EOS). As a general rule, access to protected data should be authenticated, CERN can’t just grab it!.
 It means we need to give our GitHub Actions access to our data. CERN uses `kinit` for access control.
 
+Anyhow, this is pretty much done by executing `echo $USER_PASS | kinit $USER_NAME@CERN.CH` assuming that we've set the corresponding environment variables.
 
-Anyhow, this is pretty much done by executing `printf $USER_PASS | base64 -d | kinit $USER_NAME@CERN.CH` assuming that we've set the corresponding environment variables by safely encoding them (`printf "hunter42" | base64`).
+If you are not a CERN user, don't worry. We have a backup solution for you!
+You can use this file `root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root` and skip the rest of this lesson.
 
 > ## Running example
 >
 > Sometimes you'll run into a code example here that you might want to run locally but relies on variables you might not have set? Sure, simply do the following
 > ~~~
-> USER_PASS=hunter42 USER_NAME=GoodWill printf $USER_PASS | base64 -d | kinit $USER_NAME
+> USER_PASS=hunter42 USER_NAME=GoodWill echo $USER_PASS | kinit $USER_NAME@CERN.CH
 > ~~~
 > {: .language-bash}
 {: .callout}
 
-> ## Base-64 encoding?
->
-> Sometimes you have a string that contains certain characters that would be interpreted incorrectly by GitHub Actions runners. In order to protect against that, you can safely base-64 encode the string, store it, and then decode it as part of the Actions job. This is entirely safe and recommended.
-{: .callout}
-
-# Encrypted secrets
+# GitHub secrets
 
 We first have to store our sensitive information in GitHub:
 
-1. navigate to the main page of the repository.
-2. select `Settings`.
-3. in the left sidebar, go to `Secrets` and then `New repository secret`.
-4. type `USER_NAME` in the Name input box and add the secret value.
-5. similarly add `USER_PASS` as well.
-6. Click to save the variables.
+1. Navigate to the main page of the repository.
+2. Select `Settings`.
+3. In the left sidebar, go to `Secrets and variables`, then `Actions`, and then `New repository secret`.
+4. Type `USER_NAME` in the Name input box and add your username in the Secret input box.
+5. Similarly add `USER_PASS` as well.
 
 > ## DON'T PEEK
 >
@@ -148,17 +144,17 @@ Note that there are some rules applied to secret names:
 - Secret names can only contain alphanumeric characters ([a-z], [A-Z], [0-9]) or underscores (_). Spaces are not allowed.
 - Secret names must not start with the GITHUB_ prefix.
 - Secret names must not start with a number.
-- Secret names must be unique at the level they are created at. For example, a - - secret created at the organization-level must have a unique name at that level, and a secret created at the repository-level must have a unique name in that repository. If an organization-level secret has the same name as a repository-level secret, then the repository-level secret takes precedence.
+- Secret names must be unique at the level they are created at. For example, a secret created at the organization-level must have a unique name at that level, and a secret created at the repository-level must have a unique name in that repository. If an organization-level secret has the same name as a repository-level secret, then the repository-level secret takes precedence.
 
 
 
-> ## Access encrypted secrets
+> ## Access secrets
 > The secrets you've created are available to use in GitHub Actions workflows. GitHub allows to access them using secrets context: $\{\{ secrets.\<secret name\> \}\}.
 >
 > e.g:
 >
 > ~~~
-> printf {% raw %}${{ secrets.USER_PASS }}{% endraw %} | base64 -d | kinit {% raw %}${{ secrets.USER_NAME }}{% endraw %}@CERN.CH
+> echo {% raw %}${{ secrets.USER_PASS }}{% endraw %} | kinit {% raw %}${{ secrets.USER_NAME }}{% endraw %}@CERN.CH
 > ~~~
 > {: .language-bash}
 {: .challenge}
@@ -171,7 +167,7 @@ Note that there are some rules applied to secret names:
 
 
 > ## Further Reading
-> - [https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)
+> - [https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
 {: .checklist}
 
 # Adding Artifacts on Success
@@ -191,28 +187,26 @@ As it seems like we have a complete CI/CD that does physics - we should see what
 > >    container: rootproject/root:6.26.10-conda
 > >    steps:
 > >      - name: checkout repository
-> >        uses: actions/checkout@v3
+> >        uses: actions/checkout@v4
 > >
-> >      - uses: actions/download-artifact@v3
+> >      - uses: actions/download-artifact@v4
 > >        with:
 > >          name: skim6.26.10
 > >
 > >      - name: access control
-> >        run: printf {% raw %}${{ secrets.USER_PASS }}{% endraw %} | base64 -d | kinit {% raw %}${{ secrets.USER_NAME }}{% endraw %}@CERN.CH
+> >        run: echo {% raw %}${{ secrets.USER_PASS }}{% endraw %} | kinit {% raw %}${{ secrets.USER_NAME }}{% endraw %}@CERN.CH
 > >
 > >      - name: skim
 > >        run: |
 > >          chmod +x ./skim
 > >          ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
 > >
-> >      - uses: actions/upload-artifact@v3
+> >      - uses: actions/upload-artifact@v4
 > >        with:
 > >          name: skim_ggH
 > >          path: skim_ggH.root
 > > ~~~
 > > {: .language-yaml}
-> If you are not a CERN user, don't worry. We have a backup solution for you!
-> <br/>CERN public storage: `root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root`.
 > {: .solution}
 {: .challenge}
 

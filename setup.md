@@ -12,34 +12,7 @@ questions:
 
 Part of this lesson consists in learning how to make scripts exit correctly. At some point, we will need to test exit codes with Pytest, Python testing tool.
 
-To know whether your Python has `pytest`, just run `python -c "import pytest"`. If this command returns nothing, it means everything is fine. Otherwise, please visit [https://docs.pytest.org/en/stable/getting-started.html](https://docs.pytest.org/en/stable/getting-started.html) for installation.
-
-## Set up ACT
-
-We will need the `nektos/act` tool to run GitHub Actions locally.
-
-Make sure you have it properly installed. Instructions can be found at this web page [https://github.com/nektos/act](https://github.com/nektos/act#installation).
-
-Once the installation is done, you can run a quick test:
-```bash
-act --version
-```
-
-## Set up Docker
-
-`nektos/act` uses `Docker` to run GitHub Actions on your computer. Therefore you must have Docker installed.
-
-If this is not the case, follow the above link for instructions.
-
-- Install Docker:  [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
-<!-- Mac OS:  [https://docs.docker.com/docker-for-mac/install/](https://docs.docker.com/docker-for-mac/install/)-->
-<!-- Windows: [https://docs.docker.com/docker-for-windows/install/](https://docs.docker.com/docker-for-windows/install/)-->
-
-To check your installation open a terminal and run:
-  ```bash
-  docker --version
-  ```
-**Note** that you may have to run with *sudo*. If you don’t want to preface the *docker* command with *sudo*, you may need to checkout [https://docs.docker.com/engine/install/linux-postinstall/](https://docs.docker.com/engine/install/linux-postinstall/).
+To know whether your Python has `pytest`, just run `python -c "import pytest"`. If this command returns nothing, it means everything is fine. Otherwise, it can be installed by running `python -m pip install -U pytest`. More information can be found in the [`pytest` website](https://docs.pytest.org/en/stable/getting-started.html) for installation.
 
 
 ## Set up the code

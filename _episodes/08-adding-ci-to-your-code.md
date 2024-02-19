@@ -68,27 +68,9 @@ The compilation will result in an output binary called `skim`.
 > {: .solution}
 {: .challenge}
 
-<!--![CI/CD Two Parallel Jobs]({{site.baseurl}}/fig/ci-cd-two-parallel-jobs.png)-->
-
 ## Check jobs
 
-> ## `act` is optional.
->
-> Remember, `act` is not required but encouraged for completing this workshop.
-{: .callout}
-
-```bash
-act -l
-```
-<!--![Act two parallel jobs]({{site.baseurl}}/fig/act_list_parallel_jobs.png)-->
-```
-ID          Stage  Name
-build_skim  0      build_skim
-greeting    0      greeting
-```
-{: .output}
-
-We can see 2 parallel jobs. Let's commit the changes we made.
+Let's commit and push the changes we made, and let's go to GitHub to check if both jobs ran.
 
 ```bash
 git add .github/workflows/main.yml
@@ -101,72 +83,39 @@ git push -u origin feature/add-actions
 
 ## No root-config?
 
-Ok, so maybe we were a little naive here. Let's start debugging locally.
+Ok, so maybe we were a little naive here. GitHub runners come pre-installed with a wide variety of software that is commonly needed in CI workflows (e.g. for Ubuntu 22.04 runners the list can be found [here](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md)). ROOT is not pre-installed, so we will have to add a step to install it ourselves. After reading the ROOT documentation, we find that a convenient way to get it installed for most linux distributions is using Conda. Here's how we can do it.
 
-We can reproduce this error:
-```bash
-act -j build_skim
+```yaml
+build_skim:
+  runs-on: ubuntu-latest
+  defaults:
+    run:
+      shell: bash -el {0}
+  steps:
+    - name: Install ROOT
+      uses: mamba-org/setup-micromamba@v1
+      with:
+        environment-name: env
+        create-args: root
+    - name: build
+      run: |
+        COMPILER=$(root-config --cxx)
+        $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 ```
-
-You got this error when you tried to build
-<!--![CI/CD Two Parallel Jobs]({{site.baseurl}}/fig/act_run_parallel_jobs_failure.png)-->
-```
-[example/build_skim] 🚀  Start image=catthehacker/ubuntu:act-latest
-[example/build_skim]   🐳  docker run image=catthehacker/ubuntu:act-latest entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
-[example/build_skim] ⭐  Run COMPILER=$(root-config --cxx)
-$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
-| /github/workflow/0: line 1: root-config: command not found
-[example/build_skim]   ❌  Failure - COMPILER=$(root-config --cxx)
-```
-{: .output}
-
-> ## Broken Build
->
-> What happened?
->
-> > ## Answer
-> > It turns out we had the wrong docker image for our build. If you look at the log, you'll see
-> > ~~~
-> > 🚀  Start image=catthehacker/ubuntu:act-latest
-> >   🐳  docker run image=catthehacker/ubuntu:act-latest entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
-> > ~~~
-> > {: .output}
-> > How do we fix it? We need to define the image with ROOT installed.
-> {: .solution}
-{: .challenge}
-
-> ## Docker???
->
-> Don't panic. You do not need to understand docker to be able to use it.
-{: .callout}
-
-Let's go ahead and update our `.github/workflow/main.yml` and fix it to use a versioned docker image that has `root`: `rootproject/root:6.26.10-conda` from the [rootproject/root](https://hub.docker.com/r/rootproject/root) docker hub page.
-
-~~~
-runs-on: ubuntu-latest
-container: rootproject/root:6.26.10-conda
-~~~
-{: .language-yaml}
-
-If you run again `act -j build_skim`, you see
-```
-[example/build_skim] 🚀  Start image=rootproject/root:6.26.10-conda
-```
-{: .output}
 
 
 > ## Failed again???
 >
 > What's that?
-<!-- ![Error no such file]({{site.baseurl}}/fig/act_error_no_such_file.png)-->
-> <br/>error: skim.cxx: No such file or directory
+>
+> `cc1plus: fatal error: skim.cxx: No such file or directory`
 >
 > > ## Answer
 > > It seems the job cannot access the repository. We need to instruct GitHub actions to checkout the repository.
 > > ~~~
 > > steps:
 > >    - name: checkout repository
-> >      uses: actions/checkout@v3
+> >      uses: actions/checkout@v4
 > > ~~~
 > > {: .language-yaml}
 > > Let’s go ahead and tell our CI to checkout the repository.
@@ -196,48 +145,31 @@ If you run again `act -j build_skim`, you see
 
 Ok, let's go ahead and update our `.github/workflow/main.yml` again, and it better be fixed or so help me...
 
+## Simplyfing our CI with container images
 
-<!--If you already have ROOT installed on your computer, you can run
-~~~
-cd virtual-pipelines-eventselection
-COMPILER=$(root-config --cxx)
-$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
-~~~
-{: .language-bash}
-No worries if you don't have ROOT, use `Docker` instead
-~~~
-cd virtual-pipelines-eventselection
-docker run -it --rm -v $PWD:/virtual-pipelines-eventselection -w /virtual-pipelines-eventselection rootproject/root:6.26.10-conda /bin/bash
-COMPILER=$(root-config --cxx)
-$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
-exit  # quit interactive Docker session
-~~~
-{: .language-bash}
-**Note** that you may have to run `docker` with sudo.-->
+As we saw before, GitHub pre-installs many common software packages and libraries that people might need, but often we need to install additional software. There are often actions we can use for this, like `actions/setup-python` to install python or `mamba-org/setup-micromamba` to install Mamba (an alternative to Conda). These actions are simply repositories that contain scripts to install or perform certain actions. You can find more information about these actions by going to github.com/\<name-of-action\>. For example, for `mamba-org/setup-micromamba` you can find more information at [https://github.com/mamba-org/setup-micromamba](https://github.com/mamba-org/setup-micromamba).
 
-<!--
-## Environment variables
+Sometimes it is more convenient to work with a container image that comes pre-installed with the software we need. There are several tools that are used for containerization, like Docker, Podman, and Apptainer (formerly Singularity). For this tutorial you don't need to know anything about containerization. You can just think of this as the base software set that comes pre-installed on the system that runs your code.
 
-We could separate the environment variables being set like `COMPILER=$(root-config --cxx)` in the last step since this is actually preparation for setting up our environment -- rather than part of the script we want to test! For example,
+We will be using the Docker images hosted at the [`rootproject/root` Docker Hub](https://hub.docker.com/r/rootproject/root). Let's start by using the image with tag `6.26.10-conda`. Our `build_skim` job will now look like this.
 
-~~~
+```yaml
 build_skim:
   runs-on: ubuntu-latest
-  container: rootproject/root:latest
+  container: rootproject/root:6.26.10-conda
   steps:
     - name: checkout repository
-      uses: actions/checkout@v3
-
+      uses: actions/checkout@v4
     - name: build
-      run: $COMPILER skim.cxx -o skim `root-config --cflags --glibs`
-      env:
-        COMPILER: $(root-config --cxx)
-~~~
-{: .language-yaml}
-`env` can be set under `job:steps:` or under `job:` as well. For more details, you can checkout out: [https://docs.github.com/en/actions/reference/environment-variables](https://docs.github.com/en/actions/reference/environment-variables).
--->
+      run: |
+        COMPILER=$(root-config --cxx)
+        FLAGS=$(root-config --cflags --libs)
+        $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
+```
 
-# Building multiple versions
+Note the extra line `container: rootproject/root:6.26.10-conda` that specifies the container image that we want to use. Since it comes pre-packages with ROOT we no longer need to have a step to install it. This image also contains other tools that we will need for the rest of the tutorial.
+
+## Building multiple versions
 
 Great, so we finally got it working... Let's build both the version of the code we're testing and also test that the latest ROOT image (`rootproject/root:latest`) works with our code. Call this new job `build_skim_latest`.
 
@@ -259,7 +191,7 @@ Great, so we finally got it working... Let's build both the version of the code 
 > >     container: rootproject/root:6.26.10-conda
 > >     steps:
 > >       - name: checkout repository
-> >         uses: actions/checkout@v3
+> >         uses: actions/checkout@v4
 > >
 > >       - name: build
 > >         run: |
@@ -272,7 +204,7 @@ Great, so we finally got it working... Let's build both the version of the code 
 > >     container: rootproject/root:latest
 > >     steps:
 > >       - name: checkout repository
-> >         uses: actions/checkout@v3
+> >         uses: actions/checkout@v4
 > >
 > >       - name: latest
 > >         run: |
@@ -285,7 +217,7 @@ Great, so we finally got it working... Let's build both the version of the code 
 {: .challenge}
 
 
-## Dependabot for updating gh action version
+# Dependabot for updating gh action version
 
 Github actions are accompanied by the tags ("@v2"...) which are versions/tags of that action. One might need to update this tags for example from "@v2" to "@v3" because the Github actions developers may fix existing bugs to the action or there may be other updates.
 

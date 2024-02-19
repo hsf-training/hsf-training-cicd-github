@@ -33,7 +33,7 @@ jobs:
     container: rootproject/root:6.26.10-conda
     steps:
       - name: checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: build
         run: |
           COMPILER=$(root-config --cxx)
@@ -45,7 +45,7 @@ jobs:
     container: rootproject/root:latest
     steps:
       - name: checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: latest
         run: |
           COMPILER=$(root-config --cxx)
@@ -73,7 +73,7 @@ jobs:
 >        version: [6.26.10-conda, latest]
 >    steps:
 >      - name: checkout repository
->        uses: actions/checkout@v3
+>        uses: actions/checkout@v4
 >
 >      - name: build
 >         run: |
@@ -91,43 +91,6 @@ jobs:
 > More details on matrix: [https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix).
 {: .callout}
 
-> ## `act` is optional.
->
-> Remember, `act` is not required but encouraged for completing this workshop.
-{: .callout}
-
-Let's update our `.github/workflow/main.yml` and use `act` to run the job with `matrix`.
-```bash
-act -j build_skim
-```
-
-```
-[example/build_skim-1] 🧪  Matrix: map[version:6.26.10-conda]
-[example/build_skim-1] 🚀  Start image=rootproject/root:6.26.10-conda
-[example/build_skim-2] 🧪  Matrix: map[version:latest]
-[example/build_skim-2] 🚀  Start image=rootproject/root:latest
-[example/build_skim-1]   🐳  docker run image=rootproject/root:6.26.10-conda entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
-[example/build_skim-1]   🐳  docker cp src=/tmp/eventselection/. dst=/github/workspace
-[example/build_skim-1] ⭐  Run checkout repository
-[example/build_skim-1]   ✅  Success - checkout repository
-[example/build_skim-1] ⭐  Run COMPILER=$(root-config --cxx)
-FLAGS=$(root-config --cflags --libs)
-$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-[example/build_skim-1]   ✅  Success - COMPILER=$(root-config --cxx)
-FLAGS=$(root-config --cflags --libs)
-$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-[example/build_skim-2]   🐳  docker run image=rootproject/root:latest entrypoint=["/usr/bin/tail" "-f" "/dev/null"] cmd=[]
-[example/build_skim-2]   🐳  docker cp src=/tmp/eventselection/. dst=/github/workspace
-[example/build_skim-2] ⭐  Run checkout repository
-[example/build_skim-2]   ✅  Success - checkout repository
-[example/build_skim-2] ⭐  Run COMPILER=$(root-config --cxx)
-FLAGS=$(root-config --cflags --libs)
-$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-[example/build_skim-2]   ✅  Success - COMPILER=$(root-config --cxx)
-FLAGS=$(root-config --cflags --libs)
-$COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
-```
-{: .output}
 
 We can push the changes to GitHub and see how it will look like.
 ~~~

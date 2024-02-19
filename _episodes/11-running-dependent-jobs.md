@@ -30,7 +30,7 @@ jobs:
        version: [6.26.10-conda, latest]
    steps:
      - name: checkout repository
-       uses: actions/checkout@v3
+       uses: actions/checkout@v4
 
      - name: build
        run: |
@@ -75,7 +75,7 @@ We're going to talk about another useful parameter `needs`.
 > >       version: [6.26.10-conda, latest]
 > >   steps:
 > >     - name: checkout repository
-> >       uses: actions/checkout@v3
+> >       uses: actions/checkout@v4
 > >
 > >     - name: build
 > >       run: |
@@ -87,22 +87,6 @@ We're going to talk about another useful parameter `needs`.
 > {: .solution}
 {: .challenge}
 
-> ## `act` is optional.
->
-> Remember, `act` is not required but encouraged for completing this workshop.
-{: .callout}
-
-If you do
-```bash
-act -l
-```
-you should see stages: `build_skim` will run after `greeting`
-```
-ID          Stage  Name
-greeting    0      greeting
-build_skim  1      build_skim
-```
-{: .output}
 
 Let's go ahead and add those changes and look at GitHub.
 ```bash
