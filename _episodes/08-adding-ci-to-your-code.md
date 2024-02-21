@@ -12,7 +12,11 @@ keypoints:
   - Setting up CI/CD shouldn't be mind-numbing
   - All defined jobs run in parallel by default
 ---
+
+<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/fjIBMRUKVOI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
+
 # Time To Skim
 
 ## The Naive Attempt
@@ -83,32 +87,32 @@ git push -u origin feature/add-actions
 
 ## No root-config?
 
-Ok, so maybe we were a little naive here. GitHub runners come pre-installed with a wide variety of software that is commonly needed in CI workflows (e.g. for Ubuntu 22.04 runners the list can be found [here](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md)). ROOT is not pre-installed, so we will have to add a step to install it ourselves. After reading the ROOT documentation, we find that a convenient way to get it installed for most linux distributions is using Conda. Here's how we can do it.
+Ok, so maybe we were a little naive here. GitHub runners come pre-installed with a wide variety of software that is commonly needed in CI workflows (e.g. for Ubuntu 22.04 runners the list can be found [here](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md)). ROOT is not pre-installed, so we will have to add a step to install it ourselves. After reading the [ROOT documentation](https://root.cern/install/#run-in-a-docker-container), we find that a convenient way to run it on various systems is using something called a Docker container.
+
+There are several tools that are used for containerization, like Docker, Podman, and Apptainer (formerly Singularity). For this tutorial you don't need to know anything about containerization. You can just think of this as the base software set that comes pre-installed on the system that runs your code.
+
+We will be using the Docker images hosted at the [`rootproject/root` Docker Hub](https://hub.docker.com/r/rootproject/root). Let's start by using the image with tag `6.26.10-conda`.
 
 ```yaml
 build_skim:
   runs-on: ubuntu-latest
-  defaults:
-    run:
-      shell: bash -el {0}
+  container: rootproject/root:6.26.10-conda
   steps:
-    - name: Install ROOT
-      uses: mamba-org/setup-micromamba@v1
-      with:
-        environment-name: env
-        create-args: root
+    - name: checkout repository
+      uses: actions/checkout@v4
     - name: build
       run: |
         COMPILER=$(root-config --cxx)
         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 ```
 
+Note the extra line `container: rootproject/root:6.26.10-conda` that specifies the container image that we want to use. Since it comes pre-packages with ROOT we no longer need to have a step to install it. This image also contains other tools that we will need for the rest of the tutorial.
 
 > ## Failed again???
 >
 > What's that?
 >
-> `cc1plus: fatal error: skim.cxx: No such file or directory`
+> `error: skim.cxx: No such file or directory`
 >
 > > ## Answer
 > > It seems the job cannot access the repository. We need to instruct GitHub actions to checkout the repository.
@@ -145,29 +149,33 @@ build_skim:
 
 Ok, let's go ahead and update our `.github/workflow/main.yml` again, and it better be fixed or so help me...
 
-## Simplyfing our CI with container images
+## Ways to get software
 
 As we saw before, GitHub pre-installs many common software packages and libraries that people might need, but often we need to install additional software. There are often actions we can use for this, like `actions/setup-python` to install python or `mamba-org/setup-micromamba` to install Mamba (an alternative to Conda). These actions are simply repositories that contain scripts to install or perform certain actions. You can find more information about these actions by going to github.com/\<name-of-action\>. For example, for `mamba-org/setup-micromamba` you can find more information at [https://github.com/mamba-org/setup-micromamba](https://github.com/mamba-org/setup-micromamba).
 
-Sometimes it is more convenient to work with a container image that comes pre-installed with the software we need. There are several tools that are used for containerization, like Docker, Podman, and Apptainer (formerly Singularity). For this tutorial you don't need to know anything about containerization. You can just think of this as the base software set that comes pre-installed on the system that runs your code.
 
-We will be using the Docker images hosted at the [`rootproject/root` Docker Hub](https://hub.docker.com/r/rootproject/root). Let's start by using the image with tag `6.26.10-conda`. Our `build_skim` job will now look like this.
+If we wanted to use Conda instead of Docker, our `build_skim` job would look like this:
 
 ```yaml
 build_skim:
   runs-on: ubuntu-latest
-  container: rootproject/root:6.26.10-conda
+  defaults:
+    run:
+      shell: bash -el {0}
   steps:
     - name: checkout repository
       uses: actions/checkout@v4
+    - name: Install ROOT
+      uses: mamba-org/setup-micromamba@v1
+      with:
+        environment-name: env
+        create-args: root
     - name: build
       run: |
         COMPILER=$(root-config --cxx)
         FLAGS=$(root-config --cflags --libs)
         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 ```
-
-Note the extra line `container: rootproject/root:6.26.10-conda` that specifies the container image that we want to use. Since it comes pre-packages with ROOT we no longer need to have a step to install it. This image also contains other tools that we will need for the rest of the tutorial.
 
 ## Building multiple versions
 

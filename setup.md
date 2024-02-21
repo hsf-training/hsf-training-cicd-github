@@ -4,9 +4,9 @@ questions:
 - "What do I need to start?"
 ---
 
-<!--## Video Tutorials-->
+<!--## Video Tutorials
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-Xd5D6xKugk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+-->
 
 ## Set up Python
 
@@ -55,11 +55,12 @@ To know whether your Python has `pytest`, just run `python -c "import pytest"`. 
   git remote -v
   ```
 
-  The last step is to run the push command as follows
+  The last step is to rename the branch to main, and push it to GitHub.
   ```bash
+  git branch -M main
   git push -u origin main
   ```
-  This will add the code to your GitHub account. Done!
+  This will add the code to your new repository on GitHub. Done!
 
 If you're having issues, **please let us know immediately**
 since you might not be able to follow this lesson without a proper setup.

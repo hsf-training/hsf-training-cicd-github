@@ -10,7 +10,11 @@ hidden: false
 keypoints:
   - We can specify dependencies between jobs running in a series using the needs value.
 ---
+
+<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1pnxBc33oyo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
+
 # Defining dependencies
 
 From the last session, we're starting with
@@ -44,7 +48,7 @@ We're going to talk about another useful parameter `needs`.
 
 > ## Specify dependencies between jobs
 >
-> The key-value `needs: jobs or list of jobs` allows you to specify dependencies between jobs in the order you define.
+> The key-value `needs: job or list of jobs` allows you to specify dependencies between jobs in the order you define.
 > <br/>Example:
 > ~~~
 > job2:

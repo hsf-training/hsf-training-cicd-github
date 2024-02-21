@@ -12,10 +12,12 @@ keypoints:
   - Using `matrix` allows to test the code against a combination of versions.
 ---
 
+<!--
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/o4vZf3Pr6rY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <iframe width="420" height="236" src="https://i.gifer.com/1TpS.gif" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
+-->
 
 # Matrix
 

@@ -11,7 +11,10 @@ keypoints:
   - Creating `.github/workflows/main.yml` is the first step to salvation.
   - Pipelines are made of jobs with steps.
 ---
+
+<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/iAOMjGiksUc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
 
 ## Adding CI/CD to a project
 
@@ -19,6 +22,12 @@ The first thing we'll do is create a `.github/workflows/main.yml` file in the pr
 ```bash
 cd virtual-pipelines-eventselection/
 mkdir -p .github/workflows
+touch .github/workflows/main.yml
+```
+
+This repository happens to already contain a workflow, so let's delete it so we can focus on our own workflow.
+```bash
+rm .github/workflows/test-analysis.yml
 ```
 
 Open `.github/workflows/main.yml` with your favorite editor and add the following
@@ -29,7 +38,7 @@ jobs:
   greeting:
     runs-on: ubuntu-latest
     steps:
-      -run: echo hello world
+      - run: echo hello world
 ~~~
 {: .language-yaml}
 

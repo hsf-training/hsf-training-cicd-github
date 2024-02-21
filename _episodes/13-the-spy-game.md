@@ -12,7 +12,10 @@ keypoints:
   - Secrets in GitHub actions allow you to hide protected information from others who can see your code
 ---
 <!-- Service accounts provide an extra layer of security between the outside world and your account-->
+
+<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/arfeBX-wOxs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
 
 > ## Recall
 >

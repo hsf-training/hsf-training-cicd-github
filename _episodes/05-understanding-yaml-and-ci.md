@@ -13,7 +13,10 @@ keypoints:
   - Actions are standalone commands that are combined into steps to create a job.
   - Workflows are made up of one or more jobs and can be scheduled or triggered.
 ---
+
+<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PwVUVkvcM5A" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
 
 # GitHub Actions YAML
 
@@ -44,7 +47,7 @@ For more details, check [this link](https://docs.github.com/en/free-pro-team@lat
 >
 > `<job_id>`: Each job must have an id to associate with the job, job_1 in the above example. The key job_id is a string that is unique to the jobs object. It must start with a letter or _ and contain only alphanumeric characters, -, or _. Its value is a map of the job's configuration data.
 >
-> - `runs-on`: **Required**. Each job runs in an virtual environment (runner) specified by the key runs-on. Available environments can be found [here](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on).
+> - `runs-on`: **Required**. Each job runs in a particular type of machine that we choose with this key. There are options for the major operating systems (Linux, Windows, and macOS) and different versions of them. The available options can be found [here](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on).
 >
 > - `steps`: Specify sequence of tasks. A step is an individual task that can run commands (known as actions). Each step in a job executes on the same runner, allowing the actions in that job to share data with each other. If you do not provide a `name`, the step name will default to the text specified in the `run` command.
 >

@@ -11,7 +11,11 @@ keypoints:
   - Making jobs aware of each other is pretty easy.
   - Artifacts are files created by the CI that are offered for download and inspection.
 ---
+
+<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-cO4yHz5dp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
+
 # The First Naive Attempt
 
 Let's just attempt to try and get the code working as it is. Since it worked for us already locally, surely the CI/CD must be able to run it?
@@ -155,7 +159,7 @@ In order to take advantage of passing data between two jobs, one combines `downl
 > >
 > >     - uses: actions/download-artifact@v4
 > >       with:
-> >         name: skim6.26.10
+> >         name: skim6.26.10-conda
 > >
 > >     - name: skim
 > >       run: ./skim
