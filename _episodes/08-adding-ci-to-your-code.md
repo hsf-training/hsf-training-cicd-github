@@ -151,7 +151,7 @@ Ok, let's go ahead and update our `.github/workflow/main.yml` again, and it bett
 
 ## Ways to get software
 
-As we saw before, GitHub pre-installs many common software packages and libraries that people might need, but often we need to install additional software. There are often actions we can use for this, like `actions/setup-python` to install python or `mamba-org/setup-micromamba` to install Mamba (an alternative to Conda). These actions are simply repositories that contain scripts to install or perform certain actions. You can find more information about these actions by going to github.com/\<name-of-action\>. For example, for `mamba-org/setup-micromamba` you can find more information at [https://github.com/mamba-org/setup-micromamba](https://github.com/mamba-org/setup-micromamba).
+As we saw before, GitHub pre-installs many common software packages and libraries that people might need, but often we need to install additional software. There are often actions we can use for this, like `actions/setup-python` to install python or `mamba-org/setup-micromamba` to install [Mamba](https://mamba.readthedocs.io) (an alternative to [Conda](https://docs.conda.io), an environment manager). These actions are simply repositories that contain scripts to install or perform certain actions. You can find more information about these actions by going to github.com/\<name-of-action\>. For example, for `mamba-org/setup-micromamba` you can find more information at [https://github.com/mamba-org/setup-micromamba](https://github.com/mamba-org/setup-micromamba).
 
 
 If we wanted to use Conda instead of Docker, our `build_skim` job would look like this:
