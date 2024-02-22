@@ -106,7 +106,7 @@ build_skim:
         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 ```
 
-Note the extra line `container: rootproject/root:6.26.10-conda` that specifies the container image that we want to use. Since it comes pre-packages with ROOT we no longer need to have a step to install it. This image also contains other tools that we will need for the rest of the tutorial.
+Note the extra line `container: rootproject/root:6.26.10-conda` that specifies the container image that we want to use. Since it comes pre-packaged with ROOT, we do not need to have a step to install it. This image also contains other tools that we will need for the rest of the tutorial.
 
 > ## Failed again???
 >
