@@ -10,7 +10,11 @@ hidden: false
 keypoints:
   - We can specify dependencies between jobs running in a series using the needs value.
 ---
+
+<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1pnxBc33oyo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
+
 # Defining dependencies
 
 From the last session, we're starting with
@@ -30,7 +34,7 @@ jobs:
        version: [6.26.10-conda, latest]
    steps:
      - name: checkout repository
-       uses: actions/checkout@v3
+       uses: actions/checkout@v4
 
      - name: build
        run: |
@@ -44,7 +48,7 @@ We're going to talk about another useful parameter `needs`.
 
 > ## Specify dependencies between jobs
 >
-> The key-value `needs: jobs or list of jobs` allows you to specify dependencies between jobs in the order you define.
+> The key-value `needs: job or list of jobs` allows you to specify dependencies between jobs in the order you define.
 > <br/>Example:
 > ~~~
 > job2:
@@ -75,7 +79,7 @@ We're going to talk about another useful parameter `needs`.
 > >       version: [6.26.10-conda, latest]
 > >   steps:
 > >     - name: checkout repository
-> >       uses: actions/checkout@v3
+> >       uses: actions/checkout@v4
 > >
 > >     - name: build
 > >       run: |
@@ -87,22 +91,6 @@ We're going to talk about another useful parameter `needs`.
 > {: .solution}
 {: .challenge}
 
-> ## `act` is optional.
->
-> Remember, `act` is not required but encouraged for completing this workshop.
-{: .callout}
-
-If you do
-```bash
-act -l
-```
-you should see stages: `build_skim` will run after `greeting`
-```
-ID          Stage  Name
-greeting    0      greeting
-build_skim  1      build_skim
-```
-{: .output}
 
 Let's go ahead and add those changes and look at GitHub.
 ```bash

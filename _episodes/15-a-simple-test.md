@@ -11,7 +11,9 @@ keypoints:
   - This kind of test is a regression test, as we're testing assuming the code up to this point was correct.
   - This is not a unit test. Unit tests would be testing individual pieces of the Framework code-base, or specific functionality you wrote into your algorithms.
 ---
+<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/VgFgvCrXl9o" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
 
 So at this point, I'm going to be very hands-off, and just explain what you will be doing. Here's where you should be starting from:
 
@@ -25,9 +27,9 @@ So at this point, I'm going to be very hands-off, and just explain what you will
    container: rootproject/root:6.26.10-conda
    steps:
      - name: checkout repository
-       uses: actions/checkout@v3
+       uses: actions/checkout@v4
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: skim6.26.10
 
@@ -36,7 +38,7 @@ So at this point, I'm going to be very hands-off, and just explain what you will
         chmod +x ./skim
         ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: skim_ggH
         path: skim_ggH.root
@@ -47,16 +49,16 @@ So at this point, I'm going to be very hands-off, and just explain what you will
    container: rootproject/root:6.26.10-conda
    steps:
      - name: checkout repository
-       uses: actions/checkout@v3
+       uses: actions/checkout@v4
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: skim_ggH
 
     - name: plot
       run: python histograms.py skim_ggH.root ggH hist_ggH.root
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: histograms
         path: hist_ggH.root

@@ -10,7 +10,11 @@ hidden: false
 keypoints:
   - Another action, another job, another artifact.
 ---
+
+<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xPEf5oOMm3A" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+-->
+
 # On Your Own
 
 So in order to make plots, we just need to take the skimmed file `skim_ggH.root` and pass it through the `histograms.py` code that exists. This can be run with the following code
@@ -38,7 +42,7 @@ jobs:
         version: [6.26.10-conda, latest]
     steps:
       - name: checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: build
         run: |
@@ -46,7 +50,7 @@ jobs:
           FLAGS=$(root-config --cflags --libs)
           $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: skim{% raw %}${{ matrix.version }}{% endraw %}
           path: skim
@@ -57,9 +61,9 @@ jobs:
     container: rootproject/root:6.26.10-conda
     steps:
       - name: checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: skim6.26.10
 
@@ -68,7 +72,7 @@ jobs:
           chmod +x ./skim
          ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: skim_ggH
           path: skim_ggH.root
@@ -95,9 +99,9 @@ jobs:
 > >    container: rootproject/root:6.26.10-conda
 > >    steps:
 > >      - name: checkout repository
-> >        uses: actions/checkout@v3
+> >        uses: actions/checkout@v4
 > >
-> >     - uses: actions/download-artifact@v3
+> >     - uses: actions/download-artifact@v4
 > >       with:
 > >         name: skim6.26.10
 > >
@@ -106,7 +110,7 @@ jobs:
 > >         chmod +x ./skim
 > >         ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
 > >
-> >     - uses: actions/upload-artifact@v3
+> >     - uses: actions/upload-artifact@v4
 > >       with:
 > >         name: skim_ggH
 > >         path: skim_ggH.root
@@ -117,16 +121,16 @@ jobs:
 > >    container: rootproject/root:6.26.10
 > >    steps:
 > >      - name: checkout repository
-> >        uses: actions/checkout@v3
+> >        uses: actions/checkout@v4
 > >
-> >     - uses: actions/download-artifact@v3
+> >     - uses: actions/download-artifact@v4
 > >       with:
 > >         name: skim_ggH
 > >
 > >     - name: plot
 > >       run: python histograms.py skim_ggH.root ggH hist_ggH.root
 > >
-> >     - uses: actions/upload-artifact@v3
+> >     - uses: actions/upload-artifact@v4
 > >       with:
 > >         name: histograms
 > >         path: hist_ggH.root
