@@ -23,6 +23,8 @@ As we enter the first episode of the Continuous Integration / Continuous Deploym
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uFC4IgW-qWM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 -->
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Q-A_jjjT8Kc?si=dTig4-vfG89gTCIs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 # Start by Exiting
 
 How does a general task know whether or not a script finished correctly or not? You could parse (`grep`) the output:
