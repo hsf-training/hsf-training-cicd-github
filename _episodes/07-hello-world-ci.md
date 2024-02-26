@@ -16,6 +16,8 @@ keypoints:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/iAOMjGiksUc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 -->
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CGYt9W6c1dw?si=WWY3Ihoc9i-n-D8R" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ## Adding CI/CD to a project
 
 The first thing we'll do is create a `.github/workflows/main.yml` file in the project.

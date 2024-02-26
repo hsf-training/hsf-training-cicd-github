@@ -19,6 +19,8 @@ This is a relatively short section, but we need to connect some things you've le
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Nk1wkQCEPt8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 -->
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/eeTJdSRqQNg?si=mz9xAoWdwhL9gGPa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 # Assert Your Tests
 
 An assertion is a sanity-check carried out by the `assert` statement, useful when debugging code.

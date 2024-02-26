@@ -15,6 +15,8 @@ keypoints:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1pnxBc33oyo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 -->
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VZnckXqFOw8?si=AeaGNcOM0Yb5JaBZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 # Defining dependencies
 
 From the last session, we're starting with

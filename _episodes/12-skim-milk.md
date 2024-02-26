@@ -16,6 +16,8 @@ keypoints:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-cO4yHz5dp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 -->
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XIprY9Km4k8?si=lnjutmMpVTimxJ2v" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 # The First Naive Attempt
 
 Let's just attempt to try and get the code working as it is. Since it worked for us already locally, surely the CI/CD must be able to run it?

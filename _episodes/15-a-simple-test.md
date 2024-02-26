@@ -15,6 +15,8 @@ keypoints:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/VgFgvCrXl9o" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 -->
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yu7HwY2u3Ic?si=GlDXSZ0e006QWM79" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 So at this point, I'm going to be very hands-off, and just explain what you will be doing. Here's where you should be starting from:
 
 ~~~
