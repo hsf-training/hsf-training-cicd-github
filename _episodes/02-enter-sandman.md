@@ -69,7 +69,7 @@ The exit code is `2` indicating failure. What about on success? The exit code is
 But this works for any command you run on the command line! For example, if I mistyped `git status`:
 
 ~~~
-> git stauts
+> git status
 > echo $?
 ~~~
 {: .language-bash}

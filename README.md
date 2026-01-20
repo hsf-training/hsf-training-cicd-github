@@ -20,7 +20,7 @@ This training module is part of an initiative of the [HEP Software foundation](h
 
 * 🎥 [Feb 2021](https://indico.cern.ch/event/1001128/)
 
-Emoji key: 🎥 (full video recordings availabile), ⛏️ (hackathon)
+Emoji key: 🎥 (full video recordings available), ⛏️ (hackathon)
 
 
 ## 🤗 Contributing
