@@ -19,6 +19,10 @@ keypoints:
 
 As we enter the first episode of the Continuous Integration / Continuous Deployment (CI/CD) session, we learn how to exit.
 
+Exit codes communicate the outcome of a script with (in this case) the CI/CD pipeline.
+We generally want a CI/CD pipeline to fail if one of its components fails.
+For example, you would not usually want to run CD to deploy a custom Docker image if the CI tests fail for the code in that image.
+
 <!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uFC4IgW-qWM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 -->
@@ -91,6 +95,8 @@ and there, the exit code is non-zero -- a failure.
 {: .callout}
 
 Try out some other commands on your system, and see what things look like.
+
+Some exit codes are recommended to have [special meanings](https://tldp.org/LDP/abs/html/exitcodes.html#EXITCODESREF) by convention, although there is nothing stopping someone from overriding them in their script.
 
 # Printing Exit Codes
 
@@ -173,11 +179,26 @@ and then make it executable `chmod +x python_exit.py`. Now, try running it with 
 To finish up this section, one thing you'll notice sometimes (in ATLAS or CMS) is that a script you run doesn't seem to respect exit codes. A notable example in ATLAS is the use of `setupATLAS` which returns non-zero exit status codes even though it runs successfully! This can be very annoying when you start development with the assumption that exit status codes are meaningful (such as with CI). In these cases, you'll need to ignore the exit code. An easy way to do this is to execute a second command that always gives `exit 0` if the first command doesn't, like so:
 
 ~~~
-> ls nonexistent-file || echo ignore failure
+> false || echo "ignore failure"
+> echo $?
 ~~~
 {: .language-bash}
 
-The `command_1 || command_2` operator means to execute `command_2` only if `command_1` has failed (non-zero exit code). Similarly, the `command_1 && command_2` operator means to execute `command_2` only if `command_1` has succeeded. Try this out using one of scripts you made in the previous session:
+~~~
+ignore failure
+0
+~~~
+{: .output}
+
+where `false` is just a simple command that always returns a non-zero exit code.
+
+The `command_1 || command_2` OR-operator means to execute `command_2` only if `command_1` has failed (non-zero exit code).
+Similarly, the `command_1 && command_2` AND-operator means to execute `command_2` only if `command_1` has succeeded.
+
+These are both examples of [short-circuited](https://en.wikipedia.org/wiki/Short-circuit_evaluation) boolean expressions.
+Short-circuited expressions return the result of the boolean expression as soon as the minimal information necessary for the result is computed: the operands are executed from left to right, and the right operand only evaluates if the left operand doesn't determine the answer.
+
+Try this out using one of the scripts you made in the previous session:
 
 ~~~
 > ./python_exit.py goodbye || echo ignore
@@ -185,6 +206,8 @@ The `command_1 || command_2` operator means to execute `command_2` only if `comm
 {: .language-bash}
 
 What does that give you?
+
+It's possible to ignore an exit code quietly by running `command_1 || true`, where `true` always returns an exit code of `0`.
 
 > ## Overriding Exit Codes
 >

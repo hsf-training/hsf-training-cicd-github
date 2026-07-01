@@ -56,6 +56,11 @@ For more details, check [this link](https://docs.github.com/en/free-pro-team@lat
 > [Further reading on jobs](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobs).
 {: .callout}
 
+> ## `run` commands
+>
+> Sometimes, the commands in a `run` step will need to be wrapped in single or double quotes. For example, commands that contain a colon (`:`) need to be wrapped in quotes so that the YAML parser knows to interpret the whole thing as a string rather than a "key: value" pair. Be careful when using special characters: `:`, `{`, `}`, `[`, `]`, `,`, `&`, `*`, `#`, `?`, `|`, `-`, `<`, `>`, `=`, `!`, `%`, `@`, `` ` ``.
+{: .callout}
+
 ## Overall Structure
 
 Every single parameter we consider for all configurations are keys under jobs. The YAML is structured using job names. For example, we can define two jobs that run in parallel (more on parallel/serial later) with different sets of parameters.

@@ -20,7 +20,18 @@ keypoints:
 
 # What is CI/CD?
 
-Continuous Integration (CI) is the concept of literal continuous integration of code changes. That is, every time a contributor (student, colleague, random bystander) provides new changes to your codebase, those changes are tested to make sure they don't "break" anything. Continuous Deployment (CD), similarly, is the literal continuous deployment of code changes. That means that, assuming the CI passes, you'd like to automatically deploy those changes.
+Continuous Integration ([CI](https://en.wikipedia.org/wiki/Continuous_integration)), and Continuous Deployment ([CD](https://en.wikipedia.org/wiki/Continuous_deployment)) are two related concepts in the field of [DevOps](https://en.wikipedia.org/wiki/DevOps), a sub-domain of software engineering.
+
+<dl>
+  <dt>CI</dt>
+  <dd>Continuously integrates source code changes into your repository while testing to ensure the changes do not "break" anything.</dd>
+  <dt>CD</dt>
+  <dd>Continuously deploys a service based on your code.</dd>
+</dl>
+
+A common example of a CI/CD workflow or pipeline in a repository would be one which&mdash;after each push of a set of commits&mdash;tests the codebase (via CI) and deploys documentation (via CD) on a website.
+
+CI/CD workflows can be configured to run after a push, after a pull request, or on a schedule. The broader purpose of CI/CD is to automate anything repetitive that doesn't need to be done manually, and can be thought of as a labour-based manifestation of the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) (don't repeat yourself) principle in programming.
 
 > ## Catch and Release
 >
@@ -31,6 +42,10 @@ Continuous Integration (CI) is the concept of literal continuous integration of 
 ## Breaking Changes
 
 What does it even mean to "break" something? The idea of "breaking" something is pretty contextual. If you're working on C++ code, then you probably want to make sure things compile and run without segfaulting at the bare minimum. If it's python code, maybe you have some tests with `pytest` that you want to make sure pass ("exit successfully"). Or if you're working on a paper draft, you might check for grammar, misspellings, and that the document compiles from LaTeX. Whatever the use-case is, integration is about **catching** breaking changes.
+
+> ## Don't know `pytest` ?
+> To learn more about `pytest` visit [its documentation](https://pytest.org/) or follow [this training module](http://carpentries-incubator.github.io/python-testing/).
+{: .callout}
 
 ## Deployment
 
@@ -64,5 +79,9 @@ Now, obviously, we're not going to make our own fully-fledged CI/CD solution. Pl
 - [CodeFresh](https://g.codefresh.io/)
 
 For today's lesson, we'll only focus on GitHub's solution (GitHub Actions). However, be aware that all the concepts you'll be taught today: including pipelines, jobs, artifacts; all exist in other solutions by similar/different names. For example, GitLab supports two features known as caching and artifacts; but Travis doesn't quite implement the same thing for caching and has no native support for artifacts. Therefore, while we don't discourage you from trying out other solutions, there's no "one size fits all" when designing your own CI/CD workflow.
+
+> ## Parallel lesson on GitLab CI/CD
+> We also have a [training on GitLab CI/CD](https://hsf-training.github.io/hsf-training-cicd/)
+{: .callout}
 
 {% include links.md %}
