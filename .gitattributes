@@ -1,0 +1,2 @@
+# disable end-of-file conversion to pass the drift-check
+_vendor/** -text
