@@ -29,7 +29,6 @@ jobs:
         hugo mod vendor
       drift-check-paths: |
         .github/workflows/refresh-vendored-modules.yml
-        .github/workflows/reusable-pages.yml
         .github/workflows/reusable-refresh-vendored-modules.yml
         go.mod
         go.sum

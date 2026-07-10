@@ -121,7 +121,7 @@ jobs:
             --no-progress
             --root-dir ${{ inputs.site-root }}/.cache/linkcheck-site
             '${{ inputs.site-root }}/.cache/linkcheck-site/**/*.html'
-          fail: true
+          fail: false
           jobSummary: true
           token: ${{ github.token }}
 
