@@ -1,0 +1,67 @@
+{{ $page := .context }}
+{{ $repo := replaceRE "/+$" "" (site.Params.lesson.repo | default "") }}
+{{ $docsRepo := replaceRE "/+$" "" (site.Params.lesson.docsRepo | default $repo) }}
+{{ $editBranch := site.Params.lesson.editBranch | default "main" }}
+{{ $path := "" }}
+{{ $lastUpdated := "" }}
+{{ $copyrightHolder := site.Params.lesson.copyrightHolder | default "the authors" }}
+{{ $citationURL := site.Params.lesson.citationURL }}
+{{ $poweredByURL := "https://oer-particle-physics.github.io/hugo-styles/" }}
+{{ $licenseName := site.Params.lesson.licenseName }}
+{{ with $page.File }}
+  {{ $path = .Path }}
+{{ end }}
+{{ with $page.Lastmod }}
+  {{ $lastUpdated = partial "utils/format-date.html" . }}
+{{ else }}
+  {{ with $page.Date }}
+    {{ $lastUpdated = partial "utils/format-date.html" . }}
+  {{ end }}
+{{ end }}
+{{ if and (not $citationURL) $docsRepo $editBranch }}
+  {{ $citationURL = printf "%s/blob/%s/CITATION.cff" $docsRepo $editBranch }}
+{{ end }}
+{{ $hasMeta := false }}
+<div class="lesson-footer hx:flex hx:flex-col hx:gap-4 hx:pt-4 hx:pb-8">
+  <div class="hx:flex hx:flex-wrap hx:items-center hx:gap-x-2 hx:gap-y-1 hx:text-sm">
+    {{ with site.Params.lesson.lifecycle }}
+      <span>Lifecycle: {{ . }}</span>
+      {{ $hasMeta = true }}
+    {{ end }}
+    {{ with $repo }}
+      {{ if $hasMeta }}<span aria-hidden="true">&middot;</span>{{ end }}
+      <a class="hx:text-current hover:hx:underline" href="{{ . }}">Source</a>
+      {{ $hasMeta = true }}
+    {{ end }}
+    {{ if and $repo $path }}
+      {{ if $hasMeta }}<span aria-hidden="true">&middot;</span>{{ end }}
+      <a class="hx:text-current hover:hx:underline" href="{{ printf "%s/edit/%s/%s" $repo $editBranch $path }}">Edit this page</a>
+      {{ $hasMeta = true }}
+    {{ end }}
+    {{ with $citationURL }}
+      {{ if $hasMeta }}<span aria-hidden="true">&middot;</span>{{ end }}
+      <a class="hx:text-current hover:hx:underline" href="{{ . }}">Cite</a>
+      {{ $hasMeta = true }}
+    {{ end }}
+    {{ with $lastUpdated }}
+      {{ if $hasMeta }}<span aria-hidden="true">&middot;</span>{{ end }}
+      <span>Updated: {{ . }}</span>
+    {{ end }}
+  </div>
+  <div class="hx:text-xs">
+    <span>Content &copy; {{ now.Format "2006" }} {{ $copyrightHolder }}</span>
+    {{ with $licenseName }}
+      <span aria-hidden="true">&middot;</span>
+      <span>
+        Licensed under
+        {{ with site.Params.lesson.licenseURL }}
+          <a class="hx:text-current hover:hx:underline" href="{{ . }}">{{ $licenseName }}</a>
+        {{ else }}
+          {{ $licenseName }}
+        {{ end }}
+      </span>
+    {{ end }}
+    <span aria-hidden="true">&middot;</span>
+    <a class="hx:text-current hover:hx:underline" target="_blank" rel="noopener noreferrer" href="{{ $poweredByURL }}">Powered by Hugo Styles</a>
+  </div>
+</div>

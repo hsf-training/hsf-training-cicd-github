@@ -1,0 +1,73 @@
+# x-release-please-version: v0.3.6
+name: Reusable Refresh Vendored Modules
+
+on:
+  workflow_call:
+    inputs:
+      site-root:
+        type: string
+        default: "."
+      go-version-file:
+        type: string
+        default: "go.mod"
+      refresh-command:
+        type: string
+        default: ""
+      verify-command:
+        type: string
+        default: ""
+      pr-branch:
+        type: string
+        default: "chore/refresh-vendored-hugo-modules"
+      pr-title:
+        type: string
+        default: "chore: refresh vendored Hugo modules"
+      pr-body:
+        type: string
+        default: ""
+      pr-labels:
+        type: string
+        default: "dependencies"
+    secrets:
+      WORKFLOW_SYNC_TOKEN:
+        required: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.site-root }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.160.1"
+          extended: true
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: ${{ inputs.go-version-file }}
+
+      - name: Refresh module metadata and managed files
+        shell: bash
+        run: ${{ inputs.refresh-command }}
+
+      - name: Verify refreshed site build
+        if: ${{ inputs.verify-command != '' }}
+        shell: bash
+        run: ${{ inputs.verify-command }}
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.WORKFLOW_SYNC_TOKEN || github.token }}
+          branch: ${{ inputs.pr-branch }}
+          delete-branch: true
+          commit-message: ${{ inputs.pr-title }}
+          title: ${{ inputs.pr-title }}
+          body: ${{ inputs.pr-body }}
+          labels: ${{ inputs.pr-labels }}

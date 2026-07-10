@@ -1,0 +1,11 @@
+{{- $body := partial "utils/render-shortcode-body.html" (dict "Inner" .Inner "Page" .Page) -}}
+<section class="lesson-challenge">
+  <div class="lesson-challenge-header">
+    <span class="lesson-challenge-label">Challenge</span>
+    <div class="lesson-challenge-heading">
+      {{ with .Get "title" }}<h3 class="lesson-challenge-title">{{ . }}</h3>{{ end }}
+      {{ with .Get "subtitle" }}<p class="lesson-challenge-subtitle">{{ . }}</p>{{ end }}
+    </div>
+  </div>
+  <div class="lesson-challenge-body">{{- $body -}}</div>
+</section>

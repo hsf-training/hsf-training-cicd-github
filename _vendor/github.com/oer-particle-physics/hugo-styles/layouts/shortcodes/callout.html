@@ -1,0 +1,19 @@
+{{- $type := .Get "type" | default "note" -}}
+{{- $body := partial "utils/render-shortcode-body.html" (dict "Inner" .Inner "Page" .Page) -}}
+{{- $title := .Get "title" -}}
+{{- $content := $body -}}
+{{- if $title -}}
+  {{- $content = printf "<div class=\"hx:mb-2 hx:font-semibold\">%s</div>%s" ($title | transform.HTMLEscape) $body | safeHTML -}}
+{{- end -}}
+{{- $styles := dict
+  "note" (dict "icon" "information-circle" "class" "hx:border-blue-200 hx:bg-blue-50 hx:text-blue-900 hx:dark:border-blue-300/30 hx:dark:bg-blue-900/20 hx:dark:text-blue-200")
+  "callout" (dict "icon" "information-circle" "class" "hx:border-blue-200 hx:bg-blue-50 hx:text-blue-900 hx:dark:border-blue-300/30 hx:dark:bg-blue-900/20 hx:dark:text-blue-200")
+  "prereq" (dict "icon" "check-circle" "class" "hx:border-emerald-200 hx:bg-emerald-50 hx:text-emerald-900 hx:dark:border-emerald-300/30 hx:dark:bg-emerald-900/20 hx:dark:text-emerald-200")
+  "checklist" (dict "icon" "clipboard-check" "class" "hx:border-teal-200 hx:bg-teal-50 hx:text-teal-900 hx:dark:border-teal-300/30 hx:dark:bg-teal-900/20 hx:dark:text-teal-200")
+  "testimonial" (dict "icon" "chat-alt-2" "class" "hx:border-violet-200 hx:bg-violet-50 hx:text-violet-900 hx:dark:border-violet-300/30 hx:dark:bg-violet-900/20 hx:dark:text-violet-200")
+  "discussion" (dict "icon" "chat-alt" "class" "hx:border-fuchsia-200 hx:bg-fuchsia-50 hx:text-fuchsia-900 hx:dark:border-fuchsia-300/30 hx:dark:bg-fuchsia-900/20 hx:dark:text-fuchsia-200")
+  "warning" (dict "icon" "exclamation" "class" "hx:border-amber-200 hx:bg-amber-50 hx:text-amber-900 hx:dark:border-amber-300/30 hx:dark:bg-amber-900/20 hx:dark:text-amber-200")
+  "caution" (dict "icon" "exclamation-circle" "class" "hx:border-red-200 hx:bg-red-50 hx:text-red-900 hx:dark:border-red-300/30 hx:dark:bg-red-900/20 hx:dark:text-red-200")
+-}}
+{{- $style := index $styles $type | default (index $styles "note") -}}
+{{- partial "shortcodes/callout.html" (dict "content" ($content | safeHTML) "icon" $style.icon "class" $style.class) -}}

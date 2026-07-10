@@ -1,0 +1,75 @@
+{{ define "main" }}
+  {{ $episodes := sort (where site.RegularPages "Section" "episodes") "Weight" }}
+  {{ $scratch := newScratch }}
+  {{ $scratch.Set "totalMinutes" 0 }}
+  {{ range $episodes }}
+    {{ $scratch.Add "totalMinutes" (add (.Params.teaching | default 0) (.Params.exercises | default 0)) }}
+  {{ end }}
+  <div class='hx:mx-auto hx:flex hextra-max-page-width'>
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" true "displayPlaceholder" false) }}
+    {{ partial "all-in-one-toc.html" (dict "page" . "episodes" $episodes) }}
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="wide-when-sidebar-hidden hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        {{ partial "breadcrumb.html" (dict "page" . "enable" true) }}
+        <div class="content">
+          <p class="hx:mb-2 hx:text-xs hx:font-semibold hx:uppercase hx:tracking-[0.16em] hx:text-gray-500 hx:dark:text-gray-400">Aggregated resource</p>
+          <h1>{{ .Title }}</h1>
+          <div class="hx:text-gray-600 hx:dark:text-gray-400">{{ .Content }}</div>
+          <div class="not-prose hx:mt-6 hx:flex hx:flex-wrap hx:gap-2">
+            {{ partial "resource-badge.html" (dict "content" (printf "%d %s" (len $episodes) (cond (eq (len $episodes) 1) "episode" "episodes")) "color" "blue") }}
+            {{ partial "resource-badge.html" (dict "content" (printf "%d min total" ($scratch.Get "totalMinutes")) "color" "blue") }}
+            {{ partial "resource-badge.html" (dict "content" "Best for teaching from one tab" "color" "gray") }}
+          </div>
+          <section class="not-prose hx:mt-6 hx:rounded-2xl hx:border hx:border-gray-200 hx:bg-white hx:p-4 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+            <div class="hx:flex hx:flex-col hx:gap-4">
+              <div class="hx:flex hx:flex-col hx:gap-4 hx:lg:flex-row hx:lg:items-center hx:lg:justify-between">
+                <div>
+                  <p class="hx:mb-1 hx:text-xs hx:font-semibold hx:uppercase hx:tracking-[0.16em] hx:text-gray-500 hx:dark:text-gray-400">Lesson controls</p>
+                  <p class="hx:mb-0 hx:text-sm hx:text-gray-600 hx:dark:text-gray-400">Jump between episodes, filter the page, or reveal every hint and solution when you need the full teaching flow.</p>
+                </div>
+                <div class="hx:flex hx:flex-col hx:gap-3 hx:sm:flex-row hx:sm:items-center">
+                  <button class="hx:inline-flex hx:items-center hx:justify-center hx:rounded-xl hx:border hx:border-gray-200 hx:px-4 hx:py-3 hx:text-sm hx:font-medium hx:text-gray-700 hx:hover:border-primary-300 hx:hover:text-primary-700 hx:dark:border-neutral-800 hx:dark:text-gray-300 hx:dark:hover:border-primary-700 hx:dark:hover:text-primary-300" type="button" data-expand-solutions>Expand Hints and Solutions</button>
+                  <input class="lesson-aio-search hx:w-full hx:sm:min-w-[18rem] hx:rounded-xl hx:border hx:border-gray-200 hx:bg-white hx:px-4 hx:py-3 hx:text-sm hx:text-gray-700 hx:focus:border-primary-500 hx:focus:outline-none hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:dark:text-gray-200" type="search" data-aio-search placeholder="Filter episodes on this page">
+                </div>
+              </div>
+              <div class="hx:flex hx:flex-wrap hx:gap-2">
+                {{ range $episodes }}
+                  {{ $episodeAnchor := "" }}
+                  {{ with .File }}
+                    {{ if .Dir }}
+                      {{ $episodeAnchor = path.Base (strings.TrimSuffix "/" .Dir) }}
+                    {{ else }}
+                      {{ $episodeAnchor = .TranslationBaseName }}
+                    {{ end }}
+                  {{ end }}
+                  {{ if not $episodeAnchor }}
+                    {{ $episodeAnchor = anchorize .Title }}
+                  {{ end }}
+                  {{ partial "resource-badge.html" (dict "content" .Title "color" "gray" "link" (printf "#%s" $episodeAnchor)) }}
+                {{ end }}
+              </div>
+            </div>
+          </section>
+          <div class="hx:mt-6 hx:space-y-8">
+            {{ range $episodes }}
+              {{ $episodeAnchor := "" }}
+              {{ with .File }}
+                {{ if .Dir }}
+                  {{ $episodeAnchor = path.Base (strings.TrimSuffix "/" .Dir) }}
+                {{ else }}
+                  {{ $episodeAnchor = .TranslationBaseName }}
+                {{ end }}
+              {{ end }}
+              {{ if not $episodeAnchor }}
+                {{ $episodeAnchor = anchorize .Title }}
+              {{ end }}
+              <article class="hx:scroll-mt-24 hx:overflow-hidden hx:rounded-2xl hx:border hx:border-gray-200 hx:bg-white hx:p-6 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900" data-aio-episode data-title="{{ .Title }}">
+                {{ partial "episode-content.html" (dict "page" .) }}
+              </article>
+            {{ end }}
+          </div>
+        </div>
+      </main>
+    </article>
+  </div>
+{{ end }}

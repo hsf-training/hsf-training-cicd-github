@@ -1,0 +1,29 @@
+{{- $hasFrontMatterMath := false -}}
+{{- $sources := slice . -}}
+{{- if or (eq .Layout "all-in-one") (eq .Layout "key-points") -}}
+  {{- range (where site.RegularPages "Section" "episodes") -}}
+    {{- $sources = $sources | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- range $source := $sources -}}
+  {{- range $field := slice "questions" "objectives" "keypoints" -}}
+    {{- with index $source.Params $field -}}
+      {{- range . -}}
+        {{- $item := printf "%v" . -}}
+        {{- if or (strings.Contains $item "\\(") (strings.Contains $item "\\[") (strings.Contains $item "$$") -}}
+          {{- $hasFrontMatterMath = true -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and $hasFrontMatterMath (not ($.Page.Store.Get "hasMath")) -}}
+  {{- $.Page.Store.Set "hasMath" true -}}
+  {{- $engine := site.Params.math.engine | default "katex" -}}
+  {{- if eq $engine "katex" -}}
+    {{- partialCached "scripts/katex.html" . -}}
+  {{- else if eq $engine "mathjax" -}}
+    {{- partialCached "scripts/mathjax.html" . -}}
+  {{- end -}}
+{{- end -}}

@@ -1,0 +1,42 @@
+# Locally maintained (forked from the hugo-styles template).
+# - changed `branches` to ["gh-pages"]
+# - removed this file from the `drift-check-paths`
+name: Deploy lesson
+
+on:
+  push:
+    branches: ["gh-pages"]
+  pull_request:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  pages:
+    uses: ./.github/workflows/reusable-pages.yml
+    with:
+      site-root: .
+      go-version-file: go.mod
+      sync-command: |
+        hugo mod tidy
+        ./scripts/sync-template-files.sh
+        hugo mod vendor
+      drift-check-paths: |
+        .github/workflows/refresh-vendored-modules.yml
+        .github/workflows/reusable-pages.yml
+        .github/workflows/reusable-refresh-vendored-modules.yml
+        go.mod
+        go.sum
+        lychee.toml
+        scripts/build-versioned-site.py
+        scripts/sync-template-files.sh
+        _vendor
+      validation-command: |
+        MODULE_VERSION="$(go list -m -f '{{.Version}}' github.com/oer-particle-physics/hugo-styles/cmd/hugo-styles-migrate@latest)"
+        go run "github.com/oer-particle-physics/hugo-styles/cmd/hugo-styles-migrate@${MODULE_VERSION}" check "${GITHUB_WORKSPACE}"

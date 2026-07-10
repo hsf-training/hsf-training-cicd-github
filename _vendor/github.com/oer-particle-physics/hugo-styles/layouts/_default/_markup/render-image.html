@@ -1,0 +1,19 @@
+{{ $dest := .Destination }}
+{{ $normalized := strings.TrimPrefix "/" $dest }}
+{{ if and (not (strings.HasPrefix $dest "http://")) (not (strings.HasPrefix $dest "https://")) }}
+  {{ $resourcePath := path.Clean (strings.TrimPrefix "./" $normalized) }}
+  {{ with .Page }}
+    {{ with .Resources.GetMatch $resourcePath }}
+      {{ $dest = .RelPermalink }}
+    {{ else }}
+      {{ if or (strings.HasPrefix $resourcePath "fig/") (strings.HasPrefix $resourcePath "files/") (strings.HasPrefix $resourcePath "data/") (strings.HasPrefix $resourcePath "code/") }}
+        {{ $dest = relURL $resourcePath }}
+      {{ end }}
+    {{ end }}
+  {{ else }}
+    {{ if or (strings.HasPrefix $resourcePath "fig/") (strings.HasPrefix $resourcePath "files/") (strings.HasPrefix $resourcePath "data/") (strings.HasPrefix $resourcePath "code/") }}
+      {{ $dest = relURL $resourcePath }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+<img src="{{ $dest | safeURL }}" alt="{{ .Text }}" loading="lazy">

@@ -1,0 +1,29 @@
+{{ $current := .RelPermalink }}
+{{ $scratch := newScratch }}
+{{ $scratch.Set "links" (slice
+  (dict "title" "Key Points" "href" ("key-points/" | relURL))
+  (dict "title" "All-in-One" "href" ("all-in-one/" | relURL))
+) }}
+{{ with site.GetPage "/external-links" }}
+  {{ $scratch.Add "links" (slice (dict "title" "External Links" "href" .RelPermalink)) }}
+{{ end }}
+{{ $scratch.Add "links" (slice
+  (dict "title" "Reference" "href" ("reference/" | relURL))
+  (dict "title" "Glossary" "href" ("glossary/" | relURL))
+  (dict "title" "Profiles" "href" ("profiles/" | relURL))
+) }}
+<div class="lesson-resource-links not-prose hx:flex hx:flex-wrap hx:gap-2">
+  {{ $links := $scratch.Get "links" }}
+{{ range $links }}
+    {{ $isActive := eq $current .href }}
+    {{ partial "resource-badge.html" (dict "content" .title "link" .href "color" (cond $isActive "blue" "gray")) }}
+  {{ end }}
+  {{ $instructorLinks := slice
+    (dict "title" "Instructor Notes" "href" ("instructors/instructor-notes/" | relURL))
+    (dict "title" "All Images" "href" ("extract-all-images/" | relURL))
+  }}
+  {{ range $instructorLinks }}
+    {{ $isActive := eq $current .href }}
+    <div class="hx:contents" data-audience-nav="instructor">{{ partial "resource-badge.html" (dict "content" .title "link" .href "color" (cond $isActive "blue" "gray")) }}</div>
+  {{ end }}
+</div>

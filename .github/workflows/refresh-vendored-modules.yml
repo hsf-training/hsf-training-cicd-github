@@ -1,0 +1,43 @@
+# Managed by hugo-styles.
+# x-release-please-version: v0.3.6
+name: Refresh vendored Hugo modules
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 4 * * 1"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    uses: ./.github/workflows/reusable-refresh-vendored-modules.yml
+    secrets: inherit
+    with:
+      site-root: .
+      go-version-file: go.mod
+      refresh-command: |
+        hugo mod get -u github.com/oer-particle-physics/hugo-styles@latest
+        hugo mod tidy
+        ./scripts/sync-template-files.sh
+        hugo mod vendor
+      verify-command: |
+        python3 scripts/build-versioned-site.py
+        hugo --gc --minify --noBuildLock --destination /tmp/site
+      pr-title: "chore: refresh vendored Hugo modules"
+      pr-body: |
+        Automated refresh of Hugo module metadata, managed maintainer files, reusable workflows, and `_vendor/`.
+
+        Updated artifacts:
+        - `.github/workflows/pages.yml`
+        - `.github/workflows/refresh-vendored-modules.yml`
+        - `.github/workflows/reusable-pages.yml`
+        - `.github/workflows/reusable-refresh-vendored-modules.yml`
+        - `go.mod`
+        - `go.sum`
+        - `lychee.toml`
+        - `scripts/build-versioned-site.py`
+        - `scripts/sync-template-files.sh`
+        - `_vendor/`

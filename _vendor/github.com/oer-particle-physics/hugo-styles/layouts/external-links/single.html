@@ -1,0 +1,128 @@
+{{ define "main" }}
+  {{ $episodes := sort (where site.RegularPages "Section" "episodes") "Weight" }}
+  {{ $scratch := newScratch }}
+  {{ $scratch.Set "entries" (slice) }}
+  {{ $scratch.Set "linkCount" 0 }}
+  {{ $scratch.Set "pageCount" 0 }}
+  {{ range $index, $page := $episodes }}
+    {{ $pageScratch := newScratch }}
+    {{ $pageScratch.Set "links" (slice) }}
+    {{ $pageScratch.Set "seen" (dict) }}
+    {{ $anchorTags := findRE `(?s)<a[^>]*href="https?://[^"]+"[^>]*>.*?</a>` $page.Content }}
+    {{ range $anchorTags }}
+      {{ $tag := . }}
+      {{ with findRESubmatch `(?s)<a[^>]*href="(https?://[^"]+)"[^>]*>(.*?)</a>` $tag 1 }}
+        {{ $href := index (index . 0) 1 }}
+        {{ if not (index ($pageScratch.Get "seen") $href) }}
+          {{ $pageScratch.SetInMap "seen" $href true }}
+          {{ $label := index (index . 0) 2 | plainify | htmlUnescape | strings.TrimSpace }}
+          {{ if not $label }}
+            {{ $label = $href }}
+          {{ end }}
+          {{ $parsed := urls.Parse $href }}
+          {{ $host := replaceRE `^www\.` "" $parsed.Host }}
+          {{ $sortKey := printf "%s %s" (lower $label) (lower $href) }}
+          {{ $pageScratch.Add "links" (slice (dict "href" $href "label" $label "host" $host "sortKey" $sortKey)) }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    {{ $links := sort ($pageScratch.Get "links") "sortKey" }}
+    {{ if gt (len $links) 0 }}
+      {{ $sectionID := "" }}
+      {{ with $page.File }}
+        {{ if .Dir }}
+          {{ $sectionID = path.Base (strings.TrimSuffix "/" .Dir) }}
+        {{ else }}
+          {{ $sectionID = .TranslationBaseName }}
+        {{ end }}
+      {{ end }}
+      {{ if not $sectionID }}
+        {{ $sectionID = anchorize $page.Title }}
+      {{ end }}
+      {{ $scratch.Add "linkCount" (len $links) }}
+      {{ $scratch.Add "pageCount" 1 }}
+      {{ $scratch.Add "entries" (slice (dict "page" $page "links" $links "sectionID" $sectionID "episodeNumber" (add $index 1))) }}
+    {{ end }}
+  {{ end }}
+  {{ $entries := $scratch.Get "entries" }}
+  <div class='hx:mx-auto hx:flex hextra-max-page-width'>
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" true "displayPlaceholder" false) }}
+    <nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="Table of contents">
+      <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4">
+        <p class="hx:mb-4 hx:font-semibold hx:tracking-tight">On this page</p>
+        <ul>
+          {{ range $entries }}
+            <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+              <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#{{ .sectionID }}">Episode {{ .episodeNumber }}: {{ .page.Title }}</a>
+            </li>
+          {{ end }}
+        </ul>
+        <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+          <button id="backToTop" tabindex="-1" onClick="scrollUp();" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+            <span>Scroll to top</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="wide-when-sidebar-hidden hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        {{ partial "breadcrumb.html" (dict "page" . "enable" true) }}
+        <div class="content">
+          <p class="hx:mb-2 hx:text-xs hx:font-semibold hx:uppercase hx:tracking-[0.16em] hx:text-gray-500 hx:dark:text-gray-400">Aggregated resource</p>
+          <h1>{{ .Title }}</h1>
+          <div class="hx:text-gray-600 hx:dark:text-gray-400">{{ .Content }}</div>
+          <div class="not-prose hx:mt-6 hx:flex hx:flex-wrap hx:gap-2">
+            {{ partial "resource-badge.html" (dict "content" (printf "%d %s gathered" ($scratch.Get "linkCount") (cond (eq ($scratch.Get "linkCount") 1) "link" "links")) "color" "blue") }}
+            {{ partial "resource-badge.html" (dict "content" (printf "%d source %s" ($scratch.Get "pageCount") (cond (eq ($scratch.Get "pageCount") 1) "episode" "episodes")) "color" "blue") }}
+            {{ partial "resource-badge.html" (dict "content" "Best for bibliography reviews and link QA" "color" "gray") }}
+          </div>
+          {{ if gt (len $entries) 0 }}
+            <div class="not-prose hx:mt-6 hx:grid hx:gap-4">
+              {{ range $entries }}
+                <article id="{{ .sectionID }}" class="hx:group hx:scroll-mt-24 hx:rounded-2xl hx:border hx:border-gray-200 hx:bg-white hx:p-6 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+                  <div class="hx:flex hx:flex-col hx:gap-3 hx:md:flex-row hx:md:items-start hx:md:justify-between">
+                    <div class="hx:min-w-0">
+                      <p class="hx:mb-1 hx:text-xs hx:font-semibold hx:uppercase hx:tracking-[0.16em] hx:text-gray-500 hx:dark:text-gray-400">Episode {{ .episodeNumber }}</p>
+                      <h2 class="hx:first:mt-0 hx:mb-2">
+                        <a class="hx:text-inherit hx:no-underline hx:decoration-transparent hx:transition-colors group-hover:hx:text-primary-600 hx:dark:group-hover:text-primary-400" href="{{ .page.RelPermalink }}">{{ .page.Title }}</a>
+                      </h2>
+                      <p class="hx:mb-0 hx:text-sm hx:text-gray-600 hx:dark:text-gray-400">External links collected from this episode.</p>
+                    </div>
+                    {{ partial "resource-badge.html" (dict "content" (printf "%d external %s" (len .links) (cond (eq (len .links) 1) "link" "links")) "color" "gray") }}
+                  </div>
+                  <div class="hx:mt-4">
+                    <a class="hx:inline-flex hx:items-center hx:gap-1 hx:text-sm hx:font-medium hx:text-primary-600 hx:no-underline hx:transition-colors hover:hx:text-primary-700 hx:dark:text-primary-400 hx:dark:hover:text-primary-300" href="{{ .page.RelPermalink }}">Open episode<span aria-hidden="true">→</span></a>
+                  </div>
+                  <ul class="hx:mt-5 hx:space-y-4">
+                    {{ range .links }}
+                      <li class="hx:rounded-xl hx:border hx:border-gray-200 hx:bg-gray-50 hx:p-4 hx:dark:border-neutral-800 hx:dark:bg-neutral-950/60">
+                        <div class="hx:flex hx:flex-wrap hx:items-center hx:gap-2">
+                          {{ with .host }}
+                            {{ partial "resource-badge.html" (dict "content" . "color" "gray") }}
+                          {{ end }}
+                        </div>
+                        <p class="hx:mt-3 hx:mb-1 hx:text-base hx:font-medium hx:text-gray-900 hx:dark:text-gray-100">
+                          <a class="hx:text-inherit hx:no-underline hx:transition-colors hover:hx:text-primary-600 hx:dark:hover:text-primary-400" href="{{ .href }}" target="_blank" rel="noopener">{{ .label }}</a>
+                        </p>
+                        <p class="hx:mb-0 hx:break-all hx:text-sm hx:text-gray-600 hx:dark:text-gray-400">
+                          <a class="hx:text-inherit hx:no-underline hover:hx:text-primary-600 hx:dark:hover:text-primary-400" href="{{ .href }}" target="_blank" rel="noopener">{{ .href }}</a>
+                        </p>
+                      </li>
+                    {{ end }}
+                  </ul>
+                </article>
+              {{ end }}
+            </div>
+          {{ else }}
+            <div class="not-prose hx:mt-6 hx:rounded-2xl hx:border hx:border-dashed hx:border-gray-300 hx:bg-gray-50 hx:p-6 hx:text-sm hx:text-gray-600 hx:dark:border-neutral-700 hx:dark:bg-neutral-900 hx:dark:text-gray-400">
+              No external links were found in the episode pages for this lesson.
+            </div>
+          {{ end }}
+        </div>
+      </main>
+    </article>
+  </div>
+{{ end }}

@@ -1,0 +1,43 @@
+{{ define "main" }}
+  <div class='hx:mx-auto hx:flex hextra-max-page-width' data-lesson-shell data-sidebar-collapsed="false" data-toc-collapsed="false">
+    {{ partial "sidebar.html" (dict "context" .) }}
+    {{ partial "toc.html" . }}
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <div class="hx:flex hx:w-full hx:min-w-0 hx:justify-center hx:px-6 hx:pt-4 hx:md:px-12">
+        <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width">
+          {{ partial "breadcrumb.html" (dict "page" . "enable" true) }}
+          <div class="not-prose hx:mb-6 hx:flex hx:flex-wrap hx:items-center hx:justify-end hx:gap-2">
+            <button class="lesson-display-toggle hx:hidden hx:md:inline-flex" type="button" data-lesson-sidebar-toggle aria-pressed="false" aria-label="Hide lesson menu" title="Hide lesson menu">
+              {{ partial "utils/icon.html" (dict "name" "menu-alt-2" "attributes" "height=14 class=\"hx:shrink-0\"") }}
+              <span>Lesson menu</span>
+            </button>
+            {{- if ne .Params.toc false -}}
+              <button class="lesson-display-toggle hx:hidden hx:xl:inline-flex" type="button" data-lesson-toc-toggle aria-pressed="false" aria-label="Hide on this page panel" title="Hide on this page panel">
+                {{ partial "utils/icon.html" (dict "name" "document-text" "attributes" "height=14 class=\"hx:shrink-0\"") }}
+                <span>On this page</span>
+              </button>
+            {{- end -}}
+            <div class="lesson-audience-toggle">
+              <button class="lesson-audience-option" type="button" data-view-toggle="learner" aria-pressed="false">Learner</button>
+              <button class="lesson-audience-option" type="button" data-view-toggle="instructor" aria-pressed="false">Instructor</button>
+            </div>
+          </div>
+          <div class="content">
+            {{ partial "episode-content.html" (dict "page" .) }}
+          </div>
+          {{ partial "components/pager.html" . }}
+        </main>
+      </div>
+    </article>
+    <button
+      class="lesson-floating-backtotop"
+      type="button"
+      data-lesson-back-to-top
+      aria-label="Scroll to top"
+      title="Scroll to top"
+    >
+      {{ partial "utils/icon.html" (dict "name" "arrow-up" "attributes" "height=14 class=\"hx:shrink-0\"") }}
+      <span>Scroll to top</span>
+    </button>
+  </div>
+{{ end }}

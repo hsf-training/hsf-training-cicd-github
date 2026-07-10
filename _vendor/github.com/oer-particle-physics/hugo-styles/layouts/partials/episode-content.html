@@ -1,0 +1,58 @@
+{{ $page := .page }}
+{{ $minutes := add ($page.Params.teaching | default 0) ($page.Params.exercises | default 0) }}
+{{ $inlineRender := dict "display" "inline" }}
+{{ $episodeID := "" }}
+{{ with $page.File }}
+  {{ if .Dir }}
+    {{ $episodeID = path.Base (strings.TrimSuffix "/" .Dir) }}
+  {{ else }}
+    {{ $episodeID = .TranslationBaseName }}
+  {{ end }}
+{{ end }}
+{{ if not $episodeID }}
+  {{ $episodeID = anchorize $page.Title }}
+{{ end }}
+<p class="hx:mb-2 hx:text-xs hx:font-semibold hx:uppercase hx:tracking-[0.16em] hx:text-gray-500 hx:dark:text-gray-400">Episode</p>
+<h1 id="{{ $episodeID }}">{{ $page.Title }}</h1>
+<div class="not-prose hx:mt-5 hx:flex hx:flex-wrap hx:gap-2">
+  {{ if $page.Params.teaching }}{{ partial "resource-badge.html" (dict "content" (printf "Teaching %d min" $page.Params.teaching) "color" "blue") }}{{ end }}
+  {{ if $page.Params.exercises }}{{ partial "resource-badge.html" (dict "content" (printf "Exercises %d min" $page.Params.exercises) "color" "blue") }}{{ end }}
+  {{ if gt $minutes 0 }}{{ partial "resource-badge.html" (dict "content" (printf "Estimated %d min" $minutes) "color" "gray") }}{{ end }}
+</div>
+{{ if or $page.Params.questions $page.Params.objectives }}
+  <div class="hx:mt-8 hx:grid hx:gap-4 hx:md:grid-cols-2">
+    {{ with $page.Params.questions }}
+      <section class="hx:rounded-2xl hx:border hx:border-gray-200 hx:bg-white hx:p-6 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+        <h2 class="lesson-box-title hx:first:mt-0" id="{{ printf "%s-questions" $episodeID }}">Questions</h2>
+        <ul>
+          {{ range . }}
+            <li>{{ $page.RenderString $inlineRender . }}</li>
+          {{ end }}
+        </ul>
+      </section>
+    {{ end }}
+    {{ with $page.Params.objectives }}
+      <section class="hx:rounded-2xl hx:border hx:border-gray-200 hx:bg-white hx:p-6 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+        <h2 class="lesson-box-title hx:first:mt-0" id="{{ printf "%s-objectives" $episodeID }}">Objectives</h2>
+        <ul>
+          {{ range . }}
+            <li>{{ $page.RenderString $inlineRender . }}</li>
+          {{ end }}
+        </ul>
+      </section>
+    {{ end }}
+  </div>
+{{ end }}
+{{ $page.Content }}
+{{ with $page.Params.keypoints }}
+  <section class="hx:mt-8">
+    <section class="hx:rounded-2xl hx:border hx:border-gray-200 hx:bg-white hx:p-6 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+      <h2 class="lesson-box-title hx:first:mt-0" id="{{ printf "%s-key-points" $episodeID }}">Key Points</h2>
+      <ul>
+        {{ range . }}
+          <li>{{ $page.RenderString $inlineRender . }}</li>
+        {{ end }}
+      </ul>
+    </section>
+  </section>
+{{ end }}

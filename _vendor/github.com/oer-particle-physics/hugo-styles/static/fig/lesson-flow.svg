@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" role="img" aria-labelledby="title desc">
+  <title id="title">Lesson flow illustration</title>
+  <desc id="desc">Three cards connected by arrows, representing shared module, thin template, and downstream lesson updates.</desc>
+  <rect width="820" height="420" rx="28" fill="#f4efe6"/>
+  <rect x="40" y="80" width="210" height="180" rx="24" fill="#0d5f63"/>
+  <rect x="305" y="120" width="210" height="180" rx="24" fill="#d8782d"/>
+  <rect x="570" y="80" width="210" height="180" rx="24" fill="#173b45"/>
+  <path d="M250 170h55" stroke="#173b45" stroke-width="10" stroke-linecap="round"/>
+  <path d="M515 170h55" stroke="#173b45" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="250" cy="170" r="12" fill="#173b45"/>
+  <circle cx="515" cy="170" r="12" fill="#173b45"/>
+  <text x="65" y="130" fill="#fffdf8" font-size="24" font-family="Avenir Next, sans-serif">Shared module</text>
+  <text x="65" y="165" fill="#d6eef0" font-size="16" font-family="Avenir Next, sans-serif">Layouts, shortcodes,</text>
+  <text x="65" y="188" fill="#d6eef0" font-size="16" font-family="Avenir Next, sans-serif">assets, docs, checks</text>
+  <text x="330" y="170" fill="#fffaf3" font-size="24" font-family="Avenir Next, sans-serif">Thin template</text>
+  <text x="330" y="205" fill="#fff0df" font-size="16" font-family="Avenir Next, sans-serif">Config, skeleton content,</text>
+  <text x="330" y="228" fill="#fff0df" font-size="16" font-family="Avenir Next, sans-serif">Actions, Dependabot</text>
+  <text x="595" y="126" fill="#fffdf8" font-size="24" font-family="Avenir Next, sans-serif">Downstream</text>
+  <text x="595" y="154" fill="#fffdf8" font-size="24" font-family="Avenir Next, sans-serif">lessons</text>
+  <text x="595" y="188" fill="#dbe7ea" font-size="16" font-family="Avenir Next, sans-serif">Local content, branding,</text>
+  <text x="595" y="211" fill="#dbe7ea" font-size="16" font-family="Avenir Next, sans-serif">targeted overrides</text>
+  <text x="410" y="330" fill="#4f5e66" font-size="20" font-family="Iowan Old Style, serif" text-anchor="middle">Update shared behavior once,</text>
+  <text x="410" y="356" fill="#4f5e66" font-size="20" font-family="Iowan Old Style, serif" text-anchor="middle">then roll it out by bumping a module version.</text>
+</svg>

@@ -1,0 +1,19 @@
+# Shared lychee defaults for checking rendered Hugo output.
+include_fragments = true
+include_mail = false
+index_files = ["index.html"]
+fallback_extensions = ["html"]
+
+max_redirects = 10
+max_retries = 2
+max_concurrency = 32
+host_concurrency = 4
+host_request_interval = "100ms"
+timeout = 20
+retry_wait_time = 2
+
+exclude_loopback = true
+exclude_link_local = true
+exclude_private = true
+
+user_agent = "hugo-styles-link-checker"

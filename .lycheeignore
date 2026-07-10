@@ -1,0 +1,5 @@
+# Add exact per-repository exceptions here for trusted upstream URLs that are
+# known to fail automated validation. Keep entries narrow and documented.
+#
+# Example:
+# https://cmsweb.cern.ch/das/

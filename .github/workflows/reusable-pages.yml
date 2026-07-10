@@ -1,0 +1,153 @@
+# x-release-please-version: v0.3.6
+name: Reusable Pages Build
+
+on:
+  workflow_call:
+    inputs:
+      site-root:
+        type: string
+        default: "."
+      go-version-file:
+        type: string
+        default: "go.mod"
+      setup-node:
+        type: boolean
+        default: false
+      node-version:
+        type: string
+        default: "22"
+      prepare-command:
+        type: string
+        default: ""
+      sync-command:
+        type: string
+        default: ""
+      drift-check-paths:
+        type: string
+        default: ""
+      validation-command:
+        type: string
+        default: ""
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.site-root }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        if: ${{ inputs.setup-node }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+          cache-dependency-path: ${{ inputs.site-root }}/package-lock.json
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.160.1"
+          extended: true
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: ${{ inputs.go-version-file }}
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Run prepare command
+        if: ${{ inputs.prepare-command != '' }}
+        shell: bash
+        run: ${{ inputs.prepare-command }}
+
+      - name: Sync shared template files
+        if: ${{ inputs.sync-command != '' }}
+        shell: bash
+        run: ${{ inputs.sync-command }}
+
+      - name: Verify synced files are committed
+        if: ${{ inputs.sync-command != '' && inputs.drift-check-paths != '' }}
+        shell: bash
+        env:
+          DRIFT_CHECK_PATHS: ${{ inputs.drift-check-paths }}
+        run: |
+          drift_paths=()
+          while IFS= read -r path; do
+            if [[ -n "${path}" ]]; then
+              drift_paths+=("${path}")
+            fi
+          done <<< "${DRIFT_CHECK_PATHS}"
+
+          if [[ ${#drift_paths[@]} -eq 0 ]]; then
+            echo "No drift-check paths configured"
+            exit 0
+          fi
+
+          git diff --exit-code -- "${drift_paths[@]}"
+
+      - name: Run validation command
+        if: ${{ inputs.validation-command != '' }}
+        shell: bash
+        run: ${{ inputs.validation-command }}
+
+      - name: Restore lychee cache
+        id: restore-lychee-cache
+        uses: actions/cache/restore@v5
+        with:
+          path: .lycheecache
+          key: cache-lychee-${{ github.sha }}
+          restore-keys: cache-lychee-
+
+      - name: Fetch deploy refs
+        run: git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*' --tags
+
+      - name: Build link-check artifact
+        run: python3 scripts/build-versioned-site.py --base-url / --destination .cache/linkcheck-site --no-minify
+
+      - name: Check rendered links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --cache
+            --config ${{ inputs.site-root }}/lychee.toml
+            --no-progress
+            --root-dir ${{ inputs.site-root }}/.cache/linkcheck-site
+            '${{ inputs.site-root }}/.cache/linkcheck-site/**/*.html'
+          fail: true
+          jobSummary: true
+          token: ${{ github.token }}
+
+      - name: Save lychee cache
+        if: always()
+        uses: actions/cache/save@v5
+        with:
+          path: .lycheecache
+          key: ${{ steps.restore-lychee-cache.outputs.cache-primary-key }}
+
+      - name: Build deploy artifact
+        run: python3 scripts/build-versioned-site.py --base-url "${{ steps.pages.outputs.base_url }}/"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ${{ inputs.site-root }}/public
+
+  deploy:
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5

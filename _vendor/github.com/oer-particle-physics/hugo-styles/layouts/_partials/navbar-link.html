@@ -1,0 +1,137 @@
+{{- $currentPage := .currentPage -}}
+{{- $link := .link -}}
+{{- $item := .item -}}
+{{- $icon := .icon -}}
+{{- $external := .external -}}
+{{- $pageRef := strings.TrimSuffix "/" (or $item.PageRef "") -}}
+{{- $isEpisodesMenu := and (not $item.HasChildren) (or (eq $item.Identifier "episodes") (eq $pageRef "/episodes") (eq $pageRef "episodes") (eq $item.Name "Episodes")) -}}
+{{- $episodes := slice -}}
+{{- $navScratch := newScratch -}}
+{{- $navScratch.Set "visibleChildren" (slice) -}}
+{{- if $isEpisodesMenu -}}
+  {{- $episodes = sort (where site.RegularPages "Section" "episodes") "Weight" -}}
+{{- else -}}
+  {{- range $item.Children -}}
+    {{- $showChild := true -}}
+    {{- with .PageRef -}}
+      {{- if hasPrefix . "/" -}}
+        {{- $showChild = false -}}
+        {{- with $currentPage.Site.GetPage . -}}
+          {{- $showChild = true -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if $showChild -}}
+      {{- $navScratch.Add "visibleChildren" (slice .) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $visibleChildren := $navScratch.Get "visibleChildren" -}}
+{{- $hasMenuChildren := gt (len $visibleChildren) 0 -}}
+
+{{- $active := or ($currentPage.HasMenuCurrent "main" $item) ($currentPage.IsMenuCurrent "main" $item) -}}
+{{- if and (not $active) $link -}}
+  {{- $currentPath := strings.TrimSuffix "/" $currentPage.RelPermalink -}}
+  {{- $linkPath := strings.TrimSuffix "/" $link -}}
+  {{- if eq $currentPath $linkPath -}}
+    {{- $active = true -}}
+  {{- end -}}
+{{- end -}}
+{{- if and (not $active) $isEpisodesMenu (eq $currentPage.Section "episodes") -}}
+  {{- $active = true -}}
+{{- end -}}
+{{- $activeClass := cond $active "hx:font-medium" "hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200" -}}
+
+{{- if or $hasMenuChildren (gt (len $episodes) 0) -}}
+<div class="hx:relative hx:hidden hx:md:inline-block">
+  <button
+    title="{{ or (T $item.Identifier) $item.Name | safeHTML }}"
+    data-state="closed"
+    class="hextra-nav-menu-toggle hx:cursor-pointer hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:whitespace-nowrap hx:p-2 hx:flex hx:items-center hx:gap-1 {{ $activeClass }}"
+    type="button"
+    aria-label="{{ or (T $item.Identifier) $item.Name | safeHTML }}"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    {{- if $icon -}}
+      <span class="hx:inline-flex hx:items-center">
+        {{- partial "utils/icon" (dict "name" $icon "attributes" `height="1em" class="hx:inline-block"`) -}}
+      </span>
+    {{- end -}}
+    <span class="hx:text-center">
+      {{- or (T $item.Identifier) $item.Name | safeHTML -}}
+    </span>
+    {{- partial "utils/icon.html" (dict "name" "chevron-down" "attributes" "height=12 class=\"hx:transition-transform hx:duration-200 hx:ease-in-out\"") -}}
+  </button>
+  <ul
+    class="hextra-nav-menu-items hx:hidden hx:z-20 hx:max-h-80 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="min-width: 220px;"
+    role="menu"
+  >
+    {{- if $isEpisodesMenu -}}
+      <li role="none" class="hextra-nav-menu-item hx:flex hx:flex-col">
+        <a
+          href="{{ $link }}"
+          role="menuitem"
+          class="hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200 hx:relative hx:cursor-pointer hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:flex hx:items-center hx:gap-1 hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800"
+        >
+          Overview
+        </a>
+      </li>
+      {{- range $index, $episode := $episodes -}}
+        <li role="none" class="hextra-nav-menu-item hx:flex hx:flex-col">
+          <a
+            href="{{ $episode.RelPermalink }}"
+            role="menuitem"
+            class="hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200 hx:relative hx:cursor-pointer hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-4 hx:rtl:pr-3 hx:rtl:pl-4 hx:flex hx:items-start hx:gap-2 hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800"
+          >
+            <span class="hx:mt-0.5 hx:inline-flex hx:min-w-[1.5rem] hx:justify-center hx:rounded-full hx:bg-gray-100 hx:px-1.5 hx:py-0.5 hx:text-[11px] hx:font-semibold hx:text-gray-600 hx:dark:bg-neutral-800 hx:dark:text-gray-300">{{ add $index 1 }}</span>
+            <span class="hx:min-w-0 hx:leading-5">{{ $episode.Title }}</span>
+          </a>
+        </li>
+      {{- end -}}
+    {{- else -}}
+      {{- range $visibleChildren -}}
+        {{- $childLink := .URL -}}
+        {{- $childExternal := strings.HasPrefix $childLink "http" -}}
+        {{- with .PageRef -}}
+          {{- if hasPrefix . "/" -}}
+            {{- $childLink = relLangURL (strings.TrimPrefix "/" .) -}}
+          {{- end -}}
+        {{- end -}}
+        <li role="none" class="hextra-nav-menu-item hx:flex hx:flex-col">
+          <a
+            href="{{ $childLink }}"
+            {{ if $childExternal }}target="_blank" rel="noreferrer"{{ end }}
+            role="menuitem"
+            class="hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:flex hx:items-center hx:gap-1 hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800"
+          >
+            {{- if and (eq .Params.type "link") .Params.icon -}}
+              <span class="hx:inline-flex hx:items-center">
+                {{- partial "utils/icon" (dict "name" .Params.icon "attributes" `height="1em" class="hx:inline-block"`) -}}
+              </span>
+            {{- end -}}
+            {{- or (T .Identifier) .Name | safeHTML -}}
+          </a>
+        </li>
+      {{- end -}}
+    {{- end -}}
+  </ul>
+</div>
+{{- else if $link -}}
+<a
+  title="{{ or (T .Identifier) .Name | safeHTML }}"
+  href="{{ $link }}"
+  {{ if $external }}target="_blank" rel="noreferrer"{{ end }}
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 {{ $activeClass }}"
+>
+  {{- if $icon -}}
+    <span class="hx:inline-flex hx:items-center">
+      {{- partial "utils/icon" (dict "name" $icon "attributes" `height="1em" class="hx:inline-block"`) -}}
+    </span>
+  {{- end -}}
+  <span class="hx:text-center">
+    {{- or (T $item.Identifier) $item.Name | safeHTML -}}
+  </span>
+</a>
+{{- end -}}

@@ -1,0 +1,203 @@
+baseURL = "https://oer-particle-physics.github.io/hugo-styles/"
+title = "Hugo Styles"
+locale = "en-US"
+enableGitInfo = false
+disableKinds = ["taxonomy", "term", "RSS"]
+
+[module]
+  [[module.imports]]
+    path = "github.com/imfing/hextra"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      definitionList = true
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [["\\[", "\\]"], ["$$", "$$"]]
+          inline = [["\\(", "\\)"]]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[params.lesson]
+  title = "Hugo Styles"
+  description = "Reusable lesson infrastructure with challenge blocks, audience-aware content, aggregated teaching resources, and a thin updateable template."
+  contact = "team@example.org"
+  repo = "https://github.com/oer-particle-physics/hugo-styles"
+  editBranch = "main"
+  docsRepo = "https://github.com/oer-particle-physics/hugo-styles"
+  copyrightHolder = "the authors"
+  licenseName = "CC BY 4.0"
+  licenseURL = "https://creativecommons.org/licenses/by/4.0/"
+  lifecycle = "stable"
+  defaultView = "learner"
+  enableSidebarNumbering = true
+  analytics = ""
+
+[params.navbar]
+  displayTitle = true
+  displayLogo = false
+  width = "wide"
+
+[params.search]
+  enable = true
+  type = "flexsearch"
+
+  [params.search.flexsearch]
+    index = "content"
+    js = "js/vendor/flexsearch.bundle.min.js"
+    maxPageResults = 12
+    maxSectionResults = 8
+
+[params.page.tabs]
+  sync = true
+
+[params.footer]
+  displayPoweredBy = false
+  displayCopyright = false
+
+[params.versioning]
+  enable = true
+  defaultBranch = "main"
+  menuName = "Versions"
+  menuIdentifier = "versions"
+  menuWeight = 70
+
+  [params.versioning.latest]
+    enable = true
+    label = "Latest"
+
+  [params.versioning.branches]
+    refs = []
+    patterns = []
+    all = false
+
+  [params.versioning.tags]
+    refs = []
+    patterns = []
+    all = false
+
+[menus]
+  [[menus.main]]
+    name = "Setup"
+    pageRef = "/learners/setup"
+    weight = 5
+  [[menus.main]]
+    name = "Examples"
+    pageRef = "/episodes"
+    weight = 10
+  [[menus.main]]
+    name = "Resources"
+    identifier = "resources"
+    weight = 30
+  [[menus.main]]
+    name = "Docs"
+    identifier = "docs"
+    weight = 40
+  [[menus.main]]
+    name = "Key Points"
+    parent = "resources"
+    pageRef = "/key-points"
+    weight = 10
+  [[menus.main]]
+    name = "All-in-One"
+    parent = "resources"
+    pageRef = "/all-in-one"
+    weight = 20
+  [[menus.main]]
+    name = "External Links"
+    parent = "resources"
+    pageRef = "/external-links"
+    weight = 25
+  [[menus.main]]
+    name = "Reference"
+    parent = "resources"
+    pageRef = "/reference"
+    weight = 30
+  [[menus.main]]
+    name = "Glossary"
+    parent = "resources"
+    pageRef = "/glossary"
+    weight = 40
+  [[menus.main]]
+    name = "Profiles"
+    parent = "resources"
+    pageRef = "/profiles"
+    weight = 50
+  [[menus.main]]
+    name = "All Images"
+    parent = "resources"
+    pageRef = "/extract-all-images"
+    weight = 60
+  [[menus.main]]
+    name = "Overview"
+    parent = "docs"
+    pageRef = "/docs"
+    weight = 10
+  [[menus.main]]
+    name = "Quickstart"
+    parent = "docs"
+    pageRef = "/docs/quickstart"
+    weight = 20
+  [[menus.main]]
+    name = "Authoring Guide"
+    parent = "docs"
+    pageRef = "/docs/authoring"
+    weight = 30
+  [[menus.main]]
+    name = "Front Matter"
+    parent = "docs"
+    pageRef = "/docs/frontmatter"
+    weight = 40
+  [[menus.main]]
+    name = "Components"
+    parent = "docs"
+    pageRef = "/docs/components"
+    weight = 50
+  [[menus.main]]
+    name = "Hextra Features"
+    parent = "docs"
+    pageRef = "/docs/hextra-features"
+    weight = 55
+  [[menus.main]]
+    name = "Glossary & Profiles"
+    parent = "docs"
+    pageRef = "/docs/glossary-profiles"
+    weight = 60
+  [[menus.main]]
+    name = "Deployment"
+    parent = "docs"
+    pageRef = "/docs/deployment"
+    weight = 70
+  [[menus.main]]
+    name = "Versioned Sites"
+    parent = "docs"
+    pageRef = "/docs/versioned-sites"
+    weight = 75
+  [[menus.main]]
+    name = "Troubleshooting"
+    parent = "docs"
+    pageRef = "/docs/troubleshooting"
+    weight = 80
+  [[menus.main]]
+    name = "Migration Guide"
+    parent = "docs"
+    pageRef = "/docs/migration"
+    weight = 90
+  [[menus.main]]
+    name = "Update Guide"
+    parent = "docs"
+    pageRef = "/docs/updates"
+    weight = 100
+  [[menus.main]]
+    name = "Search"
+    weight = 80
+    [menus.main.params]
+      type = "search"
+  [[menus.main]]
+    name = "GitHub"
+    url = "https://github.com/oer-particle-physics/hugo-styles"
+    weight = 90
+    [menus.main.params]
+      icon = "github"

@@ -1,0 +1,11 @@
+{
+  "name": "hugo-styles-maintainer-tools",
+  "private": true,
+  "scripts": {
+    "vendor:flexsearch": "node scripts/vendor-flexsearch.mjs",
+    "check:flexsearch": "node scripts/vendor-flexsearch.mjs --check"
+  },
+  "devDependencies": {
+    "flexsearch": "^0.8.212"
+  }
+}
