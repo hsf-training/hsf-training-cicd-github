@@ -30,7 +30,8 @@ CI/CD workflows can be configured to run after a push, after a pull request, or 
 
 {{< callout type="note" title="Catch and Release" >}}
 This is just like a fishing practice for ~~conservation~~ preservation!
-<center><iframe src="https://giphy.com/embed/j8080dkr0ux1e" width="385" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/funny-girl-fishing-j8080dkr0ux1e">via GIPHY</a></p></center>
+
+![A fish being caught and released](https://media.giphy.com/media/j8080dkr0ux1e/giphy.gif)
 {{< /callout >}}
 
 ### Breaking Changes
