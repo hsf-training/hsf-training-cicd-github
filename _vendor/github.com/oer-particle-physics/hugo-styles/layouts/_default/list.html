@@ -27,7 +27,7 @@
                 {{ $summary = ($page.Summary | plainify | htmlUnescape | strings.TrimSpace | truncate 220) }}
               {{ end }}
               {{ $minutes := add ($page.Params.teaching | default 0) ($page.Params.exercises | default 0) }}
-              <a href="{{ $page.RelPermalink }}" class="hextra-card hx:group hx:flex hx:h-full hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:bg-transparent hx:text-current hx:no-underline hx:shadow-xs hx:shadow-gray-100 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:hover:bg-slate-50 hx:hover:shadow-md hx:hover:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:dark:text-neutral-200 hx:dark:shadow-none hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900 hx:dark:hover:shadow-none">
+              <a href="{{ $page.RelPermalink }}" class="hx:p-4 hextra-card hx:group hx:flex hx:h-full hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:bg-transparent hx:text-current hx:no-underline hx:shadow-xs hx:shadow-gray-100 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:hover:bg-slate-50 hx:hover:shadow-md hx:hover:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:dark:text-neutral-200 hx:dark:shadow-none hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900 hx:dark:hover:shadow-none">
                 <div class="hx:flex hx:h-full hx:flex-col hx:p-5">
                   <div class="hx:flex hx:items-start hx:justify-between hx:gap-4">
                     <div class="hx:min-w-0">

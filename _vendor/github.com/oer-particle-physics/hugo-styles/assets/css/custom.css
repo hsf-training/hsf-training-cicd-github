@@ -522,3 +522,7 @@ html[data-view="instructor"] [data-audience="learner"] {
 .dark .lesson-aio-search::placeholder {
   color: rgb(156 163 175);
 }
+
+.lesson-box-title {
+  margin: 0;
+}
