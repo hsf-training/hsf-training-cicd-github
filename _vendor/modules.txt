@@ -1,2 +1,2 @@
-# github.com/oer-particle-physics/hugo-styles v0.3.7-0.20260522163503-c5a57ae31e51
+# github.com/oer-particle-physics/hugo-styles v0.3.6
 # github.com/imfing/hextra v0.12.1
