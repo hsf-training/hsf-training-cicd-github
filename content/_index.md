@@ -22,14 +22,7 @@ The aim of this module is to:
 {{< hextra/hero-button text="Start Lesson" link="episodes/01-introduction/" >}}
 </div>
 
-<div class="hx:mt-6"></div>
-{{< lesson/overview >}}
-<div class="hx:mt-6"></div>
-{{< lesson/schedule title="Schedule" >}}
-<div class="hx:mt-6"></div>
-{{< lesson/authors title="Authors and Contributors" >}}
-
-## About This Lesson
+<div class="content">
 
 {{< callout type="prereq" title="Prerequisites" >}}
 This assumes that you'll have some basic background with your command line, for example:
@@ -45,3 +38,12 @@ This assumes that you'll have some basic background with your command line, for 
 3.  Understanding how job runners work (and get access to your clones)
 4.  Protecting secret information while allowing jobs to run
 {{< /callout >}}
+
+</div>
+
+<div class="hx:mt-6"></div>
+{{< lesson/overview >}}
+<div class="hx:mt-6"></div>
+{{< lesson/schedule title="Schedule" >}}
+<div class="hx:mt-6"></div>
+{{< lesson/authors title="Authors and Contributors" >}}
