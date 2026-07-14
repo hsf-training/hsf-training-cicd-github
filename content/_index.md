@@ -12,9 +12,7 @@ Continuous Integration / Continuous Deployment (CI/CD) - Github Edition
 {{< hextra/hero-subtitle >}}
 GitHub is a distributed git platform used for code hosting and collaboration. It can also be used to automatically run the hosted code on Github's servers via GitHub Actions. Actions are workflow automation scripts. We'll learn how to develop on to make our code robust to errors, preserved, and reproducible.
 
-The aim of this module is to:
-- explore what it means to build a CI/CD workflow
-- guide you through building a CI/CD workflow
+The aim of this module is to help build and explore the meaning of a CI/CD workflow.
 {{< /hextra/hero-subtitle >}}
 </div>
 
