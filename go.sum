@@ -1,5 +1,7 @@
 github.com/imfing/hextra v0.12.1 h1:3t1n0bmJbDzSTVfht93UDcfF1BXMRjeFojA071ri2l8=
 github.com/imfing/hextra v0.12.1/go.mod h1:vi+yhpq8YPp/aghvJlNKVnJKcPJ/VyAEcfC1BSV9ARo=
+github.com/imfing/hextra v0.12.3 h1:DZHY2rUWYteyzjlHi9r4n7Bb5e2Q+6LXe4C1Dqn0ZjM=
+github.com/imfing/hextra v0.12.3/go.mod h1:vi+yhpq8YPp/aghvJlNKVnJKcPJ/VyAEcfC1BSV9ARo=
 github.com/oer-particle-physics/hugo-styles v0.0.0-20260412131146-fb26f680421d h1:udKGONgLJB4+DTVTy9CHQL1pku3cIyxZSgRPNB73ooI=
 github.com/oer-particle-physics/hugo-styles v0.0.0-20260412131146-fb26f680421d/go.mod h1:xqFkY9oxqm13s30BQewyVS4xD5QUpJi8bbsxlUJHiPc=
 github.com/oer-particle-physics/hugo-styles v0.0.0-20260413125150-445830cdd16b h1:QWcfD08frljQ2usxGJ3WaroPpruwcDz6BsTYMZ/fL0o=
@@ -30,3 +32,5 @@ github.com/oer-particle-physics/hugo-styles v0.3.6 h1:0qp5T4WWEazi5ln2sYV2dcmffJ
 github.com/oer-particle-physics/hugo-styles v0.3.6/go.mod h1:xqFkY9oxqm13s30BQewyVS4xD5QUpJi8bbsxlUJHiPc=
 github.com/oer-particle-physics/hugo-styles v0.3.7-0.20260522163503-c5a57ae31e51 h1:BWl8lQLPE+XRJM0JIGUhuWWauS/KssiRcVRvcWOjneI=
 github.com/oer-particle-physics/hugo-styles v0.3.7-0.20260522163503-c5a57ae31e51/go.mod h1:xqFkY9oxqm13s30BQewyVS4xD5QUpJi8bbsxlUJHiPc=
+github.com/oer-particle-physics/hugo-styles v0.5.6 h1:HbeL7WY4SYh/Hq7gaOuF4pqkQSaZbPsD7JwEmeRom4c=
+github.com/oer-particle-physics/hugo-styles v0.5.6/go.mod h1:XSlR7LMCzgUaAa4sJp1qIQ6WDwLXwRstam6YXK3XmL0=

@@ -1,4 +1,25 @@
 {{- $hasFrontMatterMath := false -}}
+<script>
+  (() => {
+    const allowed = new Set(["learner", "instructor"]);
+    const fallback = {{ site.Params.lesson.defaultView | default "learner" | jsonify | safeJS }};
+    let requested = null;
+    let saved = null;
+    try {
+      requested = new URLSearchParams(window.location.search).get("view");
+    } catch (_) {}
+    try {
+      saved = window.localStorage.getItem("hugo-styles:view");
+    } catch (_) {}
+    document.documentElement.dataset.view = allowed.has(requested)
+      ? requested
+      : allowed.has(saved)
+        ? saved
+        : allowed.has(fallback)
+          ? fallback
+          : "learner";
+  })();
+</script>
 {{- $sources := slice . -}}
 {{- if or (eq .Layout "all-in-one") (eq .Layout "key-points") -}}
   {{- range (where site.RegularPages "Section" "episodes") -}}

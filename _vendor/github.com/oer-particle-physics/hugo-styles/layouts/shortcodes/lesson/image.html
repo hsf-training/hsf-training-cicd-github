@@ -1,9 +1,17 @@
-{{ $src := .Get "src" | default "" }}
-{{ $src = strings.TrimPrefix "/" $src }}
+{{ $src := strings.TrimSpace (.Get "src" | default "") }}
 {{ $alt := .Get "alt" | default "" }}
 {{ $width := .Get "width" | default "" }}
 {{ $style := .Get "style" | default "" }}
 {{ $class := .Get "class" | default "" }}
-{{ if $src }}
-<img src="{{ $src | relURL }}" alt="{{ $alt }}"{{ with $width }} width="{{ . }}"{{ end }}{{ with $style }} style="{{ . }}"{{ end }}{{ with $class }} class="{{ . }}"{{ end }} loading="lazy" />
+{{ if not $src }}
+  {{ errorf "%s: lesson/image requires src" .Position }}
 {{ end }}
+{{ if not (strings.TrimSpace $alt) }}
+  {{ errorf "%s: lesson/image requires non-empty alt text" .Position }}
+{{ end }}
+{{ $dest := partial "image-src.html" (dict "page" .Page "src" $src) }}
+{{ $enableImageZoom := partial "image-zoom-enabled.html" .Page }}
+{{ if $enableImageZoom }}
+  {{ .Page.Store.Set "hasImageZoom" true }}
+{{ end }}
+<img src="{{ $dest }}" alt="{{ $alt }}"{{ with $width }} width="{{ . }}"{{ end }}{{ with $style }} style="{{ . }}"{{ end }}{{ with $class }} class="{{ . }}"{{ end }}{{ if $enableImageZoom }} data-zoomable{{ end }} loading="lazy" />
