@@ -1,11 +1,12 @@
-# Locally maintained (forked from the hugo-styles template).
-# - changed `branches` to ["gh-pages"]
-# - removed this file from the `drift-check-paths`
+# Managed by hugo-styles.
+# x-release-please-version: v0.5.6
 name: Deploy lesson
 
 on:
   push:
-    branches: ["gh-pages"]
+    # Trigger branch pushes so the job can compare against the repository's
+    # current default branch. Defining only branches also excludes tag pushes.
+    branches: ["**"]
   pull_request:
 
 permissions:
@@ -14,11 +15,14 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: true
+  group: "pages-${{ github.event_name }}-${{ github.ref }}"
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   pages:
+    if: >-
+      github.event_name == 'pull_request' ||
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     uses: ./.github/workflows/reusable-pages.yml
     with:
       site-root: .
@@ -28,7 +32,9 @@ jobs:
         ./scripts/sync-template-files.sh
         hugo mod vendor
       drift-check-paths: |
+        .github/workflows/pages.yml
         .github/workflows/refresh-vendored-modules.yml
+        .github/workflows/reusable-pages.yml
         .github/workflows/reusable-refresh-vendored-modules.yml
         go.mod
         go.sum
@@ -37,5 +43,5 @@ jobs:
         scripts/sync-template-files.sh
         _vendor
       validation-command: |
-        MODULE_VERSION="$(go list -m -f '{{.Version}}' github.com/oer-particle-physics/hugo-styles/cmd/hugo-styles-migrate@latest)"
+        MODULE_VERSION="$(go list -m -f '{{.Version}}' github.com/oer-particle-physics/hugo-styles)"
         go run "github.com/oer-particle-physics/hugo-styles/cmd/hugo-styles-migrate@${MODULE_VERSION}" check "${GITHUB_WORKSPACE}"

@@ -8,6 +8,22 @@
   const floatingBackToTopButtons = Array.from(document.querySelectorAll("[data-lesson-back-to-top]"));
   const desktopTocMedia = window.matchMedia("(min-width: 1280px)");
 
+  const readPreference = (key) => {
+    try {
+      return window.localStorage.getItem(key);
+    } catch (_) {
+      return null;
+    }
+  };
+
+  const savePreference = (key, value) => {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch (_) {
+      // The current page still works when storage is disabled or unavailable.
+    }
+  };
+
   const scrollToTop = () => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.scroll({
@@ -50,15 +66,12 @@
     });
   };
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const fromUrl = urlParams.get("view");
-  const fromStorage = window.localStorage.getItem(viewStorageKey);
-  applyView(fromUrl || fromStorage || root.dataset.view || "learner");
+  applyView(root.dataset.view || "learner");
 
   document.querySelectorAll("[data-view-toggle]").forEach((button) => {
     button.addEventListener("click", () => {
       const next = button.dataset.viewToggle || "learner";
-      window.localStorage.setItem(viewStorageKey, next);
+      savePreference(viewStorageKey, next);
       applyView(next);
       syncViewUrl(next);
     });
@@ -114,8 +127,8 @@
   });
 
   if (lessonShells.length > 0) {
-    const sidebarFromStorage = window.localStorage.getItem(lessonSidebarStorageKey);
-    const tocFromStorage = window.localStorage.getItem(lessonTocStorageKey);
+    const sidebarFromStorage = readPreference(lessonSidebarStorageKey);
+    const tocFromStorage = readPreference(lessonTocStorageKey);
     applyLessonToggleState("sidebar", sidebarFromStorage === "true");
     applyLessonToggleState("toc", tocFromStorage === "true");
 
@@ -123,7 +136,7 @@
       button.addEventListener("click", () => {
         const shell = button.closest("[data-lesson-shell]");
         const collapsed = shell?.dataset.sidebarCollapsed !== "true";
-        window.localStorage.setItem(lessonSidebarStorageKey, String(collapsed));
+        savePreference(lessonSidebarStorageKey, String(collapsed));
         applyLessonToggleState("sidebar", collapsed);
       });
     });
@@ -132,7 +145,7 @@
       button.addEventListener("click", () => {
         const shell = button.closest("[data-lesson-shell]");
         const collapsed = shell?.dataset.tocCollapsed !== "true";
-        window.localStorage.setItem(lessonTocStorageKey, String(collapsed));
+        savePreference(lessonTocStorageKey, String(collapsed));
         applyLessonToggleState("toc", collapsed);
       });
     });

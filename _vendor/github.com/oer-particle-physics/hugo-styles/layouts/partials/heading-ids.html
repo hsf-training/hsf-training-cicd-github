@@ -1,0 +1,10 @@
+{{- $ids := slice -}}
+{{- range . -}}
+  {{- with .ID -}}
+    {{- $ids = $ids | append . -}}
+  {{- end -}}
+  {{- with .Headings -}}
+    {{- $ids = $ids | append (partial "heading-ids.html" .) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $ids -}}

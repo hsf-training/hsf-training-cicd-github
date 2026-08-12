@@ -5,14 +5,21 @@ from __future__ import annotations
 import argparse
 import copy
 import fnmatch
+import hashlib
+import html
 import json
+import os
 import shutil
 import subprocess
 import sys
 import tempfile
+import uuid
 from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit
+
+
+OUTPUT_MARKER = ".hugo-styles-versioned-output"
 
 
 @dataclass(frozen=True)
@@ -73,6 +80,27 @@ def parse_args() -> argparse.Namespace:
         "--no-minify",
         action="store_true",
         help="Skip Hugo's --minify flag.",
+    )
+    parser.add_argument(
+        "--use-current-checkout",
+        action="store_true",
+        help=(
+            "Build the site root from the current checkout instead of the configured "
+            "primary ref. Use this for pull-request validation."
+        ),
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help=(
+            "Replace an existing non-empty destination that was not created by this "
+            "script. Structural destination safety checks still apply."
+        ),
+    )
+    parser.add_argument(
+        "--allow-external-destination",
+        action="store_true",
+        help="Allow a destination outside the Hugo site root.",
     )
     return parser.parse_args()
 
@@ -196,14 +224,37 @@ def load_hugo_config(
     hugo_bin: str,
     base_url: str | None,
     cache_dir: Path,
+    *,
+    allow_missing_config_files: bool = False,
 ) -> dict:
+    config_files = [item.strip() for item in config_name.split(",") if item.strip()]
+    if not config_files:
+        raise BuildError("At least one Hugo config file must be specified.")
+
+    available_config_files: list[str] = []
+    missing_config_files: list[str] = []
+    for config_file in config_files:
+        path = Path(config_file)
+        candidate = path if path.is_absolute() else site_root / path
+        if candidate.is_file():
+            available_config_files.append(config_file)
+        else:
+            missing_config_files.append(config_file)
+
+    if missing_config_files and not allow_missing_config_files:
+        missing = ", ".join(missing_config_files)
+        raise BuildError(f"Hugo config file not found in {site_root}: {missing}")
+    if not available_config_files:
+        raise BuildError(f"No Hugo config files found in {site_root}: {config_name}")
+
     command = [
         hugo_bin,
         "config",
+        "--quiet",
         "--format",
         "json",
         "--config",
-        config_name,
+        ",".join(available_config_files),
         "--cacheDir",
         str(cache_dir),
     ]
@@ -303,7 +354,17 @@ def remove_managed_version_menu(menu_items: list[dict], menu_identifier: str) ->
     return cleaned
 
 
-def apply_version_menu(config: dict, versioning: dict, menu_items: list[BuildTarget]) -> dict:
+def version_menu_placeholder(target: BuildTarget) -> str:
+    identifier = slugify_identifier(f"{target.kind}-{target.name}")
+    digest = hashlib.sha256(f"{target.kind}\0{target.name}".encode()).hexdigest()[:12]
+    return f"__hugo_styles_version_{identifier}-{digest}__/"
+
+
+def apply_version_menu(
+    config: dict,
+    versioning: dict,
+    menu_items: list[BuildTarget],
+) -> dict:
     updated = copy.deepcopy(config)
     menus = updated.setdefault("menus", {})
     main_menu = list(menus.get("main") or [])
@@ -329,7 +390,7 @@ def apply_version_menu(config: dict, versioning: dict, menu_items: list[BuildTar
                     "identifier": f"{menu_identifier}-{slugify_identifier(item.name)}",
                     "name": item.label,
                     "parent": menu_identifier,
-                    "url": item.menu_path,
+                    "url": version_menu_placeholder(item),
                     "weight": index * 10,
                     "params": {"hugostylesversioning": True},
                 }
@@ -338,6 +399,20 @@ def apply_version_menu(config: dict, versioning: dict, menu_items: list[BuildTar
     menus["main"] = main_menu
     updated["menus"] = menus
     return updated
+
+
+def rewrite_version_menu_links(destination: Path, menu_items: list[BuildTarget]) -> None:
+    replacements = {
+        version_menu_placeholder(item): html.escape(item.menu_path, quote=True)
+        for item in menu_items
+    }
+    for path in destination.rglob("*.html"):
+        content = path.read_text(encoding="utf-8")
+        updated = content
+        for placeholder, replacement in replacements.items():
+            updated = updated.replace(placeholder, replacement)
+        if updated != content:
+            path.write_text(updated, encoding="utf-8")
 
 
 def write_generated_config(config: dict, target: BuildTarget, directory: Path) -> Path:
@@ -408,8 +483,10 @@ def resolve_targets(
     destination_root: Path,
     repo_root: Path | None,
     current_branch: str | None,
+    use_current_checkout: bool = False,
 ) -> list[BuildTarget]:
     enable_versioning = as_bool(versioning.get("enable"), default=False)
+    root_menu_path = site_root_path(base_url)
 
     latest_cfg = versioning.get("latest") or {}
     latest_enabled = enable_versioning and as_bool(latest_cfg.get("enable"), default=True)
@@ -428,7 +505,7 @@ def resolve_targets(
         tag_names, tag_refs = list_tag_refs(repo_root)
 
     root_git_ref: str | None = None
-    if enable_versioning and repo_root is not None:
+    if enable_versioning and repo_root is not None and not use_current_checkout:
         if current_branch != latest_ref_name:
             root_git_ref = resolve_latest_ref(
                 latest_ref_name=latest_ref_name,
@@ -444,7 +521,7 @@ def resolve_targets(
                 kind="root",
                 git_ref=root_git_ref,
                 base_url=normalize_base_url(base_url),
-                menu_path="/",
+                menu_path=root_menu_path,
                 destination=destination_root,
                 include_in_menu=latest_enabled,
             )
@@ -457,7 +534,7 @@ def resolve_targets(
                 kind="root",
                 git_ref=root_git_ref,
                 base_url=normalize_base_url(base_url),
-                menu_path="/",
+                menu_path=root_menu_path,
                 destination=destination_root,
                 include_in_menu=False,
             )
@@ -497,13 +574,110 @@ def resolve_targets(
                     kind=kind,
                     git_ref=git_ref,
                     base_url=join_url(base_url, "versions", ref_name),
-                    menu_path=join_site_path("/", "versions", ref_name),
+                    menu_path=join_site_path(root_menu_path, "versions", ref_name),
                     destination=destination_root / "versions" / ref_name,
                     include_in_menu=True,
                 )
             )
 
     return targets
+
+
+def is_relative_to(path: Path, parent: Path) -> bool:
+    try:
+        path.relative_to(parent)
+        return True
+    except ValueError:
+        return False
+
+
+def validate_destination(
+    *,
+    site_root: Path,
+    repo_root: Path | None,
+    destination: Path,
+    allow_external: bool,
+    force: bool,
+) -> Path:
+    lexical_destination = destination.absolute()
+    if lexical_destination.is_symlink():
+        raise BuildError(f"Destination must not be a symbolic link: {lexical_destination}")
+    destination = lexical_destination.resolve()
+    if is_relative_to(lexical_destination, site_root) and lexical_destination != destination:
+        raise BuildError(
+            f"Destination must not escape the site root through a symbolic link: "
+            f"{lexical_destination}"
+        )
+
+    protected_roots = {site_root, Path(destination.anchor)}
+    if repo_root is not None:
+        protected_roots.add(repo_root)
+
+    if destination in protected_roots:
+        raise BuildError(f"Refusing unsafe destination: {destination}")
+    if is_relative_to(site_root, destination):
+        raise BuildError(f"Destination must not contain the site root: {destination}")
+    if repo_root is not None and is_relative_to(repo_root, destination):
+        raise BuildError(f"Destination must not contain the git repository: {destination}")
+    if not is_relative_to(destination, site_root) and not allow_external:
+        raise BuildError(
+            f"Destination {destination} is outside the site root {site_root}. "
+            "Pass --allow-external-destination to allow it explicitly."
+        )
+
+    if not destination.exists():
+        return destination
+    if not destination.is_dir():
+        raise BuildError(f"Destination exists and is not a directory: {destination}")
+    if not any(destination.iterdir()):
+        return destination
+    if (destination / OUTPUT_MARKER).is_file():
+        return destination
+    if not force:
+        raise BuildError(
+            f"Destination {destination} is non-empty and is not marked as managed by "
+            "this script. Pass --force to replace it."
+        )
+    return destination
+
+
+def target_config(
+    *,
+    build_root: Path,
+    config_name: str,
+    hugo_bin: str,
+    cache_dir: Path,
+    versioning: dict,
+    menu_targets: list[BuildTarget],
+) -> dict:
+    config = load_hugo_config(
+        build_root,
+        config_name,
+        hugo_bin,
+        None,
+        cache_dir,
+        allow_missing_config_files=True,
+    )
+    return apply_version_menu(config, versioning, menu_targets)
+
+
+def publish_staged_output(staging: Path, destination: Path) -> None:
+    backup = destination.parent / f".{destination.name}.backup-{uuid.uuid4().hex}"
+    had_destination = destination.exists()
+
+    try:
+        if had_destination:
+            os.replace(destination, backup)
+        try:
+            os.replace(staging, destination)
+        except Exception:
+            if had_destination and backup.exists():
+                os.replace(backup, destination)
+            raise
+        if backup.exists():
+            shutil.rmtree(backup)
+    except OSError as exc:
+        raise BuildError(f"Could not publish build to {destination}: {exc}") from exc
 
 
 def prepare_worktrees(
@@ -551,66 +725,97 @@ def main() -> int:
 
     configured_base_url = args.base_url or str(hugo_config.get("baseurl") or "")
     base_url = normalize_base_url(configured_base_url)
-    destination_root = (site_root / args.destination).resolve()
+    destination_root = validate_destination(
+        site_root=site_root,
+        repo_root=repo_root,
+        destination=site_root / args.destination,
+        allow_external=args.allow_external_destination,
+        force=args.force,
+    )
+    destination_root.parent.mkdir(parents=True, exist_ok=True)
+
+    staging_root = Path(
+        tempfile.mkdtemp(
+            prefix=f".{destination_root.name}.hugo-styles-build-",
+            dir=destination_root.parent,
+        )
+    )
 
     targets = resolve_targets(
         versioning=versioning,
         base_url=base_url,
-        destination_root=destination_root,
+        destination_root=staging_root,
         repo_root=repo_root,
         current_branch=current_branch_name(repo_root),
+        use_current_checkout=args.use_current_checkout,
     )
     menu_targets = [target for target in targets if target.include_in_menu]
 
-    if destination_root.exists():
-        shutil.rmtree(destination_root)
-    destination_root.mkdir(parents=True, exist_ok=True)
-
     minify = not args.no_minify
-    with tempfile.TemporaryDirectory(prefix="hugo-styles-versioned-") as temp_name:
-        temp_dir = Path(temp_name)
-        generated_config = apply_version_menu(hugo_config, versioning, menu_targets)
+    published = False
+    try:
+        with tempfile.TemporaryDirectory(prefix="hugo-styles-versioned-") as temp_name:
+            temp_dir = Path(temp_name)
 
-        site_relative_root = Path(".")
-        if repo_root is not None:
-            site_relative_root = ensure_within_repo(site_root, repo_root)
-
-        worktree_roots: dict[str, Path] = {}
-        registered_worktrees: list[Path] = []
-        if repo_root is not None:
-            worktree_roots, registered_worktrees = prepare_worktrees(
-                repo_root=repo_root,
-                site_relative_root=site_relative_root,
-                targets=targets,
-                temp_dir=temp_dir,
-            )
-
-        try:
-            for target in targets:
-                build_root = site_root if target.git_ref is None else worktree_roots[target.git_ref]
-                build_root = build_root.resolve()
-                target.destination.mkdir(parents=True, exist_ok=True)
-
-                label = f"{target.label} ({target.kind})"
-                print(f"Building {label} -> {target.destination}")
-
-                config_path = write_generated_config(generated_config, target, temp_dir)
-                build_hugo_site(
-                    hugo_bin=args.hugo_bin,
-                    config_path=config_path,
-                    site_root=build_root,
-                    destination=target.destination,
-                    base_url=target.base_url,
-                    cache_dir=cache_dir,
-                    minify=minify,
-                )
-        finally:
+            site_relative_root = Path(".")
             if repo_root is not None:
-                for worktree in reversed(registered_worktrees):
-                    try:
-                        run(["git", "worktree", "remove", "--force", str(worktree)], cwd=repo_root)
-                    except BuildError:
-                        pass
+                site_relative_root = ensure_within_repo(site_root, repo_root)
+
+            worktree_roots: dict[str, Path] = {}
+            registered_worktrees: list[Path] = []
+            if repo_root is not None:
+                worktree_roots, registered_worktrees = prepare_worktrees(
+                    repo_root=repo_root,
+                    site_relative_root=site_relative_root,
+                    targets=targets,
+                    temp_dir=temp_dir,
+                )
+
+            try:
+                for target in targets:
+                    build_root = site_root if target.git_ref is None else worktree_roots[target.git_ref]
+                    build_root = build_root.resolve()
+                    target.destination.mkdir(parents=True, exist_ok=True)
+
+                    label = f"{target.label} ({target.kind})"
+                    print(f"Building {label} -> {target.destination}")
+
+                    generated_config = target_config(
+                        build_root=build_root,
+                        config_name=args.config,
+                        hugo_bin=args.hugo_bin,
+                        cache_dir=cache_dir,
+                        versioning=versioning,
+                        menu_targets=menu_targets,
+                    )
+                    config_path = write_generated_config(generated_config, target, temp_dir)
+                    build_hugo_site(
+                        hugo_bin=args.hugo_bin,
+                        config_path=config_path,
+                        site_root=build_root,
+                        destination=target.destination,
+                        base_url=target.base_url,
+                        cache_dir=cache_dir,
+                        minify=minify,
+                    )
+                    rewrite_version_menu_links(target.destination, menu_targets)
+            finally:
+                if repo_root is not None:
+                    for worktree in reversed(registered_worktrees):
+                        try:
+                            run(["git", "worktree", "remove", "--force", str(worktree)], cwd=repo_root)
+                        except BuildError as exc:
+                            print(f"Warning: {exc}", file=sys.stderr)
+
+        (staging_root / OUTPUT_MARKER).write_text(
+            "Generated by scripts/build-versioned-site.py.\n",
+            encoding="utf-8",
+        )
+        publish_staged_output(staging_root, destination_root)
+        published = True
+    finally:
+        if not published and staging_root.exists():
+            shutil.rmtree(staging_root)
 
     print(f"Finished building versioned site in {destination_root}")
     return 0

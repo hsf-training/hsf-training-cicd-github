@@ -1,4 +1,4 @@
-# x-release-please-version: v0.3.6
+# x-release-please-version: v0.5.6
 name: Reusable Pages Build
 
 on:
@@ -10,6 +10,9 @@ on:
       go-version-file:
         type: string
         default: "go.mod"
+      hugo-config:
+        type: string
+        default: "hugo.toml"
       setup-node:
         type: boolean
         default: false
@@ -36,7 +39,7 @@ jobs:
       run:
         working-directory: ${{ inputs.site-root }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -51,7 +54,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: "0.160.1"
+          hugo-version: "0.164.0"
           extended: true
 
       - name: Setup Go
@@ -100,7 +103,7 @@ jobs:
 
       - name: Restore lychee cache
         id: restore-lychee-cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: .lycheecache
           key: cache-lychee-${{ github.sha }}
@@ -110,30 +113,31 @@ jobs:
         run: git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*' --tags
 
       - name: Build link-check artifact
-        run: python3 scripts/build-versioned-site.py --base-url / --destination .cache/linkcheck-site --no-minify
+        run: python3 scripts/build-versioned-site.py --config "${{ inputs.hugo-config }}" --base-url / --destination .cache/linkcheck-site --no-minify --use-current-checkout
 
       - name: Check rendered links
         uses: lycheeverse/lychee-action@v2
         with:
+          lycheeVersion: v0.24.2
           args: >-
             --cache
             --config ${{ inputs.site-root }}/lychee.toml
             --no-progress
             --root-dir ${{ inputs.site-root }}/.cache/linkcheck-site
             '${{ inputs.site-root }}/.cache/linkcheck-site/**/*.html'
-          fail: false
+          fail: true
           jobSummary: true
           token: ${{ github.token }}
 
       - name: Save lychee cache
         if: always()
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: .lycheecache
           key: ${{ steps.restore-lychee-cache.outputs.cache-primary-key }}
 
       - name: Build deploy artifact
-        run: python3 scripts/build-versioned-site.py --base-url "${{ steps.pages.outputs.base_url }}/"
+        run: python3 scripts/build-versioned-site.py --config "${{ inputs.hugo-config }}" --base-url "${{ steps.pages.outputs.base_url }}/" --use-current-checkout --force
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5

@@ -3,6 +3,6 @@ module github.com/hsf-training/hsf-training-cicd-github
 go 1.26
 
 require (
-	github.com/imfing/hextra v0.12.1 // indirect
-	github.com/oer-particle-physics/hugo-styles v0.3.7-0.20260522163503-c5a57ae31e51 // indirect
+	github.com/imfing/hextra v0.12.3 // indirect
+	github.com/oer-particle-physics/hugo-styles v0.5.6 // indirect
 )

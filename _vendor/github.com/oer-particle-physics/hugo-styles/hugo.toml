@@ -4,6 +4,10 @@ locale = "en-US"
 enableGitInfo = false
 disableKinds = ["taxonomy", "term", "RSS"]
 
+[outputs]
+  page = ["HTML", "Markdown"]
+  section = ["HTML", "Markdown"]
+
 [module]
   [[module.imports]]
     path = "github.com/imfing/hextra"
@@ -40,6 +44,10 @@ disableKinds = ["taxonomy", "term", "RSS"]
   displayLogo = false
   width = "wide"
 
+[params.theme]
+  default = "system"
+  displayToggle = true
+
 [params.search]
   enable = true
   type = "flexsearch"
@@ -52,6 +60,13 @@ disableKinds = ["taxonomy", "term", "RSS"]
 
 [params.page.tabs]
   sync = true
+
+[params.page.contextMenu]
+  enable = true
+
+[params.imageZoom]
+  enable = true
+  js = "js/vendor/medium-zoom.min.js"
 
 [params.footer]
   displayPoweredBy = false
@@ -74,7 +89,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
     all = false
 
   [params.versioning.tags]
-    refs = []
+    refs = ["v0.4.0"]
     patterns = []
     all = false
 
@@ -190,6 +205,11 @@ disableKinds = ["taxonomy", "term", "RSS"]
     parent = "docs"
     pageRef = "/docs/updates"
     weight = 100
+  [[menus.main]]
+    name = "Maintenance"
+    parent = "docs"
+    pageRef = "/docs/hugo-styles-maintenance"
+    weight = 110
   [[menus.main]]
     name = "Search"
     weight = 80

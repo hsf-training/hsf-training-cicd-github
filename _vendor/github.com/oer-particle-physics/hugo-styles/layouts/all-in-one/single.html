@@ -34,37 +34,20 @@
               </div>
               <div class="hx:flex hx:flex-wrap hx:gap-2">
                 {{ range $episodes }}
-                  {{ $episodeAnchor := "" }}
-                  {{ with .File }}
-                    {{ if .Dir }}
-                      {{ $episodeAnchor = path.Base (strings.TrimSuffix "/" .Dir) }}
-                    {{ else }}
-                      {{ $episodeAnchor = .TranslationBaseName }}
-                    {{ end }}
-                  {{ end }}
-                  {{ if not $episodeAnchor }}
-                    {{ $episodeAnchor = anchorize .Title }}
-                  {{ end }}
+                  {{ $episodeAnchor := partial "episode-id.html" . }}
                   {{ partial "resource-badge.html" (dict "content" .Title "color" "gray" "link" (printf "#%s" $episodeAnchor)) }}
                 {{ end }}
+              </div>
+              <div class="hx:flex hx:flex-wrap hx:items-center hx:gap-3">
+                <span class="hx:text-sm hx:font-medium hx:text-gray-700 hx:dark:text-gray-300">Audience</span>
+                {{ partial "audience-toggle.html" (dict "page" .) }}
               </div>
             </div>
           </section>
           <div class="hx:mt-6 hx:space-y-8">
             {{ range $episodes }}
-              {{ $episodeAnchor := "" }}
-              {{ with .File }}
-                {{ if .Dir }}
-                  {{ $episodeAnchor = path.Base (strings.TrimSuffix "/" .Dir) }}
-                {{ else }}
-                  {{ $episodeAnchor = .TranslationBaseName }}
-                {{ end }}
-              {{ end }}
-              {{ if not $episodeAnchor }}
-                {{ $episodeAnchor = anchorize .Title }}
-              {{ end }}
               <article class="hx:scroll-mt-24 hx:overflow-hidden hx:rounded-2xl hx:border hx:border-gray-200 hx:bg-white hx:p-6 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900" data-aio-episode data-title="{{ .Title }}">
-                {{ partial "episode-content.html" (dict "page" .) }}
+                {{ partial "episode-content.html" (dict "page" . "aggregate" true) }}
               </article>
             {{ end }}
           </div>

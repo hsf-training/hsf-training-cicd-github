@@ -12,15 +12,14 @@
               <span>Lesson menu</span>
             </button>
             {{- if ne .Params.toc false -}}
-              <button class="lesson-display-toggle hx:hidden hx:xl:inline-flex" type="button" data-lesson-toc-toggle aria-pressed="false" aria-label="Hide on this page panel" title="Hide on this page panel">
-                {{ partial "utils/icon.html" (dict "name" "document-text" "attributes" "height=14 class=\"hx:shrink-0\"") }}
-                <span>On this page</span>
+              <button class="lesson-display-toggle hx:hidden hx:xl:block" type="button" data-lesson-toc-toggle aria-pressed="false" aria-label="Hide on this page panel" title="Hide on this page panel">
+                <span class="hx:flex hx:items-center hx:gap-2">
+                  {{ partial "utils/icon.html" (dict "name" "document-text" "attributes" "height=14 class=\"hx:shrink-0\"") }}
+                  <span>On this page</span>
+                </span>
               </button>
             {{- end -}}
-            <div class="lesson-audience-toggle">
-              <button class="lesson-audience-option" type="button" data-view-toggle="learner" aria-pressed="false">Learner</button>
-              <button class="lesson-audience-option" type="button" data-view-toggle="instructor" aria-pressed="false">Instructor</button>
-            </div>
+            {{ partial "audience-toggle.html" (dict "page" .) }}
           </div>
           <div class="content">
             {{ partial "episode-content.html" (dict "page" .) }}

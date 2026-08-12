@@ -9,7 +9,9 @@
 {{ $poweredByURL := "https://oer-particle-physics.github.io/hugo-styles/" }}
 {{ $licenseName := site.Params.lesson.licenseName }}
 {{ with $page.File }}
-  {{ $path = .Path }}
+  {{ $sourceDir := replace (strings.TrimPrefix .FileInfo.Meta.BaseDir .FileInfo.Meta.SourceRoot) "\\" "/" }}
+  {{ $sourceDir = strings.TrimPrefix "/" $sourceDir }}
+  {{ $path = urls.JoinPath $sourceDir (replace .Path "\\" "/") }}
 {{ end }}
 {{ with $page.Lastmod }}
   {{ $lastUpdated = partial "utils/format-date.html" . }}
