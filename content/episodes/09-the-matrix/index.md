@@ -25,6 +25,9 @@ jobs:
     runs-on: ubuntu-latest
     container: rootproject/root:6.26.10-conda
     steps:
+      - name: install node
+        run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
       - name: checkout repository
         uses: actions/checkout@v4
       - name: build
@@ -37,6 +40,9 @@ jobs:
     runs-on: ubuntu-latest
     container: rootproject/root:latest
     steps:
+      - name: install node
+        run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
       - name: checkout repository
         uses: actions/checkout@v4
       - name: latest
@@ -52,21 +58,24 @@ We could do better using `matrix`. The latter allows us to test the code against
 ```yaml
 jobs:
   greeting:
-   runs-on: ubuntu-latest
-   steps:
-     - run: echo hello world
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello world
 
- build_skim:
-   runs-on: ubuntu-latest
-   container: rootproject/root:${{ matrix.version }}
-   strategy:
-     matrix:
-       version: [6.26.10-conda, latest]
-   steps:
-     - name: checkout repository
-       uses: actions/checkout@v4
+  build_skim:
+    runs-on: ubuntu-latest
+    container: rootproject/root:${{ matrix.version }}
+    strategy:
+      matrix:
+        version: [6.26.10-conda, latest]
+    steps:
+      - name: install node
+        run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
 
-     - name: build
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: build
         run: |
           COMPILER=$(root-config --cxx)
           FLAGS=$(root-config --cflags --libs)

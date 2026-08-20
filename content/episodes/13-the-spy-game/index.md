@@ -26,6 +26,9 @@ build_skim:
     matrix:
       version: [6.26.10-conda, latest]
   steps:
+    - name: install node
+      run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
     - name: checkout repository
       uses: actions/checkout@v4
 
@@ -44,6 +47,9 @@ skim:
   runs-on: ubuntu-latest
   container: rootproject/root:6.26.10-conda
   steps:
+    - name: install node
+      run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
     - name: checkout repository
       uses: actions/checkout@v4
 
@@ -81,12 +87,15 @@ Our YAML file should look like
    runs-on: ubuntu-latest
    container: rootproject/root:6.26.10-conda
    steps:
+     - name: install node
+       run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
      - name: checkout repository
        uses: actions/checkout@v4
 
      - uses: actions/download-artifact@v4
        with:
-         name: skim6.26.10
+         name: skim6.26.10-conda
 
      - name: skim
        run: |
@@ -109,6 +118,9 @@ Anyhow, this is pretty much done by executing `echo $USER_PASS | kinit $USER_NAM
 
 If you are not a CERN user, don't worry. We have a backup solution for you!
 You can use this file `root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root` and skip the rest of this lesson.
+
+If this still does not work, for example if the port xrootd uses to fetch the data is blocked on your network, you can instead use `https://root.cern/files/HiggsTauTauReduced/GluGluToHToTauTau.root`.
+
 
 {{< callout type="note" title="Running example" >}}
 Sometimes you'll run into a code example here that you might want to run locally but relies on variables you might not have set? Sure, simply do the following
@@ -177,12 +189,15 @@ skim:
    runs-on: ubuntu-latest
    container: rootproject/root:6.26.10-conda
    steps:
+     - name: install node
+       run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
      - name: checkout repository
        uses: actions/checkout@v4
 
      - uses: actions/download-artifact@v4
        with:
-         name: skim6.26.10
+         name: skim6.26.10-conda
 
      - name: access control
        run: echo ${{ secrets.USER_PASS }} | kinit ${{ secrets.USER_NAME }}@CERN.CH
@@ -196,6 +211,7 @@ skim:
        with:
          name: skim_ggH
          path: skim_ggH.root
+         retention-days: 7
 ```
 {{< /solution >}}
 {{< /challenge >}}

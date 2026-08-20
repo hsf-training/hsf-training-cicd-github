@@ -16,7 +16,7 @@ Head over to [our training on Docker](https://hsf-training.github.io/hsf-trainin
 
 Python packages can be installed using a Docker image. The following example illustrates how to write a Dockerfile for building an image containing python packages.
 
-```text
+```dockerfile
 FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -33,19 +33,23 @@ RUN pip3 install numpy awkward uproot4 particle hepunits matplotlib \
 
 As we see, several packages are installed.
 
-### Publish Docker images with GitHub Packages and share them!
+### Publish Docker images with GitHub/Gitea Packages and share them!
 
-It is possible to publish Docker images with [GitHub packages](https://github.com/features/packages).
-To do so, one needs to use GitHub CI/CD. A step-by-step guide is presented here.
+It is possible to publish Docker images with [GitHub packages](https://github.com/features/packages)
+or with Gitea's built-in [container registry](https://docs.gitea.com/usage/packages/container).
+To do so, one needs to use GitHub/Gitea CI/CD. A step-by-step guide is presented here.
 
-* **Step 1**: Create a GitHub repository and clone it locally.
-* **Step 2**: In the empty repository, make a folder called `.github/workflows`. In this folder we will store the file containing the YAML script for a GitHub workflow, named `Docker-build-deploy.yml` (the name doesn't really matter).
-* **Step 3**: In the top directory of your GitHub repository, create a file named `Dockerfile`.
-* **Step 4**: Copy-paste the content above and add it to the Dockerfile. (In principle it is possible to build this image locally, but we will not do that here, as we wish to build it with GitHub CI/CD).
+* **Step 1**: Create a GitHub/Gitea repository and clone it locally.
+* **Step 2**: In the empty repository, make a folder called `.github/workflows`. In this folder we will store the file containing the YAML script for a workflow, named `Docker-build-deploy.yml` (the name doesn't really matter).
+* **Step 3**: In the top directory of your repository, create a file named `Dockerfile`.
+* **Step 4**: Copy-paste the content above and add it to the Dockerfile. (In principle it is possible to build this image locally, but we will not do that here, as we wish to build it with CI/CD).
 * **Step 5**: In the `Docker-build-deploy.yml` file, add the content below.
 * **Step 6**: Add LICENSE and README as recommended in the [SW Carpentry Git-Novice Lesson](https://swcarpentry.github.io/git-novice/), and then the repository is good to go.
 
-```text
+{{< tabs >}}
+{{< tab name="GitHub" selected=true >}}
+
+```yaml
 name: Create and publish a Docker image
 
 on:
@@ -89,3 +93,54 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 ```
+
+{{< /tab >}}
+{{< tab name="Gitea" >}}
+
+```yaml
+name: Create and publish a Docker image
+
+on:
+  pull_request:
+  push:
+    branches: main
+
+env:
+  # the hostname of your Gitea instance, e.g. gitea.psi.ch
+  REGISTRY: <gitea.example.com>
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: https://github.com/actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: https://github.com/docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
+
+      - name: Docker Metadata
+        id: meta
+        uses: https://github.com/docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: https://github.com/docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+```
+
+{{< /tab >}}
+{{< /tabs >}}
+
+Note that on Gitea the automatic `secrets.GITHUB_TOKEN` [cannot write to the package registry](https://github.com/go-gitea/gitea/issues/23642), so generate a personal access token with read and write permission on `package` (**Settings → Applications**) and add it to the repository as the secret `REGISTRY_TOKEN`.

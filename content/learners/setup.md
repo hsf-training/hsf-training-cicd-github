@@ -17,48 +17,79 @@ To know whether your Python has `pytest`, just run `python -c "import pytest"`. 
 
 ## Set up the code
 
-- Create a new project on your personal GitHub account and name it `virtual-pipelines-eventselection`.
+1. Create a new project on your personal GitHub/Gitea account and name it `virtual-pipelines-eventselection`.
 
-  Make sure you click Public for the visibility level of the new project so that everyone can see your awesome work.
-  ![example of a properly-filled-in blank project form](fig/blank-project-form.png)
+    Make sure you set the visibility level of the new project to public so that everyone can see your awesome work.
 
-- Get the code
+    {{< tabs >}}
+    {{< tab name="GitHub" selected=true >}}
+    ![example of a properly-filled-in blank project form](fig/blank-project-form.png)
 
-  Open a terminal and clone the repository that contains files required for this lesson.
+    {{< /tab >}}
+    {{< tab name="Gitea" >}}
+    ![example of a properly-filled-in blank project form](fig/gitea_blank_project_form.png)
 
-  ```bash
-  git clone git@github.com:hsf-training/hsf-training-cms-analysis.git virtual-pipelines-eventselection
-  cd virtual-pipelines-eventselection
-  ```
+    {{< /tab >}}
+    {{< /tabs >}}
 
-- Add the code to your personal GitHub account
+2. Get the code
 
-  At the moment, your clone is the remote repository stored on someone GitHub account. To get the name of the existing remote use
-  ```bash
-  git remote -v # -v stands for verbose
-  ```
+    Open a terminal and clone the repository that contains files required for this lesson.
 
-  ```
-  origin	git@github.com:hsf-training/hsf-training-cms-analysis.git (fetch)
-  origin	git@github.com:hsf-training/hsf-training-cms-analysis.git (push)
-  ```
+    ```bash
+    git clone git@github.com:hsf-training/hsf-training-cms-analysis.git virtual-pipelines-eventselection
+    cd virtual-pipelines-eventselection
+    ```
 
-  You have to change remote's URL in order to be able to add the code to your personal GitHub account.
+3. Add the code to your personal GitHub/Gitea account
 
-  ```bash
-  git remote set-url origin git@github.com:<GitHub username>/virtual-pipelines-eventselection.git
-  ```
-  Check again the name of the current remote:
-  ```bash
-  git remote -v
-  ```
+    At the moment, your clone is the remote repository stored on someone GitHub account. To get the name of the existing remote use
+    ```bash
+    git remote -v # -v stands for verbose
+    ```
 
-  The last step is to rename the branch to main, and push it to GitHub.
-  ```bash
-  git branch -M main
-  git push -u origin main
-  ```
-  This will add the code to your new repository on GitHub. Done!
+    ```
+    origin	git@github.com:hsf-training/hsf-training-cms-analysis.git (fetch)
+    origin	git@github.com:hsf-training/hsf-training-cms-analysis.git (push)
+    ```
+
+    You have to change remote's URL in order to be able to add the code to your personal GitHub account.
+
+
+    {{< tabs >}}
+    {{< tab name="GitHub" selected=true >}}
+
+    ```bash
+    git remote set-url origin git@github.com:<GitHub username>/virtual-pipelines-eventselection.git
+    ```
+
+    {{< /tab >}}
+    {{< tab name="Gitea" >}}
+
+    ```bash
+    git remote set-url origin <gitea clone url of new project>
+    
+    # e.g.
+    # git@gitea.psi.ch:fatour_m/virtual-pipelines-eventselection.git
+    ```
+
+    {{< /tab >}}
+    {{< /tabs >}}
+
+
+    Check again the name of the current remote:
+    ```bash
+    git remote -v
+    ```
+
+4. The last step is to rename the branch to main, and push it to GitHub.
+    ```bash
+    git branch -M main
+    git push -u origin main
+    ```
+    This will add the code to your new repository on GitHub. Done!
+  
+  
 
 If you're having issues, **please let us know immediately**
 since you might not be able to follow this lesson without a proper setup.

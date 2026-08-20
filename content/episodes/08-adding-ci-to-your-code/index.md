@@ -75,8 +75,16 @@ git commit -m "add build skim job"
 git push -u origin feature/add-actions
 ```
 
+{{< tabs >}}
+{{< tab name="GitHub" selected=true >}}
 ![Job failure root-config](fig/actions_parallel_jobs_failure1a.png)
 ![Job failure root-config details](fig/actions_parallel_jobs_failure1b.png)
+{{< /tab >}}
+{{< tab name="Gitea" >}}
+![Job failure root-config](fig/gitea_actions_parallel_jobs_failure1a.png)
+![Job failure root-config details](fig/gitea_actions_parallel_jobs_failure1b.png)
+{{< /tab >}}
+{{< /tabs >}}
 
 ### No root-config?
 
@@ -91,6 +99,9 @@ build_skim:
   runs-on: ubuntu-latest
   container: rootproject/root:6.26.10-conda
   steps:
+    - name: install node
+      run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
     - name: checkout repository
       uses: actions/checkout@v4
     - name: build
@@ -155,7 +166,7 @@ build_skim:
     - name: checkout repository
       uses: actions/checkout@v4
     - name: Install ROOT
-      uses: mamba-org/setup-micromamba@v1
+      uses: https://github.com/mamba-org/setup-micromamba@v1
       with:
         environment-name: env
         create-args: root
@@ -165,6 +176,8 @@ build_skim:
         FLAGS=$(root-config --cflags --libs)
         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 ```
+
+Note that `https://github.com/mamba-org/setup-micromamba@v1` may be called on GitHub as `mamba-org/setup-micromamba`, but the full url makes it compatible with Gitea (if that Gitea instance does not have `mamba-org/` cloned locally).
 
 ### Building multiple versions
 
@@ -185,6 +198,9 @@ jobs:
     runs-on: ubuntu-latest
     container: rootproject/root:6.26.10-conda
     steps:
+      - name: install node
+        run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
       - name: checkout repository
         uses: actions/checkout@v4
 
@@ -198,6 +214,9 @@ jobs:
     runs-on: ubuntu-latest
     container: rootproject/root:latest
     steps:
+      - name: install node
+        run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
       - name: checkout repository
         uses: actions/checkout@v4
 
@@ -213,6 +232,8 @@ jobs:
 
 ## Dependabot for updating gh action version
 
+{{< tabs >}}
+{{< tab name="GitHub" selected=true >}}
 Github actions are accompanied by the tags ("@v2"...) which are versions/tags of that action. One might need to update this tags for example from "@v2" to "@v3" because the Github actions developers may fix existing bugs to the action or there may be other updates.
 
 However, this process can be automated by using "Dependabot" which ensures that the workflow references the updated version of the action. If that is not the case, the Dependabot will open a pull request updating the tag of the Github action.
@@ -232,3 +253,11 @@ updates:
 where interval is the frequency of looking for updates to Github actions.
 
 For more information on Dependabot, see e.g., [here.](https://docs.github.com/en/code-security/dependabot)
+
+{{< /tab >}}
+{{< tab name="Gitea" >}}
+
+Gitea does not support dependabot actions, see [renovate](https://docs.renovatebot.com/modules/platform/gitea/) instead.
+
+{{< /tab >}}
+{{< /tabs >}}

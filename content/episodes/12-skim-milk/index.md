@@ -35,6 +35,9 @@ jobs:
       matrix:
         version: [6.26.10-conda, latest]
     steps:
+      - name: install node
+        run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
       - name: checkout repository
         uses: actions/checkout@v4
 
@@ -56,6 +59,9 @@ skim:
   runs-on: ubuntu-latest
   container: rootproject/root:6.26.10-conda
   steps:
+      - name: install node
+        run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
       - name: checkout repository
         uses: actions/checkout@v4
 
@@ -71,9 +77,18 @@ git commit -m "add skim job"
 git push -u origin feature/add-actions
 ```
 
+{{< tabs >}}
+{{< tab name="GitHub" selected=true >}}
 ![Skim waiting](fig/actions_skim_job_wait.png)
 
-![Skim waiting](fig/actions_skim_job_failure1.png)
+![Skim failure](fig/actions_skim_job_failure1.png)
+{{< /tab >}}
+{{< tab name="Gitea" >}}
+![Skim waiting](fig/gitea_actions_skim_job_wait.png)
+
+![Skim failure](fig/gitea_actions_skim_job_failure1.png)
+{{< /tab >}}
+{{< /tabs >}}
 
 {{< challenge title="Failed???" >}}
 Let's have a look at the log message
@@ -127,6 +142,9 @@ build_skim:
     matrix:
       version: [6.26.10-conda, latest]
   steps:
+    - name: install node
+      run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
     - name: checkout repository
       uses: actions/checkout@v4
 
@@ -136,7 +154,7 @@ build_skim:
         FLAGS=$(root-config --cflags --libs)
         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v3
       with:
         name: skim${{ matrix.version }}
         path: skim
@@ -146,16 +164,20 @@ skim:
   runs-on: ubuntu-latest
   container: rootproject/root:6.26.10-conda
   steps:
+    - name: install node
+      run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
     - name: checkout repository
       uses: actions/checkout@v4
 
-    - uses: actions/download-artifact@v4
+    - uses: https://github.com/actions/download-artifact@v3
       with:
         name: skim6.26.10-conda
 
     - name: skim
       run: ./skim
 ```
+
 {{< /solution >}}
 {{< /challenge >}}
 
@@ -207,7 +229,7 @@ Our YAML file should look like
 
      - uses: actions/download-artifact@v3
        with:
-         name: skim6.26.10
+         name: skim6.26.10-conda
 
      - name: skim
        run: ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1

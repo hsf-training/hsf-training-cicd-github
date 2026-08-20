@@ -25,42 +25,48 @@ So at this point, I'm going to be very hands-off, and just explain what you will
    runs-on: ubuntu-latest
    container: rootproject/root:6.26.10-conda
    steps:
+     - name: install node
+       run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
      - name: checkout repository
        uses: actions/checkout@v4
 
-    - uses: actions/download-artifact@v4
-      with:
-        name: skim6.26.10
+     - uses: actions/download-artifact@v4
+       with:
+         name: skim6.26.10-conda
 
-    - name: skim
-      run: |
-        chmod +x ./skim
-        ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
+     - name: skim
+       run: |
+         chmod +x ./skim
+         ./skim root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
 
-    - uses: actions/upload-artifact@v4
-      with:
-        name: skim_ggH
-        path: skim_ggH.root
+     - uses: actions/upload-artifact@v4
+       with:
+         name: skim_ggH
+         path: skim_ggH.root
 
  plot:
    needs: skim
    runs-on: ubuntu-latest
    container: rootproject/root:6.26.10-conda
    steps:
+     - name: install node
+       run: wget -qO- https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.gz | tar -xz -C /usr/local --strip-components=1
+
      - name: checkout repository
        uses: actions/checkout@v4
 
-    - uses: actions/download-artifact@v4
-      with:
-        name: skim_ggH
+     - uses: actions/download-artifact@v4
+       with:
+         name: skim_ggH
 
-    - name: plot
-      run: python histograms.py skim_ggH.root ggH hist_ggH.root
+     - name: plot
+       run: python histograms.py skim_ggH.root ggH hist_ggH.root
 
-    - uses: actions/upload-artifact@v4
-      with:
-        name: histograms
-        path: hist_ggH.root
+     - uses: actions/upload-artifact@v4
+       with:
+         name: histograms
+         path: hist_ggH.root
 ```
 
 {{< challenge >}}

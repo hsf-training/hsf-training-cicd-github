@@ -14,6 +14,11 @@ weight = 70
 
 {{< youtube CGYt9W6c1dw >}}
 
+{{< callout type="note" title="GitHub versus Gitea actions" >}}
+Gitea actions are meant to be compatible with GitHub actions, but there are still some differences.
+A full comparison can be found [here](https://docs.gitea.com/usage/actions/comparison/) in Gitea's documentation.
+{{< /callout >}}
+
 ### Adding CI/CD to a project
 
 The first thing we'll do is create a `.github/workflows/main.yml` file in the project.
@@ -57,10 +62,25 @@ git push -u origin feature/add-actions
 
 And that's it! You've successfully run your CI/CD job and you can view the output. You just have to navigate to the GitHub webpage for the `virtual-pipelines-eventselection` project and hit Actions button, you will find details of your job (status, output,...).
 
+{{< tabs >}}
+{{< tab name="GitHub" selected=true >}}
 ![GitHub Actions Page](fig/actions_commits_page.png)
+{{< /tab >}}
+{{< tab name="Gitea" >}}
+![Gitea Actions Page](fig/gitea_actions_commits_page.png)
+{{< /tab >}}
+{{< /tabs >}}
 
 From this page, click through until you can find the output for the successful job run which should look like the following
+
+{{< tabs >}}
+{{< tab name="GitHub" selected=true >}}
 ![CI/CD Hello World Success Output](fig/actions_first_ci-cd_success.png)
+{{< /tab >}}
+{{< tab name="Gitea" >}}
+![CI/CD Hello World Success Output](fig/gitea_actions_first_ci-cd_success.png)
+{{< /tab >}}
+{{< /tabs >}}
 
 
 ### Pull Request
