@@ -1,10 +1,10 @@
 +++
 layout = 'hextra-home'
-title = 'Continuous Integration / Continuous Deployment (CI/CD) - Github Edition'
+title = 'Continuous Integration / Continuous Deployment (CI/CD) - Github/Gitea Edition'
 +++
 <div class="hx:mt-6 hx:mb-6">
 {{< hextra/hero-headline >}}
-Continuous Integration / Continuous Deployment (CI/CD) - Github Edition
+Continuous Integration / Continuous Deployment (CI/CD) - Github/Gitea Edition
 {{< /hextra/hero-headline >}}
 </div>
 
@@ -12,7 +12,9 @@ Continuous Integration / Continuous Deployment (CI/CD) - Github Edition
 {{< hextra/hero-subtitle >}}
 GitHub is a distributed git platform used for code hosting and collaboration. It can also be used to automatically run the hosted code on Github's servers via GitHub Actions. Actions are workflow automation scripts. We'll learn how to develop on to make our code robust to errors, preserved, and reproducible.
 
-The aim of this module is to help build and explore the meaning of a CI/CD workflow.
+Gitea is an open source replacement for GitHub.
+
+The aim of this module is to help build and explore the meaning of a CI/CD workflow in both platforms.
 {{< /hextra/hero-subtitle >}}
 </div>
 

@@ -14,10 +14,6 @@ weight = 70
 
 {{< youtube CGYt9W6c1dw >}}
 
-{{< callout type="note" title="GitHub versus Gitea actions" >}}
-Gitea actions are meant to be compatible with GitHub actions, but there are still some differences.
-A full comparison can be found [here](https://docs.gitea.com/usage/actions/comparison/) in Gitea's documentation.
-{{< /callout >}}
 
 ### Adding CI/CD to a project
 

@@ -8,6 +8,16 @@ title = 'Setup'
 
 {{< youtube RSj_0vtE1ZA >}}
 
+{{< callout type="note" title="GitHub versus Gitea" >}}
+This course is compatible with Github and Gitea.
+
+Gitea is meant to be a drop-in replacement for GitHub, this course will only menton Gitea explicitly when this does not hold.
+Otherwise, you can assume that what works for GitHub will work for Gitea.
+
+The Gitea actions, for example, described later in this course are meant to be compatible with GitHub actions, but there are still some differences between the two.
+A full comparison can be found [here](https://docs.gitea.com/usage/actions/comparison/) in Gitea's documentation.
+{{< /callout >}}
+
 ## Set up Python
 
 Part of this lesson consists in learning how to make scripts exit correctly. At some point, we will need to test exit codes with Pytest, Python testing tool.
