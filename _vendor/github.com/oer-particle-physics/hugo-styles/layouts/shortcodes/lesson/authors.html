@@ -1,0 +1,49 @@
+{{ $page := .Page }}
+{{ $title := .Get "title" | default "Authors and Contributors" }}
+{{ $entries := slice }}
+{{ if and $page.IsHome (fileExists "AUTHORS") }}
+  {{ $entries = split (readFile "AUTHORS") "\n" }}
+{{ end }}
+{{ if gt (len $entries) 0 }}
+<section class="hx:mt-8 hx:w-full">
+  <div class="hx:w-full hx:overflow-hidden hx:rounded-3xl hx:border hx:border-gray-200 hx:bg-white hx:px-8 hx:pb-8 hx:pt-8 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+    <h2 class="hx:first:mt-0 hx:mb-6 hx:text-2xl">{{ $title }}</h2>
+    <div class="hx:overflow-x-auto">
+      <table class="hx:min-w-full hx:w-full hx:border-collapse hx:text-sm">
+        <thead>
+          <tr class="hx:border-b hx:border-gray-200 hx:text-left hx:dark:border-neutral-800">
+            <th class="hx:px-3 hx:py-2 hx:font-semibold">Contributor</th>
+            <th class="hx:px-3 hx:py-2 hx:font-semibold">GitHub</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range $entry := $entries }}
+            {{ $line := trim (printf "%v" $entry) " \t" }}
+            {{ if and $line (not (hasPrefix $line "#")) }}
+              {{ $display := $line }}
+              {{ $handle := "" }}
+              {{ with findRESubmatch `^(.*?)\s*<\s*(?:https?://(?:www\.)?github\.com/)?@?([A-Za-z0-9-]+)\s*/?\s*>$` $line 1 }}
+                {{ $display = trim (index (index . 0) 1) " \t" }}
+                {{ $handle = index (index . 0) 2 }}
+              {{ else with findRESubmatch `^@?([A-Za-z0-9-]+)$` $line 1 }}
+                {{ $handle = index (index . 0) 1 }}
+                {{ $display = printf "@%s" $handle }}
+              {{ end }}
+              <tr class="hx:border-b hx:border-gray-100 hx:align-top hx:dark:border-neutral-800/80">
+                <td class="hx:px-3 hx:py-4 hx:font-medium">{{ $display }}</td>
+                <td class="hx:px-3 hx:py-4">
+                  {{ if $handle }}
+                    <a class="hx:no-underline hx:hover:underline" href="https://github.com/{{ $handle }}" rel="noopener">@{{ $handle }}</a>
+                  {{ else }}
+                    <span class="hx:text-gray-500 hx:dark:text-gray-400">-</span>
+                  {{ end }}
+                </td>
+              </tr>
+            {{ end }}
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,50 @@
+{{- $hasFrontMatterMath := false -}}
+<script>
+  (() => {
+    const allowed = new Set(["learner", "instructor"]);
+    const fallback = {{ site.Params.lesson.defaultView | default "learner" | jsonify | safeJS }};
+    let requested = null;
+    let saved = null;
+    try {
+      requested = new URLSearchParams(window.location.search).get("view");
+    } catch (_) {}
+    try {
+      saved = window.localStorage.getItem("hugo-styles:view");
+    } catch (_) {}
+    document.documentElement.dataset.view = allowed.has(requested)
+      ? requested
+      : allowed.has(saved)
+        ? saved
+        : allowed.has(fallback)
+          ? fallback
+          : "learner";
+  })();
+</script>
+{{- $sources := slice . -}}
+{{- if or (eq .Layout "all-in-one") (eq .Layout "key-points") -}}
+  {{- range (where site.RegularPages "Section" "episodes") -}}
+    {{- $sources = $sources | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- range $source := $sources -}}
+  {{- range $field := slice "questions" "objectives" "keypoints" -}}
+    {{- with index $source.Params $field -}}
+      {{- range . -}}
+        {{- $item := printf "%v" . -}}
+        {{- if or (strings.Contains $item "\\(") (strings.Contains $item "\\[") (strings.Contains $item "$$") -}}
+          {{- $hasFrontMatterMath = true -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and $hasFrontMatterMath (not ($.Page.Store.Get "hasMath")) -}}
+  {{- $.Page.Store.Set "hasMath" true -}}
+  {{- $engine := site.Params.math.engine | default "katex" -}}
+  {{- if eq $engine "katex" -}}
+    {{- partialCached "scripts/katex.html" . -}}
+  {{- else if eq $engine "mathjax" -}}
+    {{- partialCached "scripts/mathjax.html" . -}}
+  {{- end -}}
+{{- end -}}

@@ -1,0 +1,6 @@
+{{- $page := . -}}
+{{- $enabled := site.Params.imageZoom.enable | default false -}}
+{{- if not (eq $page.Params.imageZoom nil) -}}
+  {{- $enabled = $page.Params.imageZoom -}}
+{{- end -}}
+{{- return $enabled -}}

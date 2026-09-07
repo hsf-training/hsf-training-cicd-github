@@ -1,0 +1,66 @@
+{{ $page := .page }}
+{{ $aggregate := .aggregate | default false }}
+{{ $minutes := add ($page.Params.teaching | default 0) ($page.Params.exercises | default 0) }}
+{{ $inlineRender := dict "display" "inline" }}
+{{ $episodeID := partial "episode-id.html" $page }}
+<p class="hx:mb-2 hx:text-xs hx:font-semibold hx:uppercase hx:tracking-[0.16em] hx:text-gray-500 hx:dark:text-gray-400">Episode</p>
+{{ partial "aggregate-heading.html" (dict "level" 1 "aggregate" $aggregate "id" $episodeID "title" $page.Title) }}
+<div class="not-prose hx:mt-5 hx:flex hx:flex-wrap hx:gap-2">
+  {{ if $page.Params.teaching }}{{ partial "resource-badge.html" (dict "content" (printf "Teaching %d min" $page.Params.teaching) "color" "blue") }}{{ end }}
+  {{ if $page.Params.exercises }}{{ partial "resource-badge.html" (dict "content" (printf "Exercises %d min" $page.Params.exercises) "color" "blue") }}{{ end }}
+  {{ if gt $minutes 0 }}{{ partial "resource-badge.html" (dict "content" (printf "Estimated %d min" $minutes) "color" "gray") }}{{ end }}
+</div>
+{{ if or $page.Params.questions $page.Params.objectives }}
+  <div class="hx:mt-8 hx:grid hx:gap-4 hx:md:grid-cols-2">
+    {{ with $page.Params.questions }}
+      <section class="hx:rounded-2xl hx:border hx:border-gray-200 hx:bg-white hx:p-6 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+        {{ partial "aggregate-heading.html" (dict "level" 2 "aggregate" $aggregate "id" (printf "%s-questions" $episodeID) "class" "lesson-box-title hx:first:mt-0" "title" "Questions") }}
+        <ul>
+          {{ range . }}
+            <li>{{ $page.RenderString $inlineRender . }}</li>
+          {{ end }}
+        </ul>
+      </section>
+    {{ end }}
+    {{ with $page.Params.objectives }}
+      <section class="hx:rounded-2xl hx:border hx:border-gray-200 hx:bg-white hx:p-6 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+        {{ partial "aggregate-heading.html" (dict "level" 2 "aggregate" $aggregate "id" (printf "%s-objectives" $episodeID) "class" "lesson-box-title hx:first:mt-0" "title" "Objectives") }}
+        <ul>
+          {{ range . }}
+            <li>{{ $page.RenderString $inlineRender . }}</li>
+          {{ end }}
+        </ul>
+      </section>
+    {{ end }}
+  </div>
+{{ end }}
+{{ $body := $page.Content }}
+{{ if $aggregate }}
+  {{ with $page.Fragments.Headings }}
+    {{ range partial "heading-ids.html" . }}
+      {{ $body = replace $body (printf "id=\"%s\"" .) (printf "id=\"%s-%s\"" $episodeID .) }}
+      {{ $body = replace $body (printf "href=\"#%s\"" .) (printf "href=\"#%s-%s\"" $episodeID .) }}
+    {{ end }}
+  {{ end }}
+  {{ range $pair := slice (slice "5" "6") (slice "4" "5") (slice "3" "4") (slice "2" "3") }}
+    {{ $from := index $pair 0 }}
+    {{ $to := index $pair 1 }}
+    {{ $body = replace $body (printf "<h%s" $from) (printf "<h%s" $to) }}
+    {{ $body = replace $body (printf "</h%s>" $from) (printf "</h%s>" $to) }}
+  {{ end }}
+  {{ $body = replace $body "<h1" "<h3" }}
+  {{ $body = replace $body "</h1>" "</h3>" }}
+{{ end }}
+{{ $body | safeHTML }}
+{{ with $page.Params.keypoints }}
+  <section class="hx:mt-8">
+    <section class="hx:rounded-2xl hx:border hx:border-gray-200 hx:bg-white hx:p-6 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+      {{ partial "aggregate-heading.html" (dict "level" 2 "aggregate" $aggregate "id" (printf "%s-key-points" $episodeID) "class" "lesson-box-title hx:first:mt-0" "title" "Key Points") }}
+      <ul>
+        {{ range . }}
+          <li>{{ $page.RenderString $inlineRender . }}</li>
+        {{ end }}
+      </ul>
+    </section>
+  </section>
+{{ end }}

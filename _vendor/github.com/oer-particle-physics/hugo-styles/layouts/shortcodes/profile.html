@@ -1,0 +1,8 @@
+{{ $slug := .Get 0 }}
+{{ $label := .Get 1 | default (replace $slug "-" " " | title) }}
+{{ with site.GetPage (printf "/profiles/%s" $slug) }}
+  <a href="{{ .RelPermalink }}">{{ $label }}</a>
+{{ else }}
+  <span>{{ $label }}</span>
+{{ end }}
+

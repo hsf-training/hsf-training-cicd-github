@@ -1,0 +1,62 @@
+{{ define "main" }}
+  {{ $isCompactCollection := in (slice "glossary" "profiles") .Section }}
+  {{ $isEpisodeList := eq .Section "episodes" }}
+  {{ $hideSidebar := $isCompactCollection }}
+  {{ $sectionLabel := .Type }}
+  {{ if eq .Section "glossary" }}
+    {{ $sectionLabel = "Glossary Term" }}
+  {{ else if eq .Section "profiles" }}
+    {{ $sectionLabel = "Learner Profile" }}
+  {{ end }}
+  <div class='hx:mx-auto hx:flex hextra-max-page-width'>
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" $hideSidebar "displayPlaceholder" false) }}
+    {{ partial "toc.html" . }}
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="wide-when-sidebar-hidden hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        {{ partial "breadcrumb.html" (dict "page" . "enable" true) }}
+        <div class="content">
+          <h1>{{ .Title }}</h1>
+        </div>
+        {{ with .Content }}<div class="content hx:mt-4 hx:text-gray-600 hx:dark:text-gray-400">{{ . }}</div>{{ end }}
+        <div class="hextra-cards not-prose hx:mt-8 hx:grid hx:gap-4" style="--hextra-cards-grid-cols: {{ if $isCompactCollection }}2{{ else }}1{{ end }};">
+            {{ range $index, $page := .Pages.ByWeight }}
+              {{ $summary := "" }}
+              {{ with $page.Description }}
+                {{ $summary = . }}
+              {{ else }}
+                {{ $summary = ($page.Summary | plainify | htmlUnescape | strings.TrimSpace | truncate 220) }}
+              {{ end }}
+              {{ $minutes := add ($page.Params.teaching | default 0) ($page.Params.exercises | default 0) }}
+              <a href="{{ $page.RelPermalink }}" class="hx:p-4 hextra-card hx:group hx:flex hx:h-full hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:bg-transparent hx:text-current hx:no-underline hx:shadow-xs hx:shadow-gray-100 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:hover:bg-slate-50 hx:hover:shadow-md hx:hover:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:dark:text-neutral-200 hx:dark:shadow-none hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900 hx:dark:hover:shadow-none">
+                <div class="hx:flex hx:h-full hx:flex-col hx:p-5">
+                  <div class="hx:flex hx:items-start hx:justify-between hx:gap-4">
+                    <div class="hx:min-w-0">
+                      <p class="hx:mb-2 hx:text-[11px] hx:font-semibold hx:uppercase hx:tracking-[0.18em] hx:text-gray-500 hx:dark:text-gray-400">{{ if $isEpisodeList }}Episode {{ add $index 1 }}{{ else }}{{ $sectionLabel }}{{ end }}</p>
+                      <h2 class="hx:m-0 hx:text-xl hx:font-semibold hx:tracking-tight hx:text-gray-700 hx:transition-colors group-hover:hx:text-gray-900 hx:dark:text-neutral-200 hx:dark:group-hover:text-neutral-50">{{ $page.Title }}</h2>
+                    </div>
+                    <span aria-hidden="true" class="hx:inline-flex hx:shrink-0 hx:items-center hx:justify-center hx:rounded-full hx:border hx:border-gray-200 hx:bg-white hx:p-2 hx:text-gray-400 hx:transition-all hx:duration-200 group-hover:hx:-translate-y-0.5 group-hover:hx:translate-x-0.5 group-hover:hx:border-primary-200 group-hover:hx:text-primary-600 hx:dark:border-neutral-700 hx:dark:bg-neutral-800 hx:dark:text-gray-500 hx:dark:group-hover:hx:border-primary-700/40 hx:dark:group-hover:hx:text-primary-400">
+                      {{ partial "utils/icon.html" (dict "name" "arrow-up-right" "attributes" "height=16 width=16") }}
+                    </span>
+                  </div>
+                  {{ if $isEpisodeList }}
+                    <div class="hx:mt-4 hx:flex hx:flex-wrap hx:gap-2">
+                      {{ if $page.Params.teaching }}{{ partial "resource-badge.html" (dict "content" (printf "Teaching %d min" $page.Params.teaching) "color" "blue") }}{{ end }}
+                      {{ if $page.Params.exercises }}{{ partial "resource-badge.html" (dict "content" (printf "Exercises %d min" $page.Params.exercises) "color" "blue") }}{{ end }}
+                      {{ if gt $minutes 0 }}{{ partial "resource-badge.html" (dict "content" (printf "Estimated %d min" $minutes) "color" "gray") }}{{ end }}
+                    </div>
+                  {{ end }}
+                  {{ with $summary }}
+                    <p class="hx:mt-4 hx:mb-0 hx:text-sm hx:leading-6 hx:text-gray-600 hx:dark:text-gray-400">{{ . }}</p>
+                  {{ end }}
+                  <span class="hx:mt-4 hx:inline-flex hx:items-center hx:gap-1 hx:text-sm hx:font-medium hx:text-primary-600 hx:transition-colors group-hover:hx:text-primary-700 hx:dark:text-primary-400 hx:dark:group-hover:hx:text-primary-300">
+                    Open page
+                    {{ partial "utils/icon.html" (dict "name" "arrow-right" "attributes" "height=14 width=14") }}
+                  </span>
+                </div>
+              </a>
+            {{ end }}
+        </div>
+      </main>
+    </article>
+  </div>
+{{ end }}

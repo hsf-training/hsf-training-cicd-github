@@ -1,29 +1,23 @@
+# Continuous Integration and Deployment (CI/CD) with GitHub
 [![HSF Training Center][training-center-badge]][hsf-training-center]
 [![Upcoming Events][schools-badge]][schools]
 [![Twitter Follow][twitter-badge]][twitter]
-
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/hsf-training/hsf-training-cicd-github/gh-pages.svg)](https://results.pre-commit.ci/latest/github/hsf-training/hsf-training-cicd-github/gh-pages)
 [![pages-build-deployment](https://github.com/hsf-training/hsf-training-cicd-github/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/hsf-training/hsf-training-cicd-github/actions/workflows/pages/pages-build-deployment)
 
-HSF Training CI/CD -- Github Edition
-====================================
+> **Note**
+> Click [here](https://hsf-training.github.io/hsf-training-cicd-github/) for the training website!
 
-An introduction to continuous integration (CI) and continuous deployment (CD) using GitHub Actions. This repository holds the source code of the webpage that is rendered [here](https://hsf-training.github.io/hsf-training-cicd-github/). Contributions are welcome (see below)!
+This learning module explores how to build a CI/CD workflow, guiding participants through the development of automated processes using GitHub Actions.      
 
-This training module is part of an initiative of the [HEP Software foundation](https://hepsoftwarefoundation.org/) to build up a full software [training curriculum](https://hepsoftwarefoundation.org/training/curriculum) for high energy physics.
+## Records from past events
 
-## 📅 Past events and videos
+* 🎥 [GitHub CI/CD Training](https://indico.cern.ch/event/1001128/)
 
-* 🎥 [Feb 2021](https://indico.cern.ch/event/1001128/)
-
-Emoji key: 🎥 (full video recordings available), ⛏️ (hackathon)
-
-
-## 🤗 Contributing
+## Contributing
 <!-- CENTRALLY MAINTAINED SECTION -->
 <!-- Remove the above marker to disable having this section be overwritten -->
 
@@ -61,11 +55,12 @@ by Scott Chacon.
 Look for the tag ![good first issue][gfi-badge], which marks particularly simple issues to get you started.
 
 <!-- END CENTRALLY MAINTAINED SECTION -->
-## 💖 Authors
+
+## Authors
 
 <!-- If we have a primary author/maintainer, who kicked off the whole lessen etc, he should get a dedicated shoutout here -->
 
-Thanks goes to these wonderful people ([emoji key][allcontrib-emoji-key]) who contributed to
+Thanks goes to these wonderful people who contributed to
 the content of the lesson:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
@@ -89,6 +84,19 @@ the content of the lesson:
 
 Even more people contributed to the framework, but they are too many to list!
 Instead, all regular contributors are listed on our [HSF Training Community page][hsf-training-community].
+
+## Citation
+
+To cite this lesson, please consult with [CITATION](CITATION.cff)
+
+## Open Educational Resources (OER) on Zenodo
+
+This lesson is included in the [HEP Software Foundation Training Material](https://zenodo.org/communities/hsf-training/records) and in the [ETH Domain Open Educational Resources for Research Data Management](https://zenodo.org/communities/eth-domain-oer-rdm/records) communities on Zenodo.                                    
+
+The materials developed here are published under open licenses (CC BY 4.0) and can be freely reused and adapted for teaching and training initiatives worldwide.
+
+See the Zenodo record [here](https://doi.org/10.5281/zenodo.22016969).
+
 
 [lesson-example]: https://carpentries.github.io/lesson-example
 [pre-commit]: https://pre-commit.com/

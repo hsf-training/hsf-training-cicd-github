@@ -1,0 +1,69 @@
+{{ $episodes := sort (where site.RegularPages "Section" "episodes") "Weight" "asc" }}
+{{ $setupPage := site.GetPage "/learners/setup" }}
+{{ $inlineRender := dict "display" "inline" }}
+{{ if gt (len $episodes) 0 }}
+{{ $title := .Get "title" | default "Schedule" }}
+<section class="hx:mt-8 hx:w-full">
+  <div class="hx:w-full hx:overflow-hidden hx:rounded-3xl hx:border hx:border-gray-200 hx:bg-white hx:px-8 hx:pb-8 hx:pt-8 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+    <h2 class="hx:first:mt-0 hx:mb-6 hx:text-2xl">{{ $title }}</h2>
+    <div class="hx:overflow-x-auto">
+      <table class="hx:min-w-full hx:w-full hx:border-collapse hx:text-sm">
+        <thead>
+          <tr class="hx:border-b hx:border-gray-200 hx:text-left hx:dark:border-neutral-800">
+            <th class="hx:px-3 hx:py-2 hx:font-semibold">Time</th>
+            <th class="hx:px-3 hx:py-2 hx:font-semibold">Episode</th>
+            <th class="hx:px-3 hx:py-2 hx:font-semibold">Questions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ with $setupPage }}
+            <tr class="hx:border-b hx:border-gray-100 hx:align-top hx:dark:border-neutral-800/80">
+              <td class="hx:px-3 hx:py-4"></td>
+              <td class="hx:px-3 hx:py-4 hx:font-medium">
+                <a class="hx:no-underline hx:hover:underline" href="{{ .RelPermalink }}">{{ .Title }}</a>
+              </td>
+              <td class="hx:px-3 hx:py-4">
+                <span class="hx:text-gray-500 hx:dark:text-gray-400">Before you start</span>
+              </td>
+            </tr>
+          {{ end }}
+          {{ $minutes := 0 }}
+          {{ range $episode := $episodes }}
+            {{ $start := printf "%02d:%02d" (div $minutes 60) (mod $minutes 60) }}
+            {{ $episodeMinutes := add ($episode.Params.teaching | default 0) ($episode.Params.exercises | default 0) }}
+            {{ with $episode.Params.questions }}
+              {{ range . }}
+                {{ $item := printf "%v" . }}
+                {{ if or (strings.Contains $item "\\(") (strings.Contains $item "\\[") (strings.Contains $item "$$") }}
+                  {{ $.Page.Store.Set "hasMath" true }}
+                {{ end }}
+              {{ end }}
+            {{ end }}
+            <tr class="hx:border-b hx:border-gray-100 hx:align-top hx:dark:border-neutral-800/80">
+              <td class="hx:px-3 hx:py-4 hx:whitespace-nowrap hx:font-mono hx:text-sm">{{ $start }}</td>
+              <td class="hx:px-3 hx:py-4 hx:font-medium">
+                <div class="hx:flex hx:flex-col hx:gap-1">
+                  <a class="hx:no-underline hx:hover:underline" href="{{ $episode.RelPermalink }}">{{ $episode.Title }}</a>
+                  <span class="hx:text-xs hx:uppercase hx:tracking-[0.16em] hx:text-gray-500 hx:dark:text-gray-400">{{ $episodeMinutes }} min</span>
+                </div>
+              </td>
+              <td class="hx:px-3 hx:py-4">
+                {{ with $episode.Params.questions }}
+                  <ul class="hx:mb-0">
+                    {{ range . }}
+                      <li>{{ $episode.RenderString $inlineRender . }}</li>
+                    {{ end }}
+                  </ul>
+                {{ else }}
+                  <span class="hx:text-gray-500 hx:dark:text-gray-400">No questions listed</span>
+                {{ end }}
+              </td>
+            </tr>
+            {{ $minutes = add $minutes $episodeMinutes }}
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{{ end }}
