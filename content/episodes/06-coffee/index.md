@@ -1,6 +1,6 @@
 +++
 exercises = 15
-keypoints = ["You'll be back.", "They're the jedi of the sea."]
+keypoints = ["You'll be back.", "They're the Jedi of the sea."]
 objectives = ['Refresh your mind.']
 questions = ['Get up, stretch out, take a short break.']
 teaching = 0

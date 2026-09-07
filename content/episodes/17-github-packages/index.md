@@ -1,20 +1,20 @@
 +++
 exercises = 0
-keypoints = [' Python packages can be installed in Docker images along with ubuntu packages.', ' It is possible to publish and share Docker images over github packages.']
-objectives = ['To be able to build a Docker container and share it via GitHub packages']
-questions = ['How to build a Docker container for python packages?', 'How to share Docker images?']
+keypoints = [' Python packages can be installed in Docker images along with Ubuntu packages.', ' It is possible to publish and share Docker images over GitHub Packages.']
+objectives = ['To be able to build a Docker container and share it via GitHub Packages']
+questions = ['How to build a Docker container for Python packages?', 'How to share Docker images?']
 teaching = 40
 title = 'Bonus Episode: Building and deploying a Docker container to Github Packages'
 weight = 170
 +++
 {{< callout type="prereq" title="Prerequisites" >}}
-For this lesson you should already be familiar with Docker images.
+For this lesson, you should already be familiar with Docker images.
 Head over to [our training on Docker](https://hsf-training.github.io/hsf-training-docker/) if you aren't already!
 {{< /callout >}}
 
-### Docker Container for python packages
+### Docker Container for Python Packages
 
-Python packages can be installed using a Docker image. The following example illustrates how to write a Dockerfile for building an image containing python packages.
+Python packages can be installed using a Docker image. The following example illustrates how to write a Dockerfile for building an image containing Python Packages.
 
 ```dockerfile
 FROM ubuntu:20.04
@@ -35,14 +35,14 @@ As we see, several packages are installed.
 
 ### Publish Docker images with GitHub/Gitea Packages and share them!
 
-It is possible to publish Docker images with [GitHub packages](https://github.com/features/packages)
+It is possible to publish Docker images with [GitHub Packages](https://github.com/features/packages)
 or with Gitea's built-in [container registry](https://docs.gitea.com/usage/packages/container).
 To do so, one needs to use GitHub/Gitea CI/CD. A step-by-step guide is presented here.
 
 * **Step 1**: Create a GitHub/Gitea repository and clone it locally.
-* **Step 2**: In the empty repository, make a folder called `.github/workflows`. In this folder we will store the file containing the YAML script for a workflow, named `Docker-build-deploy.yml` (the name doesn't really matter).
+* **Step 2**: In the empty repository, make a folder called `.github/workflows`. In this folder, we will store the file containing the YAML script for a workflow, named `Docker-build-deploy.yml` (the name doesn't really matter).
 * **Step 3**: In the top directory of your repository, create a file named `Dockerfile`.
-* **Step 4**: Copy-paste the content above and add it to the Dockerfile. (In principle it is possible to build this image locally, but we will not do that here, as we wish to build it with CI/CD).
+* **Step 4**: Copy-paste the content above and add it to the Dockerfile. (In principle, it is possible to build this image locally, but we will not do that here, as we wish to build it with CI/CD).
 * **Step 5**: In the `Docker-build-deploy.yml` file, add the content below.
 * **Step 6**: Add LICENSE and README as recommended in the [SW Carpentry Git-Novice Lesson](https://swcarpentry.github.io/git-novice/), and then the repository is good to go.
 
@@ -143,4 +143,4 @@ jobs:
 {{< /tab >}}
 {{< /tabs >}}
 
-Note that on Gitea the automatic `secrets.GITHUB_TOKEN` [cannot write to the package registry](https://github.com/go-gitea/gitea/issues/23642), so generate a personal access token with read and write permission on `package` (**Settings → Applications**) and add it to the repository as the secret `REGISTRY_TOKEN`.
+Note that on Gitea, the automatic `secrets.GITHUB_TOKEN` [cannot write to the package registry](https://github.com/go-gitea/gitea/issues/23642), so generate a personal access token with read and write permissions on `package` (**Settings → Applications**) and add it to the repository as the secret `REGISTRY_TOKEN`.

@@ -1,7 +1,7 @@
 +++
 exercises = 10
 hidden = false
-keypoints = ['Using `matrix` allows to test the code against a combination of versions.']
+keypoints = ['Using `matrix` allows you to test the code against a combination of versions.']
 objectives = ["Don't Repeat Yourself (DRY)", 'Use a single job for multiple jobs']
 questions = ['How can we make job templates?']
 teaching = 5
@@ -81,13 +81,13 @@ jobs:
           FLAGS=$(root-config --cflags --libs)
           $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 ```
-YAML truncates trailing zeroes from a floating point number, which means that `version: [3.9, 3.10, 3.11]` will automatically
+YAML truncates trailing zeroes from a floating-point number, which means that `version: [3.9, 3.10, 3.11]` will automatically
 be converted to `version: [3.9, 3.1, 3.11]` (notice `3.1` instead of `3.10`). The conversion will lead to unexpected failures
 as your CI will be running on a version not specified by you. This behavior resulted in several failed jobs after the release
-of Python 3.10 on GitHub Actions. The conversion (and the build failure) can be avoided by converting the floating point number
+of Python 3.10 on GitHub Actions. The conversion (and the build failure) can be avoided by converting the floating-point number
 to strings - `version: ['3.9', '3.10', '3.11']`.
 
-More details on matrix: [https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix).
+More details on matrices: [https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix).
 {{< /callout >}}
 
 
@@ -98,12 +98,12 @@ git commit -m "add multi jobs"
 git push -u origin feature/add-ci
 ```
 
-While the jobs are running, let's imagine we don't want our CI/CD to crash if that happens. We have to add `continue-on-error: true` to a job
+While the jobs are running, let's imagine we don't want our CI/CD to crash if that happens. We have to add `continue-on-error: true` to a job.
 ```yaml
 runs-on: ubuntu-latest
 continue-on-error: true
 ```
-For the matrix case, Github Actions fails the entire workflow and stops all the running jobs if any of the jobs in the matrix fails. This can be prevented by using `fail-fast: false` key:value.
+For the matrix case, Github Actions fails the entire workflow and stops all the running jobs if any of the jobs in the matrix fail. This can be prevented by using `fail-fast: false` key:value.
 ```yaml
 strategy:
   fail-fast: false

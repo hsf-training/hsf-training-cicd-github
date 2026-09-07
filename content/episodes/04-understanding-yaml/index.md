@@ -20,7 +20,7 @@ YAML (YAML Ain't Markup Language (a recursive acronym), originally standing for 
 
 {{< callout type="note" title="Tabs or Spaces?" >}}
 We strongly suggest you use spaces for a YAML document. Indentation is done
-with one or more spaces, however **two spaces** is the unofficial standard
+with one or more spaces; however, **two spaces** is the unofficial standard
 commonly used.
 {{< /callout >}}
 
@@ -51,11 +51,11 @@ date: 2002-12-14
 Notice that in the above list, all colons have a space afterwards, `: `. This is important for YAML parsing and is a common mistake.
 {{< /callout >}}
 
-{{< callout type="note" title="YAML and trailing floating point zeroes" >}}
+{{< callout type="note" title="YAML and trailing floating-point zeroes" >}}
 YAML truncates trailing zeroes from a floating point number, which means that `python-version: 3.10` will automatically
 be converted to `python-version: 3.1` (notice `3.1` instead of `3.10`). The conversion will lead to unexpected failures
 as your CI will be running on a version not specified by you. This behavior resulted in several failed jobs after the release
-of Python 3.10 on CI services. The conversion (and the build failure) can be avoided by converting the floating point numbers
+of Python 3.10 on CI services. The conversion (and the build failure) can be avoided by converting the floating-point numbers
 to strings - `python-version: "3.10"`.
 {{< /callout >}}
 
@@ -70,7 +70,7 @@ jedis:
   - Luke Skywalker
 ```
 
-Elements of a dictionary are in the form of "key: value" (the colon must followed by a space).
+Elements of a dictionary are in the form of "key: value" (the colon must be followed by a space).
 ```yaml
 jedi:
   name: Obi-Wan Kenobi
@@ -93,7 +93,7 @@ best-jedi: {name: Obi-Wan, side: light}
 
 In YAML, there are two different ways to handle multiline strings. This is useful, for example, when you have a long code block that you want to format in a pretty way, but don't want to impact the functionality of the underlying CI script. In these cases, multiline strings can help. For an interactive demonstration, you can visit [https://yaml-multiline.info/](https://yaml-multiline.info/).
 
-Put simply, you have two operators you can use to determine whether to keep newlines (`|`, exactly how you wrote it) or to remove newlines (`>`, fold them in). Similarly, you can also choose whether you want a single newline at the end of the multiline string, multiple newlines at the end (`+`), or no newlines at the end (`-`). The below is a summary of some variations:
+Put simply, you have two operators you can use to determine whether to keep newlines (`|`, exactly how you wrote it) or to remove newlines (`>`, fold them in). Similarly, you can also choose whether you want a single newline at the end of the multiline string, multiple newlines at the end (`+`), or no newlines at the end (`-`). The following is a summary of some variations:
 
 ```yaml
 folded_no_ending_newline:
@@ -140,14 +140,14 @@ foo: bar # this is a comment, too
 
 <!--
 {{< callout type="note" title="Anchors" >}}
-YAML also has a handy feature called 'anchors', which let you easily duplicate content across your document. Anchors look like references `&` in C/C++ and named anchors can be dereferenced using `*`.
+YAML also has a handy feature called 'anchors', which lets you easily duplicate content across your document. Anchors look like references `&` in C/C++ and named anchors can be dereferenced using `*`.
 
 ```yaml
 anchored_content: &anchor_name This string will appear as the value of two keys.
 other_anchor: *anchor_name
 
 base: &base
-  name: Everyone has same name
+  name: Everyone has the same name
 
 foo: &foo
   <<: *base

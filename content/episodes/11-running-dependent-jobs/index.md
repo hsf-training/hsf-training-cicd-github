@@ -58,7 +58,7 @@ job2 waits until job1 completes successfully. [Further reading](https://docs.git
 {{< /callout >}}
 
 {{< challenge title="Dependent jobs" >}}
-How to make `build_skim` job to run after `greeting`?
+How to make `build_skim` job run after `greeting`?
 
 {{< solution title="Solution" >}}
 ```yaml

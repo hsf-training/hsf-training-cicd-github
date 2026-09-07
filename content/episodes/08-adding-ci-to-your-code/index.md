@@ -30,11 +30,11 @@ jobs:
       - run: echo hello world
 ```
 
-Let's go ahead and teach our CI to build our code. Let's add another job (named `build_skim`) that runs in parallel for right now, and runs the compiler `ROOT` uses.
+Let's go ahead and teach our CI to build our code. Let's add another job (named `build_skim`) that runs in parallel for now, and runs the compiler `ROOT` uses.
 <br/>
-**Note**: `ROOT` is a open source framework uses in High Energy Physics.<!-- ([https://root.cern/](https://root.cern/)).-->
+**Note**: `ROOT` is an open-source framework used in High Energy Physics.<!-- ([https://root.cern/](https://root.cern/)).-->
 
-Let's give a try.
+Let's give it a try.
 
 ```bash
 COMPILER=$(root-config --cxx)
@@ -44,7 +44,7 @@ $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx
 The compilation will result in an output binary called `skim`.
 
 {{< challenge title="Adding a new job" >}}
-How do we change the CI in order to add a new job that compiles our code?
+How do we change the CI to add a new job that compiles our code?
 
 {{< solution title="Solution" >}}
 ```yaml
@@ -90,7 +90,7 @@ git push -u origin feature/add-actions
 
 Ok, so maybe we were a little naive here. GitHub runners come pre-installed with a wide variety of software that is commonly needed in CI workflows (e.g. for Ubuntu 22.04 runners the list can be found [here](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md)). ROOT is not pre-installed, so we will have to add a step to install it ourselves. After reading the [ROOT documentation](https://root.cern/install/#run-in-a-docker-container), we find that a convenient way to run it on various systems is using something called a Docker container.
 
-There are several tools that are used for containerization, like Docker, Podman, and Apptainer (formerly Singularity). For this tutorial you don't need to know anything about containerization. You can just think of this as the base software set that comes pre-installed on the system that runs your code.
+There are several tools that are used for containerization, like Docker, Podman, and Apptainer (formerly Singularity). For this tutorial, you don't need to know anything about containerization. You can just think of this as the base software set that comes pre-installed on the system that runs your code.
 
 We will be using the Docker images hosted at the [`rootproject/root` Docker Hub](https://hub.docker.com/r/rootproject/root). Let's start by using the image with tag `6.26.10-conda`.
 
@@ -118,7 +118,7 @@ What's that?
 `error: skim.cxx: No such file or directory`
 
 {{< solution title="Answer" >}}
-It seems the job cannot access the repository. We need to instruct GitHub actions to checkout the repository.
+It seems the job cannot access the repository. We need to instruct GitHub Actions to checkout the repository.
 ```yaml
 steps:
    - name: checkout repository
@@ -151,7 +151,7 @@ Ok, let's go ahead and update our `.github/workflow/main.yml` again, and it bett
 
 ### Ways to get software
 
-As we saw before, GitHub pre-installs many common software packages and libraries that people might need, but often we need to install additional software. There are often actions we can use for this, like `actions/setup-python` to install python or `mamba-org/setup-micromamba` to install [Mamba](https://mamba.readthedocs.io) (an alternative to [Conda](https://docs.conda.io), an environment manager). These actions are simply repositories that contain scripts to install or perform certain actions. You can find more information about these actions by going to github.com/\<name-of-action\>. For example, for `mamba-org/setup-micromamba` you can find more information at [https://github.com/mamba-org/setup-micromamba](https://github.com/mamba-org/setup-micromamba).
+As we saw before, GitHub pre-installs many common software packages and libraries that people might need, but often we need to install additional software. There are often actions we can use for this, like `actions/setup-python` to install Python or `mamba-org/setup-micromamba` to install [Mamba](https://mamba.readthedocs.io) (an alternative to [Conda](https://docs.conda.io), an environment manager). These actions are simply repositories that contain scripts to install or perform certain actions. You can find more information about these actions by going to github.com/\<name-of-action\>. For example, for `mamba-org/setup-micromamba` you can find more information at [https://github.com/mamba-org/setup-micromamba](https://github.com/mamba-org/setup-micromamba).
 
 
 If we wanted to use Conda instead of Docker, our `build_skim` job would look like this:
@@ -177,7 +177,7 @@ build_skim:
         $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 ```
 
-Note that `https://github.com/mamba-org/setup-micromamba@v1` may be called on GitHub as `mamba-org/setup-micromamba`, but the full url makes it compatible with Gitea (if that Gitea instance does not have `mamba-org/` cloned locally).
+Note that `https://github.com/mamba-org/setup-micromamba@v1` may be called on GitHub as `mamba-org/setup-micromamba`, but the full URL makes it compatible with Gitea (if that Gitea instance does not have `mamba-org/` cloned locally).
 
 ### Building multiple versions
 
@@ -230,15 +230,15 @@ jobs:
 {{< /challenge >}}
 
 
-## Dependabot for updating gh action version
+## Dependabot for updating GitHub Action versions
 
 {{< tabs >}}
 {{< tab name="GitHub" selected=true >}}
-Github actions are accompanied by the tags ("@v2"...) which are versions/tags of that action. One might need to update this tags for example from "@v2" to "@v3" because the Github actions developers may fix existing bugs to the action or there may be other updates.
+GitHub Actions are accompanied by tags ("@v2"...) which are versions/tags of that action. One might need to update these tags, for example from "@v2" to "@v3" because the GitHub Actions developers may fix existing bugs to the action or there may be other updates.
 
-However, this process can be automated by using "Dependabot" which ensures that the workflow references the updated version of the action. If that is not the case, the Dependabot will open a pull request updating the tag of the Github action.
+However, this process can be automated by using "Dependabot", which ensures that the workflow references the updated version of the action. If that is not the case, Dependabot will open a pull request updating the tag of the GitHub action.
 
-The dependabot action can be added to a Github repository by creating the file `dependabot.yml` in the `.github/` folder. The content of the file looks like this [(Link to the dependabot.yml)](https://github.com/hsf-training/hsf-training-cicd-github/blob/gh-pages/.github/dependabot.yml):
+The Dependabot action can be added to a GitHub repository by creating the file `dependabot.yml` in the `.github/` folder. The content of the file looks like this [(Link to the dependabot.yml)](https://github.com/hsf-training/hsf-training-cicd-github/blob/gh-pages/.github/dependabot.yml):
 
 ```yaml
 version: 2
@@ -250,14 +250,14 @@ updates:
       interval: "weekly"
 ```
 
-where interval is the frequency of looking for updates to Github actions.
+where interval is the frequency of looking for updates to GitHub Actions.
 
 For more information on Dependabot, see e.g., [here.](https://docs.github.com/en/code-security/dependabot)
 
 {{< /tab >}}
 {{< tab name="Gitea" >}}
 
-Gitea does not support dependabot actions, see [renovate](https://docs.renovatebot.com/modules/platform/gitea/) instead.
+Gitea does not support Dependabot actions, see [renovate](https://docs.renovatebot.com/modules/platform/gitea/) instead.
 
 {{< /tab >}}
 {{< /tabs >}}

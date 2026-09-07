@@ -1,9 +1,9 @@
 +++
 exercises = 10
 hidden = false
-keypoints = ['Secrets in GitHub actions allow you to hide protected information from others who can see your code']
+keypoints = ['Secrets in GitHub Actions allow you to hide protected information from others who can see your code']
 objectives = ['Add custom environment variables', 'Learn how to give your CI/CD Runners access to private information']
-questions = ['How can I give my GitHub actions private information?']
+questions = ['How can I give my GitHub Actions private information?']
 teaching = 5
 title = 'Getting into the Spy Game'
 weight = 130
@@ -66,7 +66,7 @@ skim:
 
 In the previous lesson, we saw that the executable `skim` takes 5 arguments: input (remote data), output (processed data), cross-section, integrated luminosity, and scale.
 
-Let's consider the following values
+Let's consider the following values:
 ```
 input: root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root
 output: skim_ggH.root
@@ -106,24 +106,24 @@ Our YAML file should look like
 What about the output?
 ```text
 >>> Process input: root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root
-Error: n <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3010] Unable to give access - user access restricted - unauthorized identity used ; Permission denied
+Error: n <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3010] Unable to give access - user access restricted - unauthorized identity used; Permission denied
 ```
 
 ## Access Control
 
-The data we're using are on CERN User Storage (EOS). As a general rule, access to protected data should be authenticated, CERN can’t just grab it!.
+The data we're using are on CERN User Storage (EOS). As a general rule, access to protected data should be authenticated; CERN can’t just grab it!.
 It means we need to give our GitHub Actions access to our data. CERN uses `kinit` for access control.
 
-Anyhow, this is pretty much done by executing `echo $USER_PASS | kinit $USER_NAME@CERN.CH` assuming that we've set the corresponding environment variables.
+Anyhow, this is pretty much done by executing `echo $USER_PASS | kinit $USER_NAME@CERN.CH`, assuming that we've set the corresponding environment variables.
 
 If you are not a CERN user, don't worry. We have a backup solution for you!
 You can use this file `root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root` and skip the rest of this lesson.
 
-If this still does not work, for example if the port xrootd uses to fetch the data is blocked on your network, you can instead use `https://root.cern/files/HiggsTauTauReduced/GluGluToHToTauTau.root`.
+If this still does not work, for example, if the port xrootd uses to fetch the data is blocked on your network, you can instead use `https://root.cern/files/HiggsTauTauReduced/GluGluToHToTauTau.root`.
 
 
 {{< callout type="note" title="Running example" >}}
-Sometimes you'll run into a code example here that you might want to run locally but relies on variables you might not have set? Sure, simply do the following
+Sometimes you'll run into a code example here that you might want to run locally but relies on variables you might not have set? Sure, simply do the following:
 ```bash
 USER_PASS=hunter42 USER_NAME=GoodWill echo $USER_PASS | kinit $USER_NAME@CERN.CH
 ```
@@ -137,7 +137,7 @@ We first have to store our sensitive information in GitHub:
 2. Select `Settings`.
 3. In the left sidebar, go to `Secrets and variables`, then `Actions`, and then `New repository secret`.
 4. Type `USER_NAME` in the Name input box and add your username in the Secret input box.
-5. Similarly add `USER_PASS` as well.
+5. Similarly, add `USER_PASS` as well.
 
 {{< callout type="testimonial" title="DON'T PEEK" >}}
 DON'T PEEK AT YOUR FRIEND'S SCREEN WHILE DOING THIS.
@@ -155,7 +155,7 @@ Note that there are some rules applied to secret names:
 
 
 {{< challenge title="Access secrets" >}}
-The secrets you've created are available to use in GitHub Actions workflows. GitHub allows to access them using secrets context: $\{\{ secrets.\<secret name\> \}\}.
+The secrets you've created are available to use in GitHub Actions workflows. GitHub allows you to access them using the secrets context: $\{\{ secrets.\<secret name\> \}\}.
 
 e.g:
 

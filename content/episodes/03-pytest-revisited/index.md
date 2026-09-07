@@ -1,14 +1,14 @@
 +++
 exercises = 5
 hidden = false
-keypoints = ['You can do whatever you like in a test, as long as you return the right exit code', 'Pytest, and other test utilities, will propagate the exit codes correctly']
-objectives = ['Understand how assertions in python correspond to exit codes', 'Figure out how pytest fits in']
-questions = ['What happens with assertions in python?']
+keypoints = ['You can do whatever you like in a test, as long as you return the right exit code', 'Pytest, and other test utilities will propagate the exit codes correctly']
+objectives = ['Understand how assertions in Python correspond to exit codes', 'Figure out how pytest fits in']
+questions = ['What happens with assertions in Python?']
 teaching = 5
 title = 'Being Assertive'
 weight = 30
 +++
-This is a relatively short section, but we need to connect some things you've learned from testing in python with exit codes.
+This is a relatively short section, but we need to connect some things you've learned from testing in Python with exit codes.
 
 <!--
 {{< youtube Nk1wkQCEPt8 >}}
@@ -31,7 +31,7 @@ assert x == "goodbye"
 
 and then run it with `python python_assert.py`.
 
-What happens when an assertion fails in python?
+What happens when an assertion fails in Python?
 
 ```text
 Traceback (most recent call last):
@@ -40,7 +40,7 @@ Traceback (most recent call last):
 AssertionError
 ```
 
-An exception is raised, `AssertionError`. The nice thing about python is that all unhandled exceptions return a non-zero exit code. If an exit code is not set, this defaults to `1`.
+An exception is raised: `AssertionError`. The nice thing about Python is that all unhandled exceptions return a non-zero exit code. If an exit code is not set, this defaults to `1`.
 ```bash
 > echo $?
 1

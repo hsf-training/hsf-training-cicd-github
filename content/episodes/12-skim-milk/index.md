@@ -48,9 +48,9 @@ jobs:
           $COMPILER -g -O3 -Wall -Wextra -Wpedantic -o skim skim.cxx $FLAGS
 ```
 
-Since the `skim` binary is built, let's see if we can run it. We need to add a job , with name `skim`.
+Since the `skim` binary is built, let's see if we can run it. We need to add a job with the name `skim`.
 
-`skim` is meant to process data (skimming) we are going to run on.
+`skim` is meant to process data (skimming) that we are going to run on.
 
 Let's go ahead and figure out how to define a run job. Seems too easy to be true?
 ```yaml
@@ -70,7 +70,7 @@ skim:
 ```
 
 
-After you've added the `skim` job you can push your changes to GitHub:
+After you've added the `skim` job, you can push your changes to GitHub:
 ```bash
 git add .github/workflows/main.yml
 git commit -m "add skim job"
@@ -99,11 +99,11 @@ Let's have a look at the log message
 
 ## We're too naive
 
-Ok, fine. That was way too easy. It seems we have a few issues to deal with. The `skim` binary in the `build_skim` job isn't in the `skim` job by default. We need to use GitHub `artifacts` to copy over this from the right job.
+Ok, fine. That was way too easy. It seems we have a few issues to deal with. The `skim` binary in the `build_skim` job isn't in the `skim` job by default. We need to use GitHub `artifacts` to copy this over from the right job.
 
 ### Artifacts
 
-Artifacts are used to upload (`upload-artifact`) and download  (`download-artifact`) files and directories which should be attached to the job after this one has completed. That way it can share those files with another job in the same workflow.
+Artifacts are used to upload (`upload-artifact`) and download  (`download-artifact`) files and directories that should be attached to the job after this one has completed. That way, it can share those files with another job in the same workflow.
 
 {{< callout type="checklist" title="More Reading" >}}
 - [https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts](https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts)
@@ -207,7 +207,7 @@ We will deal with that in the next lesson.
 <!--
 Our executable takes 5 arguments: input (remote data), output (processed data), cross-section, integrated luminosity, and scale.
 
-Let's consider the following value
+Let's consider the following value:
 ```
 input: root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/GluGluToHToTauTau.root
 output: skim_ggH.root

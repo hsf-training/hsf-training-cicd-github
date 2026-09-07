@@ -82,7 +82,7 @@ Some exit codes are recommended to have [special meanings](https://tldp.org/LDP/
 
 ## Printing Exit Codes
 
-As you've seen above, the exit code from the last executed command is stored in the `$?` environment variable. Accessing from a shell is easy `echo $?`. What about from python? There are many different ways depending on which library you use. Using similar examples above, we can use the `getstatusoutput()` call:
+As you've seen above, the exit code from the last executed command is stored in the `$?` environment variable. Accessing it from a shell is easy `echo $?`. What about from Python? There are many different ways depending on which library you use. Using similar examples above, we can use the `getstatusoutput()` call:
 
 {{< callout type="note" title="Snake Charming" >}}
 To enter the Python interpreter, simply type `python3` in your command line. On some systems, you need to use the `python` command instead of `python3`. Check which version you have with `python3 --version`.
@@ -134,7 +134,7 @@ and then make it executable `chmod +x bash_exit.sh`. Now, try running it with `.
 
 ### Python
 
-The same can be done in a python file. Create a file called `python_exit.py` with the following content:
+The same can be done in a Python file. Create a file called `python_exit.py` with the following content:
 
 ```python
 #!/usr/bin/env python3
@@ -183,5 +183,5 @@ What does that give you?
 It's possible to ignore an exit code quietly by running `command_1 || true`, where `true` always returns an exit code of `0`.
 
 {{< callout type="note" title="Overriding Exit Codes" >}}
-It's not really recommended to 'hack' the exit codes like this, but this example is provided so that you are aware of how to do it, if you ever run into this situation. Assume that scripts respect exit codes, until you run into one that does not.
+It's not really recommended to 'hack' the exit codes like this, but this example is provided so that you are aware of how to do it if you ever run into this situation. Assume that scripts respect exit codes until you run into one that does not.
 {{< /callout >}}
