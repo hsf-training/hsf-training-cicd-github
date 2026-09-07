@@ -1,22 +1,115 @@
-# This template CITATION.cff file is meant to be replaced with
-# the metadata for your lesson. Keep the structure, but update
-# the title, authors, abstract, and repository details before
-# publishing your material.
-
 cff-version: 1.2.0
-title: Example Lesson
+title: Continuous Integration and Deployment (CI/CD) with GitHub
 message: >-
   Please cite this lesson using the metadata from this file when
   you refer to it in publications or re-use, adapt, or expand on
   the material in your own teaching.
-type: dataset
 authors:
-  - given-names: Given name
-    family-names: Family name
-    orcid: https://orcid.org/0000-0000-0000-0000
+  - given-names: Emery
+    family-names: Nibigira
+    orcid: 
+  - given-names: Saransh
+    family-names: Chopra
+    orcid: https://orcid.org/0000-0003-3046-7675
+  - given-names: Aman
+    family-names: Desai
+    orcid: https://orcid.org/0000-0003-2631-9696
+  - given-names: Florian
+    family-names: Eble
+    orcid: 
+  - given-names: Clemens
+    family-names: Lange
+    orcid: https://orcid.org/0000-0002-3632-3157
+  - given-names: Max
+    family-names: Fatouros
+    orcid: https://orcid.org/0000-0002-7438-652X
+  - given-names: Laura
+    family-names: Marqués
+    orcid: https://orcid.org/0000-0002-3593-5557
+   - given-names: Raniere
+    family-names: Silva
+    orcid:
+  - given-names: François
+    family-names: Michonneau
+    orcid: https://orcid.org/0000-0002-9092-966X
+  - given-names: Maxim
+    family-names: Belkin
+    orcid:
+  - given-names: Giordon
+    family-names: Stark
+    orcid: https://orcid.org/0000-0001-6616-3433
+  - given-names: Kilian
+    family-names: Lieret
+    orcid: https://orcid.org/0000-0003-2792-7511
+  - given-names: W. Trevor
+    family-names: King
+    orcid:
+  - given-names: Samuel
+    family-names: Meehan
+    orcid:
+  - given-names: Zhian N.
+    family-names: Kamvar
+    orcid: https://orcid.org/0000-0003-1458-7108
+  - given-names: Abby Cabunoc
+    family-names: Mayes
+    orcid: https://orcid.org/0000-0003-4959-3049
+  - given-names: Katrin
+    family-names: Leinweber
+    orcid:
+  - given-names: Aleksandra
+    family-names: Nenadic
+    orcid: https://orcid.org/0000-0002-2269-3894
+  - given-names: Toby
+    family-names: Hodges
+    orcid:
+  - given-names: Erin
+    family-names: Becker
+    orcid:
+  - given-names: Carol
+    family-names: Willing
+    orcid: https://orcid.org/0000-0002-9817-8485
+  - given-names: Maneesha
+    family-names: Sane
+    orcid:
+  - given-names: Gabriel A.
+    family-names: Devenyi
+    orcid: https://orcid.org/0000-0002-7766-1187
+  - given-names: João
+    family-names: Rodrigues
+    orcid:
+  - given-names: Piotr
+    family-names: Banaszkiewicz
+    orcid:
+  - given-names: Tracy
+    family-names: Teal
+    orcid:
+  - given-names: Lex
+    family-names: Nederbragt
+    orcid:
+  - given-names: Jonah
+    family-names: Duckles
+    orcid:
+  - given-names: Aman
+    family-names: Goel
+    orcid: https://orcid.org/0000-0003-3567-2096
+  - given-names: Marianne
+    family-names: Corvellec
+    orcid:
+  - given-names: Rayna M.
+    family-names: Harris
+    orcid:
+  - given-names: Jeramia
+    family-names: Ory
+    orcid: https://orcid.org/0000-0002-5867-007X
+  - given-names: Ethan
+    family-names: White
+    orcid:
+  - given-names: Brian
+    family-names: Ballsun-Stanton
+    orcid: https://orcid.org/0000-0003-4932-7912
 abstract: >-
-  Replace this with a short abstract describing the lesson, its
-  intended audience, and its main learning goals.
-repository-code: https://github.com/example/example-lesson
-url: https://example.github.io/example-lesson/
+  Explore how to build a CI/CD workflow, guiding participants through the development of automated processes using GitHub Actions.      
+repository-code: https://github.com/hsf-training/hsf-training-cicd-github
+url: https://hsf-training.github.io/hsf-training-cicd-github/
+doi: 10.5281/zenodo.22016969
 license: CC-BY-4.0
