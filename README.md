@@ -11,7 +11,7 @@
 > **Note**
 > Click [here](https://hsf-training.github.io/hsf-training-cicd-github/) for the training website!
 
-This learning module explores how to build a CI/CD workflow, guiding participants through the development of automated processes using GitHub actions.      
+This learning module explores how to build a CI/CD workflow, guiding participants through the development of automated processes using GitHub Actions.      
 
 ## Records from past events
 
