@@ -1,0 +1,7 @@
+# Link-check exclusions (regular expressions), read automatically by lychee
+# alongside the centrally managed lychee.toml.
+
+https://github.com/hsf-training/hsf-training-cicd-github/blob/gh-pages/CITATION.cff
+
+# Passed earlier the same day, then timed out from the runner — probably temporary.
+https://travis-ci.org/

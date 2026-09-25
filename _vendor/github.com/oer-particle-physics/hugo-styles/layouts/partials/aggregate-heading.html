@@ -1,0 +1,5 @@
+{{- $level := .level | default 2 -}}
+{{- if .aggregate -}}
+  {{- $level = add $level 1 -}}
+{{- end -}}
+<h{{ $level }}{{ with .id }} id="{{ . }}"{{ end }}{{ with .class }} class="{{ . }}"{{ end }}>{{ .title }}</h{{ $level }}>

@@ -1,0 +1,21 @@
+{{- $content := .content -}}
+{{- $color := .color | default "gray" -}}
+{{- $class := .class | default "" -}}
+{{- $icon := .icon | default "" -}}
+{{- $link := .link | default "" -}}
+{{- $title := .title | default ($content | plainify) -}}
+{{- $border := not (eq .border false) -}}
+{{- $external := strings.HasPrefix $link "http" -}}
+{{- if $link -}}
+  <a href="{{ $link }}" title="{{ $title }}" class="not-prose hx:inline-flex hx:align-middle hx:no-underline hover:hx:no-underline" {{ if $external }}target="_blank" rel="noopener noreferrer"{{ end }}>
+{{- end -}}
+{{- partial "shortcodes/badge.html" (dict
+  "content" $content
+  "color" $color
+  "class" $class
+  "border" $border
+  "icon" $icon
+) -}}
+{{- if $link -}}
+  </a>
+{{- end -}}

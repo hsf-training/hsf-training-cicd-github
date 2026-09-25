@@ -1,0 +1,7 @@
+{{- $body := partial "utils/render-shortcode-body.html" (dict "Inner" .Inner "Page" .Page) -}}
+<section class="lesson-audience-box lesson-audience-box-learner" data-audience="learner">
+  <div class="lesson-audience-header">
+    <span class="lesson-audience-label">Learner</span>
+  </div>
+  <div class="lesson-rich-content">{{- $body -}}</div>
+</section>

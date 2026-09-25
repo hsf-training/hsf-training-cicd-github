@@ -1,0 +1,13 @@
+{{- $page := . -}}
+{{- $episodeID := "" -}}
+{{- with $page.File -}}
+  {{- if .Dir -}}
+    {{- $episodeID = path.Base (strings.TrimSuffix "/" .Dir) -}}
+  {{- else -}}
+    {{- $episodeID = .TranslationBaseName -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $episodeID -}}
+  {{- $episodeID = anchorize $page.Title -}}
+{{- end -}}
+{{- return $episodeID -}}

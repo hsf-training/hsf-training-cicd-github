@@ -1,0 +1,32 @@
+{{ define "main" }}
+  {{ $resourceLabel := .Type }}
+  {{ $hideSidebar := false }}
+  {{ if eq .Section "glossary" }}
+    {{ $resourceLabel = "Glossary Term" }}
+    {{ $hideSidebar = true }}
+  {{ else if eq .Section "profiles" }}
+    {{ $resourceLabel = "Learner Profile" }}
+    {{ $hideSidebar = true }}
+  {{ else if .Params.audience }}
+    {{ $resourceLabel = printf "%s resource" .Params.audience }}
+  {{ end }}
+  {{ if eq .RelPermalink ("reference/" | relURL) }}
+    {{ $hideSidebar = true }}
+  {{ end }}
+  <div class='hx:mx-auto hx:flex hextra-max-page-width'>
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" $hideSidebar "displayPlaceholder" false) }}
+    {{ partial "toc.html" . }}
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="wide-when-sidebar-hidden hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        {{ partial "breadcrumb.html" (dict "page" . "enable" true) }}
+        <div class="content">
+          <p class="hx:mb-2 hx:text-xs hx:font-semibold hx:uppercase hx:tracking-[0.16em] hx:text-gray-500 hx:dark:text-gray-400">{{ $resourceLabel }}</p>
+          <h1>{{ .Title }}</h1>
+        </div>
+        <div class="content hx:mt-8">
+          {{ .Content }}
+        </div>
+      </main>
+    </article>
+  </div>
+{{ end }}

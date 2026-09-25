@@ -1,0 +1,28 @@
+{{- $page := .page -}}
+{{- $dest := .src -}}
+{{- $url := urls.Parse $dest -}}
+{{- $isLocal := not $url.Scheme -}}
+{{- $startsWithSlash := hasPrefix $dest "/" -}}
+{{- $startsWithRelative := hasPrefix $dest "../" -}}
+{{- $resourcePath := strings.TrimPrefix "./" (strings.TrimPrefix "/" $url.Path) -}}
+{{- $staticPath := or
+  (strings.HasPrefix $resourcePath "fig/")
+  (strings.HasPrefix $resourcePath "files/")
+  (strings.HasPrefix $resourcePath "data/")
+  (strings.HasPrefix $resourcePath "code/")
+-}}
+
+{{- if and $dest $isLocal -}}
+  {{- with or ($page.Resources.Get $resourcePath) (resources.Get $resourcePath) -}}
+    {{- $query := cond $url.RawQuery (printf "?%s" $url.RawQuery) "" -}}
+    {{- $fragment := cond $url.Fragment (printf "#%s" $url.Fragment) "" -}}
+    {{- $dest = printf "%s%s%s" .RelPermalink $query $fragment -}}
+  {{- else -}}
+    {{- if or $startsWithSlash $staticPath -}}
+      {{- $dest = relURL (strings.TrimPrefix "/" $dest) -}}
+    {{- else if and (eq $page.Kind "page") (not $page.BundleType) (not $startsWithRelative) -}}
+      {{- $dest = printf "../%s" $dest -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $dest -}}

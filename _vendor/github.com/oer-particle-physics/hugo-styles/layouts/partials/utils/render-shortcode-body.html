@@ -1,0 +1,2 @@
+{{- $body := .Inner | strings.TrimSpace -}}
+{{- return (($body | .Page.RenderString) | strings.TrimSpace | safeHTML) -}}

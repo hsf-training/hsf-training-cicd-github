@@ -1,0 +1,131 @@
+{{ $page := .Page }}
+{{ $title := .Get "title" | default "Authors and Contributors" }}
+
+{{/* Rows are {display, orcid, github}. The ORCID comes from the cff `orcid`
+     field and the GitHub handle from `alias`; each column is shown only when
+     at least one author has a value for it. */}}
+{{ $rows := slice }}
+{{ $hasOrcid := false }}
+{{ $hasGithub := false }}
+
+{{/* fileExists and os.ReadFile fall back to module directories, which would
+     pick up hugo-styles' own CITATION.cff; readDir lists only the project. */}}
+{{ $hasCitation := false }}
+{{ if $page.IsHome }}
+  {{ range readDir "." }}
+    {{ if eq .Name "CITATION.cff" }}{{ $hasCitation = true }}{{ end }}
+  {{ end }}
+{{ end }}
+
+{{/* An empty or comment-only CITATION.cff renders no table. Anything else must
+     have the structure the table relies on, or the build fails. Full CFF schema
+     compliance is left to a validator such as cffconvert. */}}
+{{ if $hasCitation }}
+  {{ $citation := os.ReadFile "CITATION.cff" }}
+  {{/* Parse as YAML explicitly: format sniffing fails on comment-only files. */}}
+  {{ $parsed := try (resources.FromString "CITATION.cff.yaml" $citation | transform.Unmarshal) }}
+  {{ $authors := slice }}
+  {{ with $parsed.Err }}
+    {{ errorf "lesson/authors: CITATION.cff could not be parsed: %s" . }}
+  {{ else }}
+    {{/* Skip empty source and nil YAML, but validate false, zero, and empty collections. */}}
+    {{ if and $citation (ne $parsed.Value nil) }}
+      {{ if not (reflect.IsMap $parsed.Value) }}
+        {{ errorf "lesson/authors: CITATION.cff must be a mapping of keys to values" }}
+      {{ else }}
+        {{ $list := index $parsed.Value "authors" }}
+        {{ if not (reflect.IsSlice $list) }}
+          {{ errorf "lesson/authors: CITATION.cff must have an authors list" }}
+        {{ else if eq (len $list) 0 }}
+          {{ errorf "lesson/authors: authors in CITATION.cff must not be empty" }}
+        {{ else }}
+          {{ $authors = $list }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ range $i, $author := $authors }}
+    {{ $n := add $i 1 }}
+    {{ if not (reflect.IsMap $author) }}
+      {{ errorf "lesson/authors: CITATION.cff author %d must be a mapping of keys to values, got %v" $n $author }}
+      {{ continue }}
+    {{ end }}
+    {{/* Person authors: given-names name-particle family-names name-suffix,
+         e.g. "Alexander von Humboldt III". */}}
+    {{ $parts := slice }}
+    {{ range slice "given-names" "name-particle" "family-names" "name-suffix" }}
+      {{ with trim (printf "%v" (index $author . | default "")) " \t" }}
+        {{ $parts = $parts | append . }}
+      {{ end }}
+    {{ end }}
+    {{ $display := delimit $parts " " }}
+    {{/* Organisations and groups carry a single name field. */}}
+    {{ if not $display }}
+      {{ $display = trim (printf "%v" (index $author "name" | default "")) " \t" }}
+    {{ end }}
+    {{ $orcid := "" }}
+    {{ with findRESubmatch `(\d{4}-\d{4}-\d{4}-\d{3}[\dXx])` (printf "%v" (index $author "orcid" | default "")) 1 }}
+      {{ $orcid = index (index . 0) 0 }}
+    {{ end }}
+    {{ $github := "" }}
+    {{ $alias := trim (printf "%v" (index $author "alias" | default "")) " \t" }}
+    {{ with findRESubmatch `^(?:https?://(?:www\.)?github\.com/)?@?([A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?)/?$` $alias 1 }}
+      {{ $github = index (index . 0) 1 }}
+    {{ end }}
+    {{/* Authors identified only by an alias are listed under that alias. */}}
+    {{ if not $display }}
+      {{ $display = $github | default $alias }}
+    {{ end }}
+    {{ if not $display }}
+      {{ errorf "lesson/authors: CITATION.cff author %d has no name: set given-names/family-names, name, or alias" $n }}
+      {{ continue }}
+    {{ end }}
+    {{ if $orcid }}{{ $hasOrcid = true }}{{ end }}
+    {{ if $github }}{{ $hasGithub = true }}{{ end }}
+    {{ $rows = $rows | append (dict "display" $display "orcid" $orcid "github" $github) }}
+  {{ end }}
+{{ end }}
+
+{{ if gt (len $rows) 0 }}
+<section class="hx:mt-8 hx:w-full">
+  <div class="hx:w-full hx:overflow-hidden hx:rounded-3xl hx:border hx:border-gray-200 hx:bg-white hx:px-8 hx:pb-8 hx:pt-8 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+    <h2 class="hx:first:mt-0 hx:mb-6 hx:text-2xl">{{ $title }}</h2>
+    <div class="hx:overflow-x-auto">
+      <table class="hx:min-w-full hx:w-full hx:border-collapse hx:text-sm">
+        <thead>
+          <tr class="hx:border-b hx:border-gray-200 hx:text-left hx:dark:border-neutral-800">
+            <th class="hx:px-3 hx:py-2 hx:font-semibold">Contributor</th>
+            {{ if $hasOrcid }}<th class="hx:px-3 hx:py-2 hx:font-semibold">ORCID</th>{{ end }}
+            {{ if $hasGithub }}<th class="hx:px-3 hx:py-2 hx:font-semibold">GitHub</th>{{ end }}
+          </tr>
+        </thead>
+        <tbody>
+          {{ range $rows }}
+            <tr class="hx:border-b hx:border-gray-100 hx:align-top hx:dark:border-neutral-800/80">
+              <td class="hx:px-3 hx:py-4 hx:font-medium">{{ .display }}</td>
+              {{ if $hasOrcid }}
+                <td class="hx:px-3 hx:py-4">
+                  {{ with .orcid }}
+                    <a class="hx:no-underline hx:hover:underline" href="https://orcid.org/{{ . }}" rel="noopener">{{ . }}</a>
+                  {{ else }}
+                    <span class="hx:text-gray-500 hx:dark:text-gray-400">-</span>
+                  {{ end }}
+                </td>
+              {{ end }}
+              {{ if $hasGithub }}
+                <td class="hx:px-3 hx:py-4">
+                  {{ with .github }}
+                    <a class="hx:no-underline hx:hover:underline" href="https://github.com/{{ . }}" rel="noopener">@{{ . }}</a>
+                  {{ else }}
+                    <span class="hx:text-gray-500 hx:dark:text-gray-400">-</span>
+                  {{ end }}
+                </td>
+              {{ end }}
+            </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{{ end }}

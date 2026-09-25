@@ -1,0 +1,31 @@
+{{- $supportedKeys := "title, tagline, description, siteTitle" -}}
+{{- $rawKey := "" -}}
+{{- if .IsNamedParams -}}
+  {{- with .Get "key" -}}
+    {{- $rawKey = . -}}
+  {{- end -}}
+{{- else -}}
+  {{- with .Get 0 -}}
+    {{- $rawKey = . -}}
+  {{- end -}}
+{{- end -}}
+{{- $key := lower (strings.TrimSpace $rawKey) -}}
+
+{{- if not $key -}}
+  {{- errorf "The lesson/meta shortcode requires a metadata key at %s. Supported keys: %s" .Position $supportedKeys -}}
+{{- end -}}
+
+{{- $value := "" -}}
+{{- if eq $key "title" -}}
+  {{- $value = site.Params.lesson.title | default site.Title -}}
+{{- else if eq $key "tagline" -}}
+  {{- $value = site.Params.lesson.tagline | default site.Params.lesson.description -}}
+{{- else if eq $key "description" -}}
+  {{- $value = site.Params.lesson.description | default site.Params.lesson.tagline -}}
+{{- else if or (eq $key "sitetitle") (eq $key "site-title") -}}
+  {{- $value = site.Title -}}
+{{- else -}}
+  {{- errorf "Unsupported lesson/meta key %q at %s. Supported keys: %s" $rawKey .Position $supportedKeys -}}
+{{- end -}}
+
+{{- $value -}}

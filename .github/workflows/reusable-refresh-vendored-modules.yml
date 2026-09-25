@@ -1,0 +1,133 @@
+# x-release-please-version: v0.7.0
+name: Reusable Update hugo-styles
+
+on:
+  workflow_call:
+    inputs:
+      site-root:
+        type: string
+        default: "."
+      go-version-file:
+        type: string
+        default: "go.mod"
+      refresh-command:
+        type: string
+        default: ""
+      verify-command:
+        type: string
+        default: ""
+      pr-branch:
+        type: string
+        default: "chore/refresh-vendored-hugo-modules"
+      pr-title:
+        description: Optional title override; otherwise include the installed and target versions.
+        type: string
+        default: ""
+      pr-body:
+        description: Additional context appended to the generated upgrade report.
+        type: string
+        default: ""
+      pr-labels:
+        type: string
+        default: "dependencies"
+    secrets:
+      WORKFLOW_SYNC_TOKEN:
+        required: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.site-root }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.164.0"
+          extended: true
+
+      - name: Setup Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: ${{ inputs.go-version-file }}
+
+      - name: Record installed hugo-styles version
+        id: installed
+        shell: bash
+        run: |
+          module_version="$(go list -m -f '{{.Version}}' github.com/oer-particle-physics/hugo-styles)" || module_version=unknown
+          echo "version=${module_version:-unknown}" >> "${GITHUB_OUTPUT}"
+
+      - name: Refresh module metadata and managed files
+        shell: bash
+        run: ${{ inputs.refresh-command }}
+
+      - name: Prepare upgrade report
+        id: report
+        shell: bash
+        env:
+          OLD_VERSION: ${{ steps.installed.outputs.version }}
+          PR_TITLE: ${{ inputs.pr-title }}
+          PR_BODY: ${{ inputs.pr-body }}
+          UPGRADE_REPORT_PATH: ${{ runner.temp }}/hugo-styles-upgrade.md
+        run: |
+          go mod download github.com/oer-particle-physics/hugo-styles
+          module_dir="$(go list -m -f '{{.Dir}}' github.com/oer-particle-physics/hugo-styles)"
+          module_version="$(go list -m -f '{{.Version}}' github.com/oer-particle-physics/hugo-styles)"
+          python3 scripts/upgrade-report.py report \
+            --module-root "${module_dir}" \
+            --old-version "${OLD_VERSION}" \
+            --new-version "${module_version:-unknown}" \
+            --output "${UPGRADE_REPORT_PATH}" \
+            --github-output "${GITHUB_OUTPUT}" \
+            --title "${PR_TITLE}" \
+            --extra-body "${PR_BODY}"
+
+      - name: Verify refreshed site build
+        id: verify
+        if: ${{ inputs.verify-command != '' }}
+        shell: bash
+        run: ${{ inputs.verify-command }}
+
+      - name: Publish upgrade summary
+        if: ${{ always() && steps.report.outcome == 'success' }}
+        shell: bash
+        env:
+          VALIDATION_OUTCOME: ${{ steps.verify.outcome }}
+          UPGRADE_REPORT_PATH: ${{ runner.temp }}/hugo-styles-upgrade.md
+        run: |
+          python3 scripts/upgrade-report.py finalize \
+            --report "${UPGRADE_REPORT_PATH}" \
+            --validation "${VALIDATION_OUTCOME}" \
+            --summary "${GITHUB_STEP_SUMMARY}"
+
+      - name: Check workflow update credentials
+        shell: bash
+        env:
+          WORKFLOW_SYNC_TOKEN: ${{ secrets.WORKFLOW_SYNC_TOKEN }}
+        run: |
+          if [[ -n "${WORKFLOW_SYNC_TOKEN}" ]]; then
+            exit 0
+          fi
+
+          workflow_changes="$(git -C "${GITHUB_WORKSPACE}" status --porcelain --untracked-files=all -- .github/workflows)"
+          if [[ -n "${workflow_changes}" ]]; then
+            echo "::error title=WORKFLOW_SYNC_TOKEN required::The refresh changed files under .github/workflows/, but the WORKFLOW_SYNC_TOKEN repository secret is not configured. Add a fine-grained personal access token or GitHub App installation token with Contents, Pull requests, and Workflows read and write permissions. See https://oer-particle-physics.github.io/hugo-styles/docs/updates/"
+            exit 1
+          fi
+
+          echo "::warning title=WORKFLOW_SYNC_TOKEN not configured::No files under .github/workflows/ changed, so this refresh can continue with GITHUB_TOKEN. Configure WORKFLOW_SYNC_TOKEN before a future workflow update. See https://oer-particle-physics.github.io/hugo-styles/docs/updates/"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.WORKFLOW_SYNC_TOKEN || github.token }}
+          branch: ${{ inputs.pr-branch }}
+          delete-branch: true
+          commit-message: ${{ steps.report.outputs.title }}
+          title: ${{ steps.report.outputs.title }}
+          body-path: ${{ runner.temp }}/hugo-styles-upgrade.md
+          labels: ${{ inputs.pr-labels }}

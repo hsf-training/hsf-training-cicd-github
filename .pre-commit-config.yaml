@@ -1,10 +1,6 @@
-# === IMPORTANT: CENTRALLY MAINTAINED FILE ===
-# This file was automatically added via the scripts at the maintenance repository.
-# Please do not change it. Rather, update the blueprint in the maintenance repository and propagate
-# the changes from there.
-# IF YOU REALLY WANT TO MAKE REPOSITORY SPECIFIC CHANGES TO THIS FILE, PLEASE REMOVE THIS NOTICE!
-# Tag @klieret for any questions.
-# ======
+# Adapted from the centrally maintained hsf-training blueprint: the file
+# patterns below point at the Hugo content/ directory instead of the old
+# Jekyll layout.
 
 ci:
   autoupdate_schedule: monthly
@@ -19,10 +15,11 @@ repos:
       - id: check-symlinks
       - id: debug-statements
       - id: end-of-file-fixer
-        files: ^(_episodes|README.md|setup.md)
+        files: ^(content|README.md)
       - id: mixed-line-ending
+        files: ^(content|README.md)
       - id: trailing-whitespace
-        files: ^(_episodes|code|README.md|setup.md)
+        files: ^(content|README.md)
 
   - repo: https://github.com/codespell-project/codespell
     rev: "v2.4.3"

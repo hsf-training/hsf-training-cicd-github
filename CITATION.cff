@@ -1,0 +1,58 @@
+cff-version: 1.2.0
+title: Continuous Integration and Deployment (CI/CD) with GitHub and Gitea
+message: >-
+  Please cite this lesson using the metadata from this file when
+  you refer to it in publications or re-use, adapt, or expand on
+  the material in your own teaching.
+authors:
+  - given-names: Giordon
+    family-names: Stark
+    orcid: https://orcid.org/0000-0001-6616-3433
+  - given-names: Saransh
+    family-names: Chopra
+    orcid: https://orcid.org/0000-0003-3046-7675
+  - given-names: Aman
+    family-names: Desai
+    orcid: https://orcid.org/0000-0003-2631-9696
+  - given-names: Max
+    family-names: Fatouros
+    orcid: https://orcid.org/0000-0002-7438-652X
+  - given-names: Guillermo A.
+    family-names: Fidalgo-Rodríguez
+    orcid: https://orcid.org/0000-0001-8605-9772
+  - given-names: Clemens
+    family-names: Lange
+    orcid: https://orcid.org/0000-0002-3632-3157
+  - given-names: Kilian
+    family-names: Lieret
+    orcid: https://orcid.org/0000-0003-2792-7511
+  - given-names: Laura
+    family-names: Marqués
+    orcid: https://orcid.org/0000-0002-3593-5557
+  - given-names: Emery
+    family-names: Nibigira
+    orcid: https://orcid.org/0000-0001-5821-291X
+abstract: |-
+  This learning module, developed by the HEP Software Foundation (HSF), explores how to build a CI/CD workflow, guiding participants through the development of automated processes using GitHub Actions and Gitea Actions.
+
+  After completing this module, participants will be able to:
+
+  - Write scripts with appropriate exit codes.
+  - Build flexible and reusable CI/CD workflows using GitHub Actions.
+  - Configure and manage workflow jobs using YAML.
+  - Understand how GitHub Actions runners execute jobs and access repository code.
+  - Use matrices, dependencies, and artifacts to create efficient and scalable workflows.
+  - Protect secrets and sensitive information while allowing workflows to run securely.
+keywords:
+  - "Reproducible analyses"
+  - "Particle Physics"
+  - "GitHub Actions"
+  - "Continuous Integration"
+  - "Continuous Deployment"
+  - "CI/CD"
+  - "Workflow Automation"
+  - "Secrets Management"
+repository-code: https://github.com/hsf-training/hsf-training-cicd-github
+url: https://hsf-training.github.io/hsf-training-cicd-github/
+doi: 10.5281/zenodo.22016968
+license: CC-BY-4.0

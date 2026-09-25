@@ -1,0 +1,48 @@
+{{ $episodes := sort (where site.RegularPages "Section" "episodes") "Weight" "asc" }}
+{{ $inlineRender := dict "display" "inline" }}
+{{ $rows := slice }}
+{{ range $episode := $episodes }}
+  {{ with $episode.Params.objectives }}
+    {{ range . }}
+      {{ $item := printf "%v" . }}
+      {{ if or (strings.Contains $item "\\(") (strings.Contains $item "\\[") (strings.Contains $item "$$") }}
+        {{ $.Page.Store.Set "hasMath" true }}
+      {{ end }}
+    {{ end }}
+    {{ $rows = $rows | append (dict "title" $episode.Title "link" $episode.RelPermalink "objectives" . "page" $episode) }}
+  {{ end }}
+{{ end }}
+{{ if gt (len $rows) 0 }}
+<section class="hx:mt-8 hx:w-full">
+  <div class="hx:w-full hx:overflow-hidden hx:rounded-3xl hx:border hx:border-gray-200 hx:bg-white hx:px-8 hx:pb-8 hx:pt-8 hx:shadow-sm hx:dark:border-neutral-800 hx:dark:bg-neutral-900">
+    <h2 class="hx:first:mt-0 hx:mb-6 hx:text-2xl">Learning Objectives</h2>
+    <div class="hx:overflow-x-auto">
+      <table class="hx:min-w-full hx:w-full hx:border-collapse">
+        <thead>
+          <tr class="hx:border-b hx:border-gray-200 hx:text-left hx:dark:border-neutral-800">
+            <th class="hx:py-2 hx:pr-4 hx:text-xs hx:font-semibold hx:uppercase hx:tracking-[0.16em] hx:text-gray-500 hx:dark:text-gray-400">Episode</th>
+            <th class="hx:py-2 hx:text-xs hx:font-semibold hx:uppercase hx:tracking-[0.16em] hx:text-gray-500 hx:dark:text-gray-400">Learning Objectives</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range $rows }}
+            {{ $row := . }}
+            <tr class="hx:border-b hx:border-gray-100 hx:align-top hx:dark:border-neutral-800/80">
+              <td class="hx:py-4 hx:pr-4 hx:font-medium">
+                <a class="hx:no-underline hx:hover:underline" href="{{ .link }}">{{ .title }}</a>
+              </td>
+              <td class="hx:py-4">
+                <ul class="hx:mb-0">
+                  {{ range .objectives }}
+                    <li>{{ $row.page.RenderString $inlineRender . }}</li>
+                  {{ end }}
+                </ul>
+              </td>
+            </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{{ end }}

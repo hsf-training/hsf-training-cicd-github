@@ -1,0 +1,6 @@
+{{ $dest := partial "image-src.html" (dict "page" .Page "src" .Destination) }}
+{{ $enableImageZoom := partial "image-zoom-enabled.html" .Page }}
+{{ if $enableImageZoom }}
+  {{ .Page.Store.Set "hasImageZoom" true }}
+{{ end }}
+<img src="{{ $dest }}" alt="{{ .Text }}"{{ if $enableImageZoom }} data-zoomable{{ end }} loading="lazy">

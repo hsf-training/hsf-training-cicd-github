@@ -1,0 +1,79 @@
++++
+exercises = 0
+keypoints = ['CI/CD is crucial for any reproducibility and testing', 'Take advantage of automation to reduce your workload']
+objectives = ['Understand why CI/CD is important', 'Learn what can be possible with CI/CD', 'Find resources to explore in more depth']
+questions = ['What is continuous integration / continuous deployment?']
+teaching = 5
+title = 'Introduction'
+weight = 10
++++
+<!--
+{{< youtube nkaK9-cJp9Y >}}
+-->
+
+{{< youtube -_IEYxxcUns >}}
+
+## What is CI/CD?
+
+Continuous Integration ([CI](https://en.wikipedia.org/wiki/Continuous_integration)), and Continuous Deployment ([CD](https://en.wikipedia.org/wiki/Continuous_deployment)) are two related concepts in the field of [DevOps](https://en.wikipedia.org/wiki/DevOps), a sub-domain of software engineering.
+
+<dl>
+  <dt>CI</dt>
+  <dd>Continuously integrates source code changes into your repository while testing to ensure the changes do not "break" anything.</dd>
+  <dt>CD</dt>
+  <dd>Continuously deploys a service based on your code.</dd>
+</dl>
+
+A common example of a CI/CD workflow or pipeline in a repository would be one which&mdash;after each push of a set of commits&mdash;tests the codebase (via CI) and deploys documentation (via CD) on a website.
+
+CI/CD workflows can be configured to run after a push, after a pull request, or on a schedule. The broader purpose of CI/CD is to automate anything repetitive that doesn't need to be done manually, and can be thought of as a labour-based manifestation of the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) (don't repeat yourself) principle in programming.
+
+{{< callout type="note" title="Catch and Release" >}}
+This is just like a fishing practice for ~~conservation~~ preservation!
+
+![A fish being caught and released](https://media.giphy.com/media/j8080dkr0ux1e/giphy.gif)
+{{< /callout >}}
+
+### Breaking Changes
+
+What does it even mean to "break" something? The idea of "breaking" something is pretty contextual. If you're working on C++ code, then you probably want to make sure things compile and run without segfaulting at the bare minimum. If it's Python code, maybe you have some tests with `pytest` that you want to make sure pass ("exit successfully"). Or if you're working on a paper draft, you might check for grammar, misspellings, and that the document compiles from LaTeX. Whatever the use-case is, integration is about **catching** breaking changes.
+
+{{< callout type="note" title="Don't know `pytest` ?" >}}
+To learn more about `pytest` visit [its documentation](https://pytest.org/) or follow [this training module](http://carpentries-incubator.github.io/python-testing/).
+{{< /callout >}}
+
+### Deployment
+
+Similarly, "deployment" can mean a lot of things. Perhaps you have a Curriculum Vitae (CV) that is automatically built from LaTeX and uploaded to your website. Another case is to release Docker images of your framework that others depend on. Maybe it's just uploading documentation. Or to even upload a new tag of your Python package on `pypi`. Whatever the use-case is, deployment is about **releasing** changes.
+
+### Workflow Automation
+
+CI/CD is the first step to automating your entire workflow. Imagine everything you do in order to run an analysis, or make some changes. Can you make a computer do it automatically? If so, do it! The less human work you do, the less risk of making human mistakes.
+
+
+{{< callout type="note" title="Anything you can do, a computer can do better" >}}
+Any command you run on your computer can be equivalently run in a CI job.
+{{< /callout >}}
+
+Don't just limit yourself to thinking of CI/CD as primarily for testing changes, but as one part of automating an entire development cycle. You can trigger notifications to your cellphone, fetch/download new data, execute cron jobs, and so much more. However, for the lessons you'll be going through today and that you've just recently learned about Python testing with `pytest`, we'll focus primarily on setting up CI/CD with tests for code that you've written already.
+
+## CI/CD Solutions
+
+Now, obviously, we're not going to make our own fully-fledged CI/CD solution. Plenty exist in the wild today, and below are just a popular few:
+
+- [Native GitHub Actions](https://github.com/features/actions)
+- [Native GitLab CI/CD](https://docs.gitlab.com/ee/ci/)
+- [Travis CI](https://travis-ci.org/)
+- [Circle CI](https://circleci.com/)
+- [TeamCity](https://www.jetbrains.com/teamcity/)
+- [Bamboo](https://www.atlassian.com/software/bamboo)
+- [Jenkins](https://jenkins.io/)
+- [Buddy](https://buddy.works/)
+- [CodeShip](https://codeship.com/)
+- [CodeFresh](https://g.codefresh.io/)
+
+For today's lesson, we'll only focus on GitHub's solution (GitHub Actions). However, be aware that all the concepts you'll be taught today: including pipelines, jobs, artifacts; all exist in other solutions by similar/different names. For example, GitLab supports two features known as caching and artifacts; but Travis doesn't quite implement the same thing for caching and has no native support for artifacts. Therefore, while we don't discourage you from trying out other solutions, there's no "one size fits all" when designing your own CI/CD workflow.
+
+{{< callout type="note" title="Parallel lesson on GitLab CI/CD" >}}
+We also have a [training on GitLab CI/CD](https://hsf-training.github.io/hsf-training-cicd/)
+{{< /callout >}}

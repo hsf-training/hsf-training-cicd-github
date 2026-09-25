@@ -3,5 +3,12 @@ updates:
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
+    # These workflows are synced from hugo-styles; updates come from there.
+    exclude-paths:
+      - ".github/workflows/cffconvert.yml"
+      - ".github/workflows/pages.yml"
+      - ".github/workflows/refresh-vendored-modules.yml"
+      - ".github/workflows/reusable-pages.yml"
+      - ".github/workflows/reusable-refresh-vendored-modules.yml"
     schedule:
       interval: "weekly"

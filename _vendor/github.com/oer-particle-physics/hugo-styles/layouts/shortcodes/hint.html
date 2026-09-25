@@ -1,0 +1,17 @@
+{{- $body := partial "utils/render-shortcode-body.html" (dict "Inner" .Inner "Page" .Page) -}}
+<section class="hx:mt-6">
+  <details class="lesson-disclosure lesson-disclosure-hint" data-lesson-disclosure="hint">
+    <summary class="lesson-disclosure-summary">
+      <span class="lesson-disclosure-icon" aria-hidden="true">
+        {{ partial "utils/icon.html" (dict "name" "light-bulb" "attributes" "height=18") }}
+      </span>
+      <span class="lesson-disclosure-copy">
+        <span class="lesson-disclosure-title">{{ .Get "title" | default "Need a hint?" }}</span>
+      </span>
+      <span class="lesson-disclosure-chevron" aria-hidden="true">▾</span>
+    </summary>
+    <div class="lesson-disclosure-body">
+      <div class="lesson-rich-content">{{- $body -}}</div>
+    </div>
+  </details>
+</section>

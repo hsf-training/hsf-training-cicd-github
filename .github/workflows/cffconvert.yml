@@ -1,0 +1,30 @@
+# Validates CITATION.cff against the Citation File Format schema.
+name: Validate CITATION.cff
+
+on:
+  push:
+    paths:
+      - CITATION.cff
+      - .github/workflows/cffconvert.yml
+  pull_request:
+    paths:
+      - CITATION.cff
+      - .github/workflows/cffconvert.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      # A deleted CITATION.cff is a deliberate opt-out; an empty one is still checked.
+      - name: Validate CITATION.cff
+        if: hashFiles('CITATION.cff') != ''
+        uses: citation-file-format/cffconvert-github-action@2.0.0
+        with:
+          args: "--validate"
