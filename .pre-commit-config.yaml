@@ -4,6 +4,8 @@
 
 ci:
   autoupdate_schedule: monthly
+  autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
+  autofix_commit_msg: "style: pre-commit fixes"
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -13,6 +15,7 @@ repos:
       - id: check-case-conflict
       - id: check-merge-conflict
       - id: check-symlinks
+      - id: check-yaml
       - id: debug-statements
       - id: end-of-file-fixer
         files: ^(content|README.md)
